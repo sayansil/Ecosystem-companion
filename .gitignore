@@ -2,6 +2,12 @@
 **.swp
 app/src/androidTest/
 .idea/
+.dart*
+.packages
+android/
+linux/
+ios/
+pubspec*
 app/src/test/
 .project
 .settings/*
