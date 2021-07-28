@@ -1,16 +1,26 @@
-# ecosystem
 
-A new Flutter project.
+<p align="center">
 
-## Getting Started
+<a href="https://github.com/sayansil/Ecosystem-android">
+  <img src="https://ecosystem-simulation.web.app/assets/img/eco-android.png" />
+</a>
 
-This project is a starting point for a Flutter application.
+</p>
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<!-- Badges -->
+
+<p align="center">
+<a href="https://github.com/sayansil/Ecosystem/blob/master/LICENSE">
+        <img src="https://img.shields.io/badge/license-GPL%20v3-yellow.svg" /></a>
+</p>
+
+
+<br>
+
+<p align="center">
+A companion app for the <a href="https://github.com/sayansil/Ecosystem">Ecosystem Simulator</a> project. Find more information about the project in the main project <a href="https://github.com/sayansil/Ecosystem/wiki">wiki</a>.
+</p>
+
+<br>
