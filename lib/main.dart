@@ -1,7 +1,7 @@
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ecosystem/screens/home/components/home_screen.dart';
+import 'package:ecosystem/screens/home/home_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
