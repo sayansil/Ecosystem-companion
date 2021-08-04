@@ -1,7 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+    @override
+    _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+
+    bool correctKingdom = false;
+    bool correctSpecies = false;
+
+    final textKingdomController = TextEditingController();
+    final textSpeciesController = TextEditingController();
+
+    @override
+    void dispose() {
+        textKingdomController.dispose();
+        textSpeciesController.dispose();
+        super.dispose();
+    }
+
+    void speciesChanged() {
+        String kingdom = textKingdomController.text;
+        String species = textSpeciesController.text;
+
+        setState(() {
+            correctKingdom = false;
+            correctSpecies = false;
+
+            if (kingdom == "animal") {
+                correctKingdom = true;
+            }
+            if (species == "deer") {
+                correctSpecies = true;
+            }
+        });
+
+        print("kingdom: $kingdom $correctKingdom");
+        print("species: $species $correctSpecies");
+    }
 
     @override
     Widget build(BuildContext context) {
@@ -59,13 +97,18 @@ class Body extends StatelessWidget {
                                                                 labelStyle: TextStyle(color: colorPrimary.withOpacity(0.5)),
                                                                 enabledBorder: InputBorder.none,
                                                                 focusedBorder: InputBorder.none,
-                                                            )
+                                                            ),
+                                                            onChanged: (text) { speciesChanged(); },
+                                                            controller: textKingdomController,
                                                         ),
                                                     ),
-                                                    Icon(
-                                                        Icons.check_rounded,
-                                                        color: Colors.green,
-                                                        size: 30.0,
+                                                    Visibility(
+                                                        child: Icon(
+                                                            Icons.check_rounded,
+                                                            color: Colors.green,
+                                                            size: 30.0,
+                                                        ),
+                                                        visible: correctKingdom,
                                                     ),
                                                 ]
                                             ),
@@ -86,13 +129,18 @@ class Body extends StatelessWidget {
                                                                 labelStyle: TextStyle(color: colorPrimary.withOpacity(0.5)),
                                                                 enabledBorder: InputBorder.none,
                                                                 focusedBorder: InputBorder.none,
-                                                            )
+                                                            ),
+                                                            onChanged: (text) { speciesChanged(); },
+                                                            controller: textSpeciesController,
                                                         ),
                                                     ),
-                                                    Icon(
-                                                        Icons.check_rounded,
-                                                        color: Colors.green,
-                                                        size: 30.0,
+                                                    Visibility(
+                                                        child: Icon(
+                                                            Icons.check_rounded,
+                                                            color: Colors.green,
+                                                            size: 30.0,
+                                                        ),
+                                                        visible: correctSpecies,
                                                     ),
                                                 ]
                                             ),
