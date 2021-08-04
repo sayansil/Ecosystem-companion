@@ -9,3 +9,11 @@ const colorBackground = Color(0xFFF0F0F0);
 // Global spacing
 
 const defaultPadding = 30.0;
+
+
+// Global parameters
+
+const demoSpeciesList = {
+    "animal": ["lion", "deer"],
+    "plant": ["bamboo"]
+};
