@@ -217,6 +217,10 @@ class _BodyState extends State<Body> {
                                             fontSize: 18.0,
                                             color: Colors.white.withOpacity(0.8)
                                         ),
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.digitsOnly
+                                        ],
                                         decoration: InputDecoration(
                                             labelText: "Years to Simulate",
                                             labelStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
