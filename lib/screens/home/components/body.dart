@@ -19,6 +19,7 @@ class _BodyState extends State<Body> {
     final textCountController = TextEditingController();
 
     var allSets = [];
+    int years = 0;
 
     @override
     void dispose() {
@@ -77,6 +78,12 @@ class _BodyState extends State<Body> {
         }
     }
 
+    void clearSets() {
+        setState(() {
+            allSets = [];
+        });
+    }
+
     bool isReady() {
         return allSets.isNotEmpty;
     }
@@ -96,7 +103,7 @@ class _BodyState extends State<Body> {
                     child: Stack(
                         children: <Widget>[
                             Container(
-                                height: size.height*0.3 - 75,
+                                height: size.height*0.3 - 25,
                                 decoration: BoxDecoration(
                                     color: colorPrimary,
                                     borderRadius: BorderRadius.only(
@@ -110,7 +117,7 @@ class _BodyState extends State<Body> {
                                 margin: EdgeInsets.only(
                                     left: defaultPadding,
                                     right: defaultPadding,
-                                    top: size.height*0.3 + 130,
+                                    top: size.height*0.3 + 80,
                                 ),
                                 child: GridView.builder(
                                     physics:BouncingScrollPhysics(),
@@ -121,14 +128,53 @@ class _BodyState extends State<Body> {
                                         crossAxisSpacing: 20,
                                         mainAxisSpacing: 20
                                     ),
-                                    itemCount: allSets.length,
+                                    itemCount: allSets.isNotEmpty ? allSets.length + 1 : 0,
                                     itemBuilder: (BuildContext context, index) {
-                                        return Container(
-                                            alignment: Alignment.center,
-                                            child: Text(allSets[index].kingdom),
+                                        return index < allSets.length ? Container(
+                                            child: Stack(children: <Widget>[
+                                                Positioned(
+                                                    top: 10, left: 15, right: 15,
+                                                    child: Container(
+                                                        child: Text(
+                                                            allSets[index].species,
+                                                            style: TextStyle(fontSize: 30),
+                                                        ),
+                                                    ),
+                                                ),
+                                                Positioned(
+                                                    top: 50, left: 15, right: 15,
+                                                    child: Container(
+                                                        child: Text(
+                                                            allSets[index].kingdom,
+                                                            style: TextStyle(fontSize: 15, fontStyle: FontStyle.italic),
+                                                        ),
+                                                    ),
+                                                ),
+                                                Positioned(
+                                                    bottom: 10, right: 15,
+                                                    child: Container(
+                                                        child: Text(
+                                                            allSets[index].count.toString(),
+                                                            style: TextStyle(fontSize: 25),
+                                                        ),
+                                                    ),
+                                                ),
+                                            ]),
                                             decoration: BoxDecoration(
                                                 color: Colors.white,
-                                                borderRadius: BorderRadius.circular(15)
+                                                borderRadius: BorderRadius.circular(10)
+                                            ),
+                                        ) : Container(
+                                            alignment: Alignment.center,
+                                            child: IconButton(
+                                                icon: const Icon(Icons.delete),
+                                                color: colorSecondary,
+                                                iconSize: 35,
+                                                onPressed:(){ clearSets();  },
+                                            ),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(10)
                                             ),
                                         );
                                     },
@@ -136,7 +182,7 @@ class _BodyState extends State<Body> {
                             ),
 
                             Positioned(
-                                top: size.height*0.3 - 150,
+                                top: size.height*0.3 - 200,
                                 left: 0,
                                 right: 0,
                                 child: Container(
