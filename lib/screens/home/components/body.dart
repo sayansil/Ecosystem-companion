@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:ecosystem/utility/simulationHelpers.dart';
 
 class Body extends StatefulWidget {
     @override
@@ -16,6 +17,8 @@ class _BodyState extends State<Body> {
     final textKingdomController = TextEditingController();
     final textSpeciesController = TextEditingController();
     final textCountController = TextEditingController();
+
+    var allSets = [];
 
     @override
     void dispose() {
@@ -53,7 +56,32 @@ class _BodyState extends State<Body> {
         });
     }
 
+    void addSet() {
+        if (isValidSet()) {
+            setState((){
+                allSets.add(
+                    SimulationSet(
+                        textKingdomController.text.toLowerCase(),
+                        textSpeciesController.text.toLowerCase(),
+                        int.tryParse(textCountController.text) ?? 0
+                    )
+                );
+
+                textKingdomController.clear();
+                textSpeciesController.clear();
+                textCountController.clear();
+                valueChanged('kingdom');
+                valueChanged('species');
+                valueChanged('count');
+            });
+        }
+    }
+
     bool isReady() {
+        return allSets.isNotEmpty;
+    }
+
+    bool isValidSet() {
         return  correctSpecies &&
                 correctKingdom &&
                 correctCount;
@@ -64,7 +92,7 @@ class _BodyState extends State<Body> {
         Size size = MediaQuery.of(context).size;
 
         return Container(
-                    height: double.infinity,
+                    constraints: BoxConstraints.expand(),
                     child: Stack(
                         children: <Widget>[
                             Container(
@@ -83,7 +111,7 @@ class _BodyState extends State<Body> {
                                 left: 0,
                                 right: 0,
                                 child: Container(
-                                    height: 250,
+                                    height: 300,
                                     margin: EdgeInsets.symmetric(horizontal: defaultPadding),
                                     padding: EdgeInsets.symmetric(horizontal: defaultPadding),
                                     decoration: BoxDecoration(
@@ -195,6 +223,21 @@ class _BodyState extends State<Body> {
                                                         visible: correctCount,
                                                     ),
                                                 ]
+                                            ),
+                                            ElevatedButton(
+                                                onPressed: isValidSet() ? () { addSet(); } : null,
+                                                child: Text('ADD'),
+                                                style: ElevatedButton.styleFrom(
+                                                    primary: colorPrimary,
+                                                    textStyle: const TextStyle(fontSize: 16),
+                                                    minimumSize: Size(double.infinity, 30),
+                                                    onPrimary: Colors.white,
+                                                    shape: StadiumBorder(),
+                                                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
+                                                ),
+                                            ),
+                                            const SizedBox(
+                                                height: 10.0,
                                             ),
                                         ]
                                     ),

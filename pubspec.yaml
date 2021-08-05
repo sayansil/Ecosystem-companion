@@ -21,6 +21,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.9.0"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -30,3 +31,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+
+flutter_icons:
+  image_path: "assets/images/ecosystem-circle.png"
+  android: true
+  ios: true
