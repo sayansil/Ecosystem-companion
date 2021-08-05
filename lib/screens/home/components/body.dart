@@ -106,6 +106,35 @@ class _BodyState extends State<Body> {
                                 ),
                             ),
 
+                            Container(
+                                margin: EdgeInsets.only(
+                                    left: defaultPadding,
+                                    right: defaultPadding,
+                                    top: size.height*0.3 + 130,
+                                ),
+                                child: GridView.builder(
+                                    physics:BouncingScrollPhysics(),
+                                    padding: EdgeInsets.only(top: 40, bottom: size.height*0.1),
+                                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent: 200,
+                                        childAspectRatio: 3 / 2,
+                                        crossAxisSpacing: 20,
+                                        mainAxisSpacing: 20
+                                    ),
+                                    itemCount: allSets.length,
+                                    itemBuilder: (BuildContext context, index) {
+                                        return Container(
+                                            alignment: Alignment.center,
+                                            child: Text(allSets[index].kingdom),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(15)
+                                            ),
+                                        );
+                                    },
+                                ),
+                            ),
+
                             Positioned(
                                 top: size.height*0.3 - 150,
                                 left: 0,
