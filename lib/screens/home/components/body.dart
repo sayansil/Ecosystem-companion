@@ -13,10 +13,12 @@ class _BodyState extends State<Body> {
     bool correctKingdom = false;
     bool correctSpecies = false;
     bool correctCount = false;
+    bool correctYears = false;
 
     final textKingdomController = TextEditingController();
     final textSpeciesController = TextEditingController();
     final textCountController = TextEditingController();
+    final textYearsController = TextEditingController();
 
     var allSets = [];
     int years = 0;
@@ -53,6 +55,14 @@ class _BodyState extends State<Body> {
                 if (count > 0) {
                     correctCount = true;
                 }
+            } else if (valueType == "years") {
+                int years = int.tryParse(textYearsController.text) ?? 0;
+
+                correctYears = false;
+
+                if (years > 0) {
+                    correctYears = true;
+                }
             }
         });
     }
@@ -71,10 +81,10 @@ class _BodyState extends State<Body> {
                 textKingdomController.clear();
                 textSpeciesController.clear();
                 textCountController.clear();
-                valueChanged('kingdom');
-                valueChanged('species');
-                valueChanged('count');
             });
+            valueChanged('kingdom');
+            valueChanged('species');
+            valueChanged('count');
         }
     }
 
@@ -85,7 +95,7 @@ class _BodyState extends State<Body> {
     }
 
     bool isReady() {
-        return allSets.isNotEmpty;
+        return allSets.isNotEmpty && correctYears;
     }
 
     bool isValidSet() {
@@ -103,7 +113,7 @@ class _BodyState extends State<Body> {
                     child: Stack(
                         children: <Widget>[
                             Container(
-                                height: size.height*0.3 - 25,
+                                height: size.height*0.3,
                                 decoration: BoxDecoration(
                                     color: colorPrimary,
                                     borderRadius: BorderRadius.only(
@@ -117,7 +127,7 @@ class _BodyState extends State<Body> {
                                 margin: EdgeInsets.only(
                                     left: defaultPadding,
                                     right: defaultPadding,
-                                    top: size.height*0.3 + 80,
+                                    top: size.height*0.3 + 140,
                                 ),
                                 child: GridView.builder(
                                     physics:BouncingScrollPhysics(),
@@ -182,7 +192,45 @@ class _BodyState extends State<Body> {
                             ),
 
                             Positioned(
-                                top: size.height*0.3 - 200,
+                                top: size.height*0.3 - 210,
+                                left: 0,
+                                right: 0,
+                                child: Container(
+                                    height: 100,
+                                    margin: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                    decoration: BoxDecoration(
+                                        color: colorPrimaryLight,
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20), topRight: Radius.circular(20)
+                                        ),
+                                        boxShadow: [
+                                            BoxShadow(
+                                                offset: Offset(0, 10),
+                                                blurRadius: 50,
+                                                color: colorPrimary.withOpacity(0.23),
+                                            ),
+                                        ],
+                                    ),
+                                    child: TextField(
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            color: Colors.white.withOpacity(0.8)
+                                        ),
+                                        decoration: InputDecoration(
+                                            labelText: "Years to Simulate",
+                                            labelStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+                                            enabledBorder: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                        ),
+                                        onChanged: (text) { valueChanged("years"); },
+                                        controller: textYearsController,
+                                    ),
+                                ),
+                            ),
+
+                            Positioned(
+                                top: size.height*0.3 - 150,
                                 left: 0,
                                 right: 0,
                                 child: Container(
