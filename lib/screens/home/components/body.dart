@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/screens/home/components/header.dart';
 
 class Body extends StatefulWidget {
     @override
@@ -112,16 +113,7 @@ class _BodyState extends State<Body> {
                     constraints: BoxConstraints.expand(),
                     child: Stack(
                         children: <Widget>[
-                            Container(
-                                height: size.height*0.3,
-                                decoration: BoxDecoration(
-                                    color: colorPrimary,
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(36),
-                                        bottomRight: Radius.circular(36),
-                                    ),
-                                ),
-                            ),
+                            BodyHeader(parentSize: size),
 
                             Container(
                                 margin: EdgeInsets.only(
