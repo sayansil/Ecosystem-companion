@@ -24,11 +24,9 @@ class BodyHeader extends StatelessWidget {
             ),
             child: Row(
                 children: <Widget>[
-                    Spacer(),
-                    Image.asset(
-                        "assets/images/icon_white.png",
-                        width: 60,
-                        height: 60,
+                    Text(
+                        "Ecosystem Simulator",
+                        style: TextStyle(fontSize: 30),
                     ),
                 ],
             ),

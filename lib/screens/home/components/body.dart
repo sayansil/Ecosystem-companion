@@ -167,200 +167,153 @@ class _BodyState extends State<Body> {
                                                 borderRadius: BorderRadius.circular(10)
                                             ),
                                         ) : Container(
-                                            alignment: Alignment.center,
-                                            child: IconButton(
-                                                icon: const Icon(Icons.delete),
-                                                color: colorSecondary,
-                                                iconSize: 35,
-                                                onPressed:(){ clearSets();  },
-                                            ),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(10)
-                                            ),
-                                        );
-                                    },
+                                            alignment: Alignment.center, child: IconButton( icon: const Icon(Icons.delete), color: colorSecondary, iconSize: 35, onPressed:(){ clearSets();  },), decoration: BoxDecoration( color: Colors.white, borderRadius: BorderRadius.circular(10)),); },),), Container( constraints: BoxConstraints(maxWidth: 600), height: 100, margin: EdgeInsets.only( left: defaultPadding, right: defaultPadding, top: size.height*0.3 - 210,), padding: EdgeInsets.symmetric(horizontal: defaultPadding), decoration: BoxDecoration( color: colorPrimaryLight, borderRadius: BorderRadius.only( topLeft: Radius.circular(20), topRight: Radius.circular(20)), boxShadow: [ BoxShadow( offset: Offset(0, 10), blurRadius: 50, color: colorPrimary.withOpacity(0.23),), ],), child: TextField( style: TextStyle( fontSize: 18.0, color: Colors.white.withOpacity(0.8)), keyboardType: TextInputType.number, inputFormatters: <TextInputFormatter>[ FilteringTextInputFormatter.digitsOnly ], decoration: InputDecoration(
+                                        labelText: "Years to Simulate",
+                                        labelStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+                                        enabledBorder: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                    ),
+                                    onChanged: (text) { valueChanged("years"); },
+                                    controller: textYearsController,
                                 ),
                             ),
 
-                            Positioned(
-                                top: size.height*0.3 - 210,
-                                left: 0,
-                                right: 0,
-                                child: Container(
-                                    height: 100,
-                                    margin: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                    decoration: BoxDecoration(
-                                        color: colorPrimaryLight,
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20), topRight: Radius.circular(20)
-                                        ),
-                                        boxShadow: [
-                                            BoxShadow(
-                                                offset: Offset(0, 10),
-                                                blurRadius: 50,
-                                                color: colorPrimary.withOpacity(0.23),
-                                            ),
-                                        ],
-                                    ),
-                                    child: TextField(
-                                        style: TextStyle(
-                                            fontSize: 18.0,
-                                            color: Colors.white.withOpacity(0.8)
-                                        ),
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter.digitsOnly
-                                        ],
-                                        decoration: InputDecoration(
-                                            labelText: "Years to Simulate",
-                                            labelStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                        ),
-                                        onChanged: (text) { valueChanged("years"); },
-                                        controller: textYearsController,
-                                    ),
+                            Container(
+                                constraints: BoxConstraints(maxWidth: 600),
+                                height: 300,
+                                margin: EdgeInsets.only(
+                                    left: defaultPadding,
+                                    right: defaultPadding,
+                                    top: size.height*0.3 - 150,
                                 ),
-                            ),
-
-                            Positioned(
-                                top: size.height*0.3 - 150,
-                                left: 0,
-                                right: 0,
-                                child: Container(
-                                    height: 300,
-                                    margin: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                    padding: EdgeInsets.symmetric(horizontal: defaultPadding),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                            BoxShadow(
-                                                offset: Offset(0, 10),
-                                                blurRadius: 50,
-                                                color: colorPrimary.withOpacity(0.23),
-                                            ),
-                                        ],
-                                    ),
-                                    child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: <Widget>[
-                                            Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: <Widget>[
-                                                    Flexible(
-                                                        child: TextField(
-                                                            style: TextStyle(
-                                                                fontSize: 20.0,
-                                                            ),
-                                                            decoration: InputDecoration(
-                                                                labelText: "Kingdom",
-                                                                labelStyle: TextStyle(color: colorPrimary.withOpacity(0.5)),
-                                                                enabledBorder: InputBorder.none,
-                                                                focusedBorder: InputBorder.none,
-                                                            ),
-                                                            onChanged: (text) { valueChanged("kingdom"); },
-                                                            controller: textKingdomController,
+                                padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                        BoxShadow(
+                                            offset: Offset(0, 10),
+                                            blurRadius: 50,
+                                            color: colorPrimary.withOpacity(0.23),
+                                        ),
+                                    ],
+                                ),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                        Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget>[
+                                                Flexible(
+                                                    child: TextField(
+                                                        style: TextStyle(
+                                                            fontSize: 20.0,
                                                         ),
-                                                    ),
-                                                    Visibility(
-                                                        child: Icon(
-                                                            Icons.check_rounded,
-                                                            color: Colors.green,
-                                                            size: 30.0,
+                                                        decoration: InputDecoration(
+                                                            labelText: "Kingdom",
+                                                            labelStyle: TextStyle(color: colorPrimary.withOpacity(0.5)),
+                                                            enabledBorder: InputBorder.none,
+                                                            focusedBorder: InputBorder.none,
                                                         ),
-                                                        visible: correctKingdom,
+                                                        onChanged: (text) { valueChanged("kingdom"); },
+                                                        controller: textKingdomController,
                                                     ),
-                                                ]
-                                            ),
-                                            const Divider(
-                                                height: 0,
-                                                thickness:1,
-                                            ),
-                                            Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: <Widget>[
-                                                    Flexible(
-                                                        child: TextField(
-                                                            style: TextStyle(
-                                                                fontSize: 20.0,
-                                                            ),
-                                                            decoration: InputDecoration(
-                                                                labelText: "Species",
-                                                                labelStyle: TextStyle(color: colorPrimary.withOpacity(0.5)),
-                                                                enabledBorder: InputBorder.none,
-                                                                focusedBorder: InputBorder.none,
-                                                            ),
-                                                            onChanged: (text) { valueChanged("species"); },
-                                                            controller: textSpeciesController,
-                                                        ),
-                                                    ),
-                                                    Visibility(
-                                                        child: Icon(
-                                                            Icons.check_rounded,
-                                                            color: Colors.green,
-                                                            size: 30.0,
-                                                        ),
-                                                        visible: correctSpecies,
-                                                    ),
-                                                ]
-                                            ),
-                                            const Divider(
-                                                height: 0,
-                                                thickness:1,
-                                            ),
-                                            Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                children: <Widget>[
-                                                    Flexible(
-                                                        child: TextField(
-                                                            style: TextStyle(
-                                                                fontSize: 20.0,
-                                                            ),
-                                                            keyboardType: TextInputType.number,
-                                                            inputFormatters: <TextInputFormatter>[
-                                                                FilteringTextInputFormatter.digitsOnly
-                                                            ],
-                                                            decoration: InputDecoration(
-                                                                labelText: "Count",
-                                                                labelStyle: TextStyle(color: colorPrimary.withOpacity(0.5)),
-                                                                enabledBorder: InputBorder.none,
-                                                                focusedBorder: InputBorder.none,
-                                                            ),
-                                                            onChanged: (text) { valueChanged("count"); },
-                                                            controller: textCountController,
-                                                        ),
-                                                    ),
-                                                    Visibility(
-                                                        child: Icon(
-                                                            Icons.check_rounded,
-                                                            color: Colors.green,
-                                                            size: 30.0,
-                                                        ),
-                                                        visible: correctCount,
-                                                    ),
-                                                ]
-                                            ),
-                                            ElevatedButton(
-                                                onPressed: isValidSet() ? () { addSet(); } : null,
-                                                child: Text('ADD'),
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: colorPrimary,
-                                                    textStyle: const TextStyle(fontSize: 16),
-                                                    minimumSize: Size(double.infinity, 30),
-                                                    onPrimary: Colors.white,
-                                                    shape: StadiumBorder(),
-                                                    padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
                                                 ),
+                                                Visibility(
+                                                    child: Icon(
+                                                        Icons.check_rounded,
+                                                        color: Colors.green,
+                                                        size: 30.0,
+                                                    ),
+                                                    visible: correctKingdom,
+                                                ),
+                                            ]
+                                        ),
+                                        const Divider(
+                                            height: 0,
+                                            thickness:1,
+                                        ),
+                                        Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget>[
+                                                Flexible(
+                                                    child: TextField(
+                                                        style: TextStyle(
+                                                            fontSize: 20.0,
+                                                        ),
+                                                        decoration: InputDecoration(
+                                                            labelText: "Species",
+                                                            labelStyle: TextStyle(color: colorPrimary.withOpacity(0.5)),
+                                                            enabledBorder: InputBorder.none,
+                                                            focusedBorder: InputBorder.none,
+                                                        ),
+                                                        onChanged: (text) { valueChanged("species"); },
+                                                        controller: textSpeciesController,
+                                                    ),
+                                                ),
+                                                Visibility(
+                                                    child: Icon(
+                                                        Icons.check_rounded,
+                                                        color: Colors.green,
+                                                        size: 30.0,
+                                                    ),
+                                                    visible: correctSpecies,
+                                                ),
+                                            ]
+                                        ),
+                                        const Divider(
+                                            height: 0,
+                                            thickness:1,
+                                        ),
+                                        Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget>[
+                                                Flexible(
+                                                    child: TextField(
+                                                        style: TextStyle(
+                                                            fontSize: 20.0,
+                                                        ),
+                                                        keyboardType: TextInputType.number,
+                                                        inputFormatters: <TextInputFormatter>[
+                                                            FilteringTextInputFormatter.digitsOnly
+                                                        ],
+                                                        decoration: InputDecoration(
+                                                            labelText: "Count",
+                                                            labelStyle: TextStyle(color: colorPrimary.withOpacity(0.5)),
+                                                            enabledBorder: InputBorder.none,
+                                                            focusedBorder: InputBorder.none,
+                                                        ),
+                                                        onChanged: (text) { valueChanged("count"); },
+                                                        controller: textCountController,
+                                                    ),
+                                                ),
+                                                Visibility(
+                                                    child: Icon(
+                                                        Icons.check_rounded,
+                                                        color: Colors.green,
+                                                        size: 30.0,
+                                                    ),
+                                                    visible: correctCount,
+                                                ),
+                                            ]
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: isValidSet() ? () { addSet(); } : null,
+                                            child: Text('ADD'),
+                                            style: ElevatedButton.styleFrom(
+                                                primary: colorPrimary,
+                                                textStyle: const TextStyle(fontSize: 16),
+                                                minimumSize: Size(double.infinity, 30),
+                                                onPrimary: Colors.white,
+                                                shape: StadiumBorder(),
+                                                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
                                             ),
-                                            const SizedBox(
-                                                height: 10.0,
-                                            ),
-                                        ]
-                                    ),
-                                )
+                                        ),
+                                        const SizedBox(
+                                            height: 10.0,
+                                        ),
+                                    ]
+                                ),
                             ),
 
                             Positioned(
