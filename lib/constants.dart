@@ -13,6 +13,8 @@ const defaultPadding = 30.0;
 
 // * Global parameters
 
+enum DrawerItem { home, config, settings, about, contribute }
+
 const demoSpeciesList = {
   "animal": ["lion", "deer"],
   "plant": ["bamboo"]

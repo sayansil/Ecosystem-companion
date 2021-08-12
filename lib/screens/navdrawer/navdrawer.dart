@@ -7,10 +7,10 @@ import 'package:ecosystem/screens/settings/settings_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NavigationDrawer extends StatelessWidget {
-  final String? currentScreen;
+  final DrawerItem? currentItem;
 
-  NavigationDrawer({required String? currentScreen})
-      : currentScreen = currentScreen;
+  NavigationDrawer({required DrawerItem? currentItem})
+      : currentItem = currentItem;
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +23,23 @@ class NavigationDrawer extends StatelessWidget {
             buildMenuItem(
                 text: "Home",
                 icon: Icons.home_rounded,
-                onClicked: () => selectedItem(context, 0)),
+                onClicked: () => (currentItem == DrawerItem.home)
+                    ? {}
+                    : selectedItem(context, DrawerItem.home)),
             const SizedBox(height: 10),
             buildMenuItem(
                 text: "Config",
                 icon: Icons.code_rounded,
-                onClicked: () => selectedItem(context, 1)),
+                onClicked: () => (currentItem == DrawerItem.config)
+                    ? {}
+                    : selectedItem(context, DrawerItem.config)),
             const SizedBox(height: 10),
             buildMenuItem(
                 text: "Settings",
                 icon: Icons.settings_rounded,
-                onClicked: () => selectedItem(context, 2)),
+                onClicked: () => (currentItem == DrawerItem.settings)
+                    ? {}
+                    : selectedItem(context, DrawerItem.settings)),
             const SizedBox(height: 20),
             Divider(
               color: Colors.white30,
@@ -44,12 +50,17 @@ class NavigationDrawer extends StatelessWidget {
             buildMenuItem(
                 text: "About",
                 icon: Icons.info_rounded,
-                onClicked: () => selectedItem(context, 3)),
-            const SizedBox(height: 20),
+                onClicked: () => (currentItem == DrawerItem.about)
+                    ? {}
+                    : selectedItem(context, DrawerItem.about)),
+            const SizedBox(height: 10),
             buildMenuItem(
                 text: "Contribute",
                 icon: Icons.code_rounded,
-                onClicked: () => selectedItem(context, 4)),
+                onClicked: () => (currentItem == DrawerItem.contribute)
+                    ? {}
+                    : selectedItem(context, DrawerItem.contribute)),
+            const SizedBox(height: 10),
           ],
         ),
       ),
@@ -64,26 +75,26 @@ class NavigationDrawer extends StatelessWidget {
     }
   }
 
-  VoidCallback? selectedItem(BuildContext context, int index) {
+  VoidCallback? selectedItem(BuildContext context, DrawerItem item) {
     Navigator.of(context).pop();
-    switch (index) {
-      case 0:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => HomeScreen()));
+    switch (item) {
+      case DrawerItem.home:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
         break;
-      case 1:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => ConfigScreen()));
+      case DrawerItem.config:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => ConfigScreen()));
         break;
-      case 2:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => SettingsScreen()));
+      case DrawerItem.settings:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => SettingsScreen()));
         break;
-      case 3:
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => AboutScreen()));
+      case DrawerItem.about:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => AboutScreen()));
         break;
-      case 4:
+      case DrawerItem.contribute:
         _launchURL(url: githubUrl);
         break;
       default:
