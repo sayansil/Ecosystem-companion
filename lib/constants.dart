@@ -17,3 +17,6 @@ const demoSpeciesList = {
   "animal": ["lion", "deer"],
   "plant": ["bamboo"]
 };
+
+
+const githubUrl = "https://github.com/sayansil/Ecosystem-android";
