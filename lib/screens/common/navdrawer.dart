@@ -1,4 +1,5 @@
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/screens/common/transition.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/home/home_screen.dart';
 import 'package:ecosystem/screens/config/config_screen.dart';
@@ -76,24 +77,22 @@ class NavigationDrawer extends StatelessWidget {
     }
   }
 
+
+
   VoidCallback? selectedItem(BuildContext context, DrawerItem item) {
     Navigator.of(context).pop();
     switch (item) {
       case DrawerItem.home:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.push(context, buildPageRoute(HomeScreen()));
         break;
       case DrawerItem.config:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => ConfigScreen()));
+        Navigator.push(context, buildPageRoute(ConfigScreen()));
         break;
       case DrawerItem.settings:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => SettingsScreen()));
+        Navigator.push(context, buildPageRoute(SettingsScreen()));
         break;
       case DrawerItem.about:
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AboutScreen()));
+        Navigator.push(context, buildPageRoute(AboutScreen()));
         break;
       case DrawerItem.contribute:
         _launchURL(url: githubUrl);

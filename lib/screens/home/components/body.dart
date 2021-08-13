@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
-import 'package:ecosystem/screens/home/components/header.dart';
+import 'header.dart';
 
-class Body extends StatefulWidget {
+class HomeBody extends StatefulWidget {
   @override
-  _BodyState createState() => _BodyState();
+  _HomeBodyState createState() => _HomeBodyState();
 }
 
-class _BodyState extends State<Body> {
+class _HomeBodyState extends State<HomeBody> {
   bool correctKingdom = false;
   bool correctSpecies = false;
   bool correctCount = false;
@@ -27,6 +27,8 @@ class _BodyState extends State<Body> {
   void dispose() {
     textKingdomController.dispose();
     textSpeciesController.dispose();
+    textCountController.dispose();
+    textYearsController.dispose();
     super.dispose();
   }
 
@@ -107,7 +109,6 @@ class _BodyState extends State<Body> {
         constraints: BoxConstraints.expand(),
         child: Stack(
           children: <Widget>[
-
             // * Header bar
             BodyHeader(parentSize: size),
 
