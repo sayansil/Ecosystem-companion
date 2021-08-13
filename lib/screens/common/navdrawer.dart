@@ -21,7 +21,7 @@ class NavigationDrawer extends StatelessWidget {
         color: colorPrimary,
         child: ListView(
           children: <Widget>[
-            const SizedBox(height: 10),
+            const SizedBox(height: 50),
             buildMenuItem(
                 text: "Home",
                 icon: Icons.home_rounded,
