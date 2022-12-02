@@ -388,9 +388,9 @@ class _HomeBodyState extends State<HomeBody> {
               bottom: 0,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: colorPrimary,
+                  backgroundColor: colorPrimary,
                   textStyle: const TextStyle(fontSize: 20),
-                  onPrimary: Colors.white,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0), // <-- Radius
                   ),
