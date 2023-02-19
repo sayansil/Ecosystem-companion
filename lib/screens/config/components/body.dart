@@ -1,4 +1,5 @@
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/styles/widget_styles.dart';
 import 'header.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -104,8 +105,7 @@ class _ConfigBodyState extends State<ConfigBody> {
                       ),
                       decoration: InputDecoration(
                         labelText: "Local ecosystem server URL",
-                        labelStyle:
-                            TextStyle(color: colorPrimary.withOpacity(0.5)),
+                        labelStyle: editTextStyle,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                       ),
@@ -123,8 +123,7 @@ class _ConfigBodyState extends State<ConfigBody> {
                       ),
                       decoration: InputDecoration(
                         labelText: "Report saving location",
-                        labelStyle:
-                            TextStyle(color: colorPrimary.withOpacity(0.5)),
+                        labelStyle: editTextStyle,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                       ),
@@ -142,8 +141,7 @@ class _ConfigBodyState extends State<ConfigBody> {
                       ),
                       decoration: InputDecoration(
                         labelText: "On-device simulation directory",
-                        labelStyle:
-                            TextStyle(color: colorPrimary.withOpacity(0.5)),
+                        labelStyle: editTextStyle,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                       ),

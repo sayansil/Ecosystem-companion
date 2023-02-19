@@ -15,8 +15,6 @@ class ResultBody extends StatefulWidget {
 }
 
 class _ResultBodyState extends State<ResultBody> {
-  int currentYear = 0;
-
   String getText() {
     return widget.years.toString() + " years with " + widget.initOrganisms.length.toString() + " species types.";
   }

@@ -1,4 +1,5 @@
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/screens/results/components/progress.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flutter/material.dart';
 import 'components/body.dart';
@@ -12,6 +13,6 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     resizeToAvoidBottomInset: false,
-    body: ResultBody(this.year, this.initOrganisms),
+    body: ResultProgress(this.year, this.initOrganisms),
   );
 }
