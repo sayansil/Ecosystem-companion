@@ -41,7 +41,7 @@ class _HomeBodyState extends State<HomeBody> {
         correctKingdom = false;
         correctSpecies = false;
 
-        var speciesList = demoSpeciesList;
+        var speciesList = completeSpeciesList;
         if (speciesList.containsKey(kingdom)) {
           correctKingdom = true;
 

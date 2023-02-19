@@ -15,7 +15,7 @@ const defaultPadding = 30.0;
 
 enum DrawerItem { home, config, settings, about, contribute }
 
-const demoSpeciesList = {
+const completeSpeciesList = {
   "animal": ["lion", "deer"],
   "plant": ["bamboo"]
 };

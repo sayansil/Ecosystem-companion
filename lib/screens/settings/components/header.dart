@@ -1,4 +1,5 @@
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 
 class BodyHeader extends StatelessWidget {
@@ -26,7 +27,7 @@ class BodyHeader extends StatelessWidget {
         children: <Widget>[
           Text(
             "Settings",
-            style: TextStyle(fontSize: 30),
+            style: headerStyle,
           ),
         ],
       ),

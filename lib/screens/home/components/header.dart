@@ -1,5 +1,6 @@
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:ecosystem/styles/widget_styles.dart';
 
 class BodyHeader extends StatelessWidget {
   final Size parentSize;
@@ -26,7 +27,7 @@ class BodyHeader extends StatelessWidget {
         children: <Widget>[
           Text(
             "Ecosystem Simulator",
-            style: TextStyle(fontSize: 30),
+            style: headerStyle,
           ),
         ],
       ),
