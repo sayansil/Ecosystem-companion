@@ -1,3 +1,4 @@
+import 'package:ecosystem/screens/results/results_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +21,7 @@ class _HomeBodyState extends State<HomeBody> {
   final textCountController = TextEditingController();
   final textYearsController = TextEditingController();
 
-  var allSets = [];
+  List<SimulationSet> allSets = [];
   int years = 0;
 
   @override
@@ -58,8 +59,7 @@ class _HomeBodyState extends State<HomeBody> {
           correctCount = true;
         }
       } else if (valueType == "years") {
-        int years = int.tryParse(textYearsController.text) ?? 0;
-
+        years = int.tryParse(textYearsController.text) ?? 0;
         correctYears = false;
 
         if (years > 0) {
@@ -99,6 +99,14 @@ class _HomeBodyState extends State<HomeBody> {
 
   bool isValidSet() {
     return correctSpecies && correctKingdom && correctCount;
+  }
+
+  void simulate() {
+    Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => ResultScreen(this.years, this.allSets)
+        )
+    );
   }
 
   @override
@@ -396,7 +404,9 @@ class _HomeBodyState extends State<HomeBody> {
                   ),
                   padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
                 ),
-                onPressed: isReady() ? () {} : null,
+                onPressed: isReady() ? () {
+                  simulate();
+                } : null,
                 child: const Text('SIMULATE'),
               ),
             ),
