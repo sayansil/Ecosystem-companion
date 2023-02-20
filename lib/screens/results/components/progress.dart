@@ -23,8 +23,6 @@ class _ResultProgressState extends State<ResultProgress> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Container(
       constraints: BoxConstraints.expand(),
       padding: EdgeInsets.only(

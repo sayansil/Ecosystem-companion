@@ -24,4 +24,14 @@ const completeSpeciesList = {
 };
 
 
+// * String constants
+
 const githubUrl = "https://github.com/sayansil/Ecosystem-companion";
+
+const simulateBtn = "SIMULATE 🐗";
+const addSpeciesBtn = "ADD";
+
+const stopSimulationTitle = "Exit Simulation? 🕊️";
+const stopSimulationMessage = "All data from the current simulation will be lost...";
+const stopSimulationAccept = "Yes";
+const stopSimulationReject = "No";

@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ecosystem/constants.dart';
 
-AppBar buildAppBar(BuildContext context, String title) {
+AppBar buildNavAppBar(BuildContext context) {
   return AppBar(
     elevation: 0,
     systemOverlayStyle:
         SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
-    title: Text(title),
-    centerTitle: true,
     backgroundColor: colorPrimary,
     leading: Builder(
       builder: (context) => IconButton(

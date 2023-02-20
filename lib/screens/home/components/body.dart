@@ -370,7 +370,7 @@ class _HomeBodyState extends State<HomeBody> {
                               addSet();
                             }
                           : null,
-                      child: Text('ADD'),
+                      child: Text(addSpeciesBtn),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colorPrimary,
                         foregroundColor: Colors.white,
@@ -405,7 +405,7 @@ class _HomeBodyState extends State<HomeBody> {
                 onPressed: isReady() ? () {
                   simulate();
                 } : null,
-                child: const Text('SIMULATE'),
+                child: const Text(simulateBtn),
               ),
             ),
           ],
