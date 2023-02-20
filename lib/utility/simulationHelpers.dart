@@ -8,3 +8,10 @@ class SimulationSet {
         species = species,
         count = count;
 }
+
+enum SimulationStatus {
+  ready,
+  running,
+  completed,
+  stopped,
+}

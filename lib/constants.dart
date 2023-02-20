@@ -35,3 +35,6 @@ const stopSimulationTitle = "Exit Simulation? 🕊️";
 const stopSimulationMessage = "All data from the current simulation will be lost...";
 const stopSimulationAccept = "Yes";
 const stopSimulationReject = "No";
+
+const simulateStartBtn = "Start";
+const simulateStopBtn = "Stop";
