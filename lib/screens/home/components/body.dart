@@ -1,3 +1,5 @@
+import 'package:ecosystem/screens/results/results_screen.dart';
+import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +22,7 @@ class _HomeBodyState extends State<HomeBody> {
   final textCountController = TextEditingController();
   final textYearsController = TextEditingController();
 
-  var allSets = [];
+  List<SimulationSet> allSets = [];
   int years = 0;
 
   @override
@@ -58,8 +60,7 @@ class _HomeBodyState extends State<HomeBody> {
           correctCount = true;
         }
       } else if (valueType == "years") {
-        int years = int.tryParse(textYearsController.text) ?? 0;
-
+        years = int.tryParse(textYearsController.text) ?? 0;
         correctYears = false;
 
         if (years > 0) {
@@ -101,6 +102,14 @@ class _HomeBodyState extends State<HomeBody> {
     return correctSpecies && correctKingdom && correctCount;
   }
 
+  void simulate() {
+    Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => ResultScreen(this.years, this.allSets)
+        )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -117,7 +126,7 @@ class _HomeBodyState extends State<HomeBody> {
               margin: EdgeInsets.only(
                 left: defaultPadding,
                 right: defaultPadding,
-                top: size.height * 0.3 + 140,
+                top: size.height * 0.3 + 160,
               ),
               child: GridView.builder(
                 physics: BouncingScrollPhysics(),
@@ -221,7 +230,7 @@ class _HomeBodyState extends State<HomeBody> {
                 ],
                 decoration: InputDecoration(
                   labelText: "Years to Simulate",
-                  labelStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
+                  labelStyle: editTextDarkStyle,
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
@@ -266,8 +275,7 @@ class _HomeBodyState extends State<HomeBody> {
                               ),
                               decoration: InputDecoration(
                                 labelText: "Kingdom",
-                                labelStyle: TextStyle(
-                                    color: colorPrimary.withOpacity(0.5)),
+                                labelStyle: editTextStyle,
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                               ),
@@ -300,8 +308,7 @@ class _HomeBodyState extends State<HomeBody> {
                               ),
                               decoration: InputDecoration(
                                 labelText: "Species",
-                                labelStyle: TextStyle(
-                                    color: colorPrimary.withOpacity(0.5)),
+                                labelStyle: editTextStyle,
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                               ),
@@ -338,8 +345,7 @@ class _HomeBodyState extends State<HomeBody> {
                               ],
                               decoration: InputDecoration(
                                 labelText: "Count",
-                                labelStyle: TextStyle(
-                                    color: colorPrimary.withOpacity(0.5)),
+                                labelStyle: editTextStyle,
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                               ),
@@ -364,12 +370,12 @@ class _HomeBodyState extends State<HomeBody> {
                               addSet();
                             }
                           : null,
-                      child: Text('ADD'),
+                      child: Text(addSpeciesBtn),
                       style: ElevatedButton.styleFrom(
-                        primary: colorPrimary,
-                        textStyle: const TextStyle(fontSize: 16),
+                        backgroundColor: colorPrimary,
+                        foregroundColor: Colors.white,
+                        textStyle: buttonStyle,
                         minimumSize: Size(double.infinity, 30),
-                        onPrimary: Colors.white,
                         shape: StadiumBorder(),
                         padding: EdgeInsets.symmetric(
                             vertical: defaultPadding / 1.5),
@@ -389,15 +395,17 @@ class _HomeBodyState extends State<HomeBody> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colorPrimary,
-                  textStyle: const TextStyle(fontSize: 20),
+                  textStyle: bigButtonStyle,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0), // <-- Radius
                   ),
                   padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
                 ),
-                onPressed: isReady() ? () {} : null,
-                child: const Text('SIMULATE'),
+                onPressed: isReady() ? () {
+                  simulate();
+                } : null,
+                child: const Text(simulateBtn),
               ),
             ),
           ],
