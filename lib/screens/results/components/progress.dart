@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
@@ -15,7 +17,7 @@ class ResultProgress extends StatefulWidget {
 }
 
 class _ResultProgressState extends State<ResultProgress> {
-  int currentYear = 5;
+  int currentYear = 1536;
 
   String getProgressText() {
     return currentYear.toString() + " / " + widget.years.toString();
@@ -23,45 +25,46 @@ class _ResultProgressState extends State<ResultProgress> {
 
   @override
   Widget build(BuildContext context) {
+    Size parentSize = MediaQuery.of(context).size;
+
+    double progressDims = min(parentSize.width * 0.75, 500);
+    double markerWidth = progressDims * 0.1;
+
     return Container(
-      constraints: BoxConstraints.expand(),
-      padding: EdgeInsets.only(
-        left: defaultPadding,
-        right: defaultPadding,
-        bottom: defaultPadding,
-        top: defaultPadding,
-      ),
-      child: SfRadialGauge(axes: <RadialAxis>[
-        RadialAxis(
-          minimum: 0,
-          maximum: widget.years.toDouble(),
-          showLabels: false,
-          showTicks: false,
-          axisLineStyle: AxisLineStyle(
-            thickness: 0.2,
-            cornerStyle: CornerStyle.bothCurve,
-            color: colorSecondaryLight,
-            thicknessUnit: GaugeSizeUnit.factor,
-          ),
-          pointers: <GaugePointer>[
-            RangePointer(
-              value: currentYear.toDouble(),
+      alignment: Alignment.topCenter,
+
+      child: Container(
+        height: progressDims,
+        width: progressDims,
+        child: SfRadialGauge(axes: <RadialAxis>[
+          RadialAxis(
+            minimum: 0,
+            maximum: 100,
+            showLabels: false,
+            showTicks: false,
+            axisLineStyle: AxisLineStyle(
+              thickness: markerWidth,
               cornerStyle: CornerStyle.bothCurve,
-              width: 0.2,
-              color: colorPrimaryLight,
-              sizeUnit: GaugeSizeUnit.factor,
-            )
-          ],
-          annotations: <GaugeAnnotation>[
-            GaugeAnnotation(
-              positionFactor: 0.1,
-              angle: 90,
-              widget: Text(
-                getProgressText(),
-                style: progressTextStyle,
-              ))
-          ])
-      ])
+              color: colorSecondaryLight,
+            ),
+            pointers: <GaugePointer>[
+              RangePointer(
+                value: max(100 * currentYear.toDouble() / widget.years, 10),
+                cornerStyle: CornerStyle.bothCurve,
+                width: markerWidth,
+                color: colorPrimaryLight,
+              ),
+            ],
+            annotations: <GaugeAnnotation>[
+              GaugeAnnotation(
+                positionFactor: 0.1,
+                angle: 90,
+                widget: Text(
+                  getProgressText(),
+                  style: progressTextStyle,
+                ))
+            ])
+        ]))
     );
   }
 }
