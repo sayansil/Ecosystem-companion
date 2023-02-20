@@ -22,7 +22,7 @@ class _ResultProgressState extends State<ResultProgress> {
   var simulationState = SimulationStatus.ready;
 
   String getProgressText() {
-    return currentYear.toString() + " / " + widget.years.toString() + "\nyears";
+    return currentYear.toString() + " / " + widget.years.toString();
   }
 
   Future<int> iterateSimulation() async {
