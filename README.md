@@ -2,7 +2,7 @@
 <p align="center">
 
 <a href="https://github.com/sayansil/Ecosystem-android">
-  <img src="https://ecosystem-simulation.web.app/assets/img/eco-android.png" />
+  <img src="https://ecosystem-simulation.web.app/assets/img/eco-flutter.png" />
 </a>
 
 </p>
