@@ -10,11 +10,7 @@ class BodyHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
-        left: defaultPadding,
-        right: defaultPadding,
-        bottom: defaultPadding + 200,
-      ),
+      padding: headerPadding,
       height: parentSize.height * 0.3,
       decoration: BoxDecoration(
         color: colorPrimary,

@@ -13,6 +13,7 @@ const colorTextLight = Color(0x80FFFFFF);
 // * Global spacing
 
 const defaultPadding = 30.0;
+const defaultSmallPadding = 20.0;
 
 // * Global parameters
 

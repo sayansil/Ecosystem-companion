@@ -4,6 +4,13 @@ import 'package:ecosystem/constants.dart';
 // * Global widget styles for application
 
 const headerStyle = TextStyle(fontSize: 30, height: 0.9, fontFamily: 'Poppins', fontWeight: FontWeight.w300);
+const headerPadding = EdgeInsets.only(
+  left: defaultPadding,
+  right: defaultPadding,
+  top: defaultSmallPadding,
+  bottom: defaultPadding + 210 - defaultSmallPadding,
+);
+
 const editTextStyle = TextStyle(color: colorTextDark, fontSize: 18, fontFamily: 'Poppins');
 const editTextDarkStyle = TextStyle(color: colorTextLight, fontSize: 18, fontFamily: 'Poppins');
 
