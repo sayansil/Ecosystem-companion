@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/results/results_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
@@ -32,12 +34,54 @@ class _HomeBodyState extends State<HomeBody> {
   late SharedPreferences prefs;
 
   @override
+  void initState() {
+    super.initState();
+    loadAllValues();
+  }
+
+  @override
   void dispose() {
     textKingdomController.dispose();
     textSpeciesController.dispose();
     textCountController.dispose();
     textYearsController.dispose();
     super.dispose();
+  }
+
+  Future<void> loadAllValues() async {
+    prefs = await SharedPreferences.getInstance();
+
+    final _years = prefs.getInt('simulationYears') ?? 0;
+    final _sets = prefs.getString('simulationSet') ?? "[]";
+
+    print(_years);
+
+    setState(() {
+      allSets = SimulationSet.fromString(_sets);
+      if (_years > 0) {
+        years = _years;
+
+        setTextValue(textYearsController, years.toString());
+      }
+    });
+
+    valueChanged('years');
+  }
+
+  Future<void> saveAllValues() async {
+    final _sets = SimulationSet.asString(allSets);
+
+    prefs.setInt('simulationYears', years);
+    prefs.setString('simulationSet', _sets);
+  }
+
+  void setTextValue(TextEditingController controller, String text) {
+    controller.value = controller.value.copyWith(
+      text: text,
+      selection: TextSelection.collapsed(
+        offset: controller.value.selection.baseOffset + text.length,
+      ),
+    );
   }
 
   void valueChanged(String valueType) {
@@ -91,6 +135,8 @@ class _HomeBodyState extends State<HomeBody> {
       valueChanged('kingdom');
       valueChanged('species');
       valueChanged('count');
+
+      saveAllValues();
     }
   }
 
@@ -98,6 +144,9 @@ class _HomeBodyState extends State<HomeBody> {
     setState(() {
       allSets = [];
     });
+
+    final _sets = SimulationSet.asString([]);
+    prefs.setString('simulationSet', _sets);
   }
 
   bool isReady() {
@@ -109,7 +158,8 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   void simulate() async {
-    prefs = await SharedPreferences.getInstance();
+    saveAllValues();
+
     final textLocalDbPath = prefs.getString('textLocalDbPath') ?? "";
     final textReportLocation = prefs.getString('textReportLocation') ?? "";
     
