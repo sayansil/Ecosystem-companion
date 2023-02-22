@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/results/results_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
@@ -53,8 +54,6 @@ class _HomeBodyState extends State<HomeBody> {
 
     final _years = prefs.getInt('simulationYears') ?? 0;
     final _sets = prefs.getString('simulationSet') ?? "[]";
-
-    print(_years);
 
     setState(() {
       allSets = SimulationSet.fromString(_sets);
@@ -162,7 +161,7 @@ class _HomeBodyState extends State<HomeBody> {
 
     final textLocalDbPath = prefs.getString('textLocalDbPath') ?? "";
     final textReportLocation = prefs.getString('textReportLocation') ?? "";
-    
+
     if (textLocalDbPath.isEmpty || textReportLocation.isEmpty) {
       // Configs not yet set
       if (await showYesNoDialog(

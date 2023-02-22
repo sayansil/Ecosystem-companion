@@ -1,5 +1,6 @@
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
+import 'package:file_picker/file_picker.dart';
 import 'header.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,8 +61,8 @@ class _ConfigBodyState extends State<ConfigBody> {
   void setTextValue(TextEditingController controller, String text) {
     controller.value = controller.value.copyWith(
       text: text,
-      selection: TextSelection.collapsed(
-        offset: controller.value.selection.baseOffset + text.length,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: text.length),
       ),
     );
   }
@@ -74,6 +75,23 @@ class _ConfigBodyState extends State<ConfigBody> {
 
     setTextValue(textLocalDbPathController, textLocalDbPath);
     setTextValue(textReportLocationController, textReportLocation);
+  }
+
+  void fillPath(editText) async {
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+    if (selectedDirectory != null) {
+
+      if (editText == "textLocalDbPath") {
+        setTextValue(textLocalDbPathController, selectedDirectory);
+        textLocalDbPath = selectedDirectory;
+      } else {
+        setTextValue(textReportLocationController, selectedDirectory);
+        textReportLocation = selectedDirectory;
+      }
+
+      configChanged();
+    }
   }
 
   @override
@@ -112,21 +130,33 @@ class _ConfigBodyState extends State<ConfigBody> {
                 children: <Widget>[
 
                   // DB Directory path input
-                  Flexible(
-                    child: TextField(
-                      style: TextStyle(
-                        fontSize: 20.0,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: TextField(
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: configLocalDbPathText,
+                            labelStyle: editTextStyle,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          controller: textLocalDbPathController,
+                          onChanged: (text) {configChanged();},
+                        ),
                       ),
-                      decoration: InputDecoration(
-                        labelText: configLocalDbPathText,
-                        labelStyle: editTextStyle,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                      controller: textLocalDbPathController,
-                      onChanged: (text) {configChanged();},
-                    ),
+
+                      IconButton(
+                        icon: Image.asset('assets/images/folder.png'),
+                        iconSize: 30,
+                        onPressed: () {fillPath("textLocalDbPath");},
+                      )
+                    ],
                   ),
+
 
                   const Divider(
                     height: 0,
@@ -134,20 +164,31 @@ class _ConfigBodyState extends State<ConfigBody> {
                   ),
 
                   // Report directory path input
-                  Flexible(
-                    child: TextField(
-                      style: TextStyle(
-                        fontSize: 20.0,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: TextField(
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: configLocalReportDirText,
+                            labelStyle: editTextStyle,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          controller: textReportLocationController,
+                          onChanged: (text) {configChanged();},
+                        ),
                       ),
-                      decoration: InputDecoration(
-                        labelText: configLocalReportDirText,
-                        labelStyle: editTextStyle,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                      controller: textReportLocationController,
-                      onChanged: (text) {configChanged();},
-                    ),
+
+                      IconButton(
+                        icon: Image.asset('assets/images/folder.png'),
+                        iconSize: 30,
+                        onPressed: () {fillPath("textReportLocation");},
+                      )
+                    ],
                   ),
 
                   // Save button

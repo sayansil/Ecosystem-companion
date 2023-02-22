@@ -1,4 +1,4 @@
-package com.example.ecosystem
+package com.ecosystem.simulation
 
 import io.flutter.embedding.android.FlutterActivity
 
