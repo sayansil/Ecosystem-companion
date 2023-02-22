@@ -18,7 +18,8 @@ class ResultScreen extends StatelessWidget {
           stopSimulationTitle,
           stopSimulationMessage,
           stopSimulationAccept,
-          stopSimulationReject
+          stopSimulationReject,
+          defaultYes: false
       ),
     child: Scaffold(
       resizeToAvoidBottomInset: false,

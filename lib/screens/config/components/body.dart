@@ -21,6 +21,12 @@ class _ConfigBodyState extends State<ConfigBody> {
   late SharedPreferences prefs;
 
   @override
+  void initState() {
+    super.initState();
+    loadAllValues();
+  }
+
+  @override
   void dispose() {
     textLocalDbPathController.dispose();
     textReportLocationController.dispose();
@@ -73,8 +79,6 @@ class _ConfigBodyState extends State<ConfigBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    loadAllValues();
 
     return Container(
       constraints: BoxConstraints.expand(),
