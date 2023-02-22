@@ -16,6 +16,8 @@ class _ConfigBodyState extends State<ConfigBody> {
   String textLocalDbPath = "";
   String textReportLocation = "";
 
+  bool updatedConfigs = false;
+
   late SharedPreferences prefs;
 
   @override
@@ -25,12 +27,22 @@ class _ConfigBodyState extends State<ConfigBody> {
     super.dispose();
   }
 
-  VoidCallback? saveValues() {
+  void configChanged() {
+    setState(() {
+      updatedConfigs = true;
+    });
+  }
+
+  void saveValues() {
     textLocalDbPath = textLocalDbPathController.text;
     textReportLocation = textReportLocationController.text;
 
     prefs.setString('textLocalDbPath', textLocalDbPath);
     prefs.setString('textReportLocation', textReportLocation);
+
+    setState(() {
+      updatedConfigs = false;
+    });
 
     ScaffoldMessenger.of(context)
       .showSnackBar(SnackBar(content: Text(
@@ -94,6 +106,8 @@ class _ConfigBodyState extends State<ConfigBody> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+
+                  // DB Directory path input
                   Flexible(
                     child: TextField(
                       style: TextStyle(
@@ -106,12 +120,16 @@ class _ConfigBodyState extends State<ConfigBody> {
                         focusedBorder: InputBorder.none,
                       ),
                       controller: textLocalDbPathController,
+                      onChanged: (text) {configChanged();},
                     ),
                   ),
+
                   const Divider(
                     height: 0,
                     thickness: 1,
                   ),
+
+                  // Report directory path input
                   Flexible(
                     child: TextField(
                       style: TextStyle(
@@ -124,12 +142,15 @@ class _ConfigBodyState extends State<ConfigBody> {
                         focusedBorder: InputBorder.none,
                       ),
                       controller: textReportLocationController,
+                      onChanged: (text) {configChanged();},
                     ),
                   ),
+
+                  // Save button
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: updatedConfigs ? () {
                       saveValues();
-                    },
+                    } : null,
                     child: Text(saveConfigBtn),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorPrimary,

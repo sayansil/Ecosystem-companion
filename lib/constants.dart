@@ -37,8 +37,13 @@ const stopSimulationMessage = "All data from the current simulation will be lost
 const stopSimulationAccept = "Yes";
 const stopSimulationReject = "No";
 
+const addConfigsTitle = "Configs not set 😔";
+const addConfigsMessage = "Would you like to set them now?";
+const addConfigsAccept = "Yes";
+const addConfigsReject = "No";
+
 const simulateStartBtn = "Start";
 const simulateStopBtn = "Stop";
 
-const configLocalDbPathText = "Local database path";
+const configLocalDbPathText = "Local database directory path";
 const configLocalReportDirText = "Simulation report directory path";

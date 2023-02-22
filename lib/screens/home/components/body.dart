@@ -1,9 +1,13 @@
+import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/results/results_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../common/transition.dart';
+import '../../config/config_screen.dart';
 import 'header.dart';
 
 class HomeBody extends StatefulWidget {
@@ -24,6 +28,8 @@ class _HomeBodyState extends State<HomeBody> {
 
   List<SimulationSet> allSets = [];
   int years = 0;
+  
+  late SharedPreferences prefs;
 
   @override
   void dispose() {
@@ -102,12 +108,29 @@ class _HomeBodyState extends State<HomeBody> {
     return correctSpecies && correctKingdom && correctCount;
   }
 
-  void simulate() {
-    Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) => ResultScreen(this.years, this.allSets)
-        )
-    );
+  void simulate() async {
+    prefs = await SharedPreferences.getInstance();
+    final textLocalDbPath = prefs.getString('textLocalDbPath') ?? "";
+    final textReportLocation = prefs.getString('textReportLocation') ?? "";
+    
+    if (textLocalDbPath.isEmpty || textReportLocation.isEmpty) {
+      // Configs not yet set
+      if (await showYesNoDialog(
+          context,
+          addConfigsTitle,
+          addConfigsMessage,
+          addConfigsAccept,
+          addConfigsReject)) {
+        Navigator.push(context, buildPageRoute(ConfigScreen()));
+      }
+    } else {
+      // Config values set properly
+      Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => ResultScreen(this.years, this.allSets)
+          )
+      );
+    }
   }
 
   @override
