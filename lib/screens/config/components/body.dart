@@ -10,35 +10,33 @@ class ConfigBody extends StatefulWidget {
 }
 
 class _ConfigBodyState extends State<ConfigBody> {
-  final textLocalServerURLController = TextEditingController();
+  final textLocalDbPathController = TextEditingController();
   final textReportLocationController = TextEditingController();
-  final textSimulationDirectoryController = TextEditingController();
 
-  String textLocalServerURL = "";
+  String textLocalDbPath = "";
   String textReportLocation = "";
-  String textSimulationDirectory = "";
 
   late SharedPreferences prefs;
 
   @override
   void dispose() {
-    textLocalServerURLController.dispose();
+    textLocalDbPathController.dispose();
     textReportLocationController.dispose();
-    textSimulationDirectoryController.dispose();
     super.dispose();
   }
 
   VoidCallback? saveValues() {
-    textLocalServerURL = textLocalServerURLController.text;
+    textLocalDbPath = textLocalDbPathController.text;
     textReportLocation = textReportLocationController.text;
-    textSimulationDirectory = textSimulationDirectoryController.text;
 
-    prefs.setString('textLocalServerURL', textLocalServerURL);
+    prefs.setString('textLocalDbPath', textLocalDbPath);
     prefs.setString('textReportLocation', textReportLocation);
-    prefs.setString('textSimulationDirectory', textSimulationDirectory);
 
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Saved successfully!')));
+      .showSnackBar(SnackBar(content: Text(
+        'Saved successfully!',
+        style: snackBarTextStyle,
+      )));
   }
 
   void setTextValue(TextEditingController controller, String text) {
@@ -53,13 +51,11 @@ class _ConfigBodyState extends State<ConfigBody> {
   Future<void> loadAllValues() async {
     prefs = await SharedPreferences.getInstance();
 
-    textLocalServerURL = prefs.getString('textLocalServerURL') ?? "";
+    textLocalDbPath = prefs.getString('textLocalDbPath') ?? "";
     textReportLocation = prefs.getString('textReportLocation') ?? "";
-    textSimulationDirectory = prefs.getString('textSimulationDirectory') ?? "";
 
-    setTextValue(textLocalServerURLController, textLocalServerURL);
+    setTextValue(textLocalDbPathController, textLocalDbPath);
     setTextValue(textReportLocationController, textReportLocation);
-    setTextValue(textSimulationDirectoryController, textSimulationDirectory);
   }
 
   @override
@@ -104,12 +100,12 @@ class _ConfigBodyState extends State<ConfigBody> {
                         fontSize: 20.0,
                       ),
                       decoration: InputDecoration(
-                        labelText: "Local ecosystem server URL",
+                        labelText: configLocalDbPathText,
                         labelStyle: editTextStyle,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
                       ),
-                      controller: textLocalServerURLController,
+                      controller: textLocalDbPathController,
                     ),
                   ),
                   const Divider(
@@ -122,7 +118,7 @@ class _ConfigBodyState extends State<ConfigBody> {
                         fontSize: 20.0,
                       ),
                       decoration: InputDecoration(
-                        labelText: "Report saving location",
+                        labelText: configLocalReportDirText,
                         labelStyle: editTextStyle,
                         enabledBorder: InputBorder.none,
                         focusedBorder: InputBorder.none,
@@ -130,37 +126,19 @@ class _ConfigBodyState extends State<ConfigBody> {
                       controller: textReportLocationController,
                     ),
                   ),
-                  const Divider(
-                    height: 0,
-                    thickness: 1,
-                  ),
-                  Flexible(
-                    child: TextField(
-                      style: TextStyle(
-                        fontSize: 20.0,
-                      ),
-                      decoration: InputDecoration(
-                        labelText: "On-device simulation directory",
-                        labelStyle: editTextStyle,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                      controller: textSimulationDirectoryController,
-                    ),
-                  ),
                   ElevatedButton(
                     onPressed: () {
                       saveValues();
                     },
-                    child: Text('SAVE'),
+                    child: Text(saveConfigBtn),
                     style: ElevatedButton.styleFrom(
-                      primary: colorPrimary,
-                      textStyle: const TextStyle(fontSize: 16),
+                      backgroundColor: colorPrimary,
+                      foregroundColor: Colors.white,
+                      textStyle: buttonStyle,
                       minimumSize: Size(double.infinity, 30),
-                      onPrimary: Colors.white,
                       shape: StadiumBorder(),
-                      padding:
-                          EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
+                      padding: EdgeInsets.symmetric(
+                          vertical: defaultPadding / 1.5),
                     ),
                   ),
                   const SizedBox(

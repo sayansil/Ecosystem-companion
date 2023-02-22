@@ -30,6 +30,7 @@ const githubUrl = "https://github.com/sayansil/Ecosystem-companion";
 
 const simulateBtn = "SIMULATE 🐗";
 const addSpeciesBtn = "ADD";
+const saveConfigBtn = "SAVE";
 
 const stopSimulationTitle = "Exit Simulation? 🕊️";
 const stopSimulationMessage = "All data from the current simulation will be lost...";
@@ -38,3 +39,6 @@ const stopSimulationReject = "No";
 
 const simulateStartBtn = "Start";
 const simulateStopBtn = "Stop";
+
+const configLocalDbPathText = "Local database path";
+const configLocalReportDirText = "Simulation report directory path";
