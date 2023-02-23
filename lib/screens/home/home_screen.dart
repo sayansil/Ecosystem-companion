@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: NavigationDrawer(currentItem: DrawerItem.home),
+        drawer: NavDrawer(currentItem: DrawerItem.home),
         appBar: buildNavAppBar(context),
         body: HomeBody(),
       );

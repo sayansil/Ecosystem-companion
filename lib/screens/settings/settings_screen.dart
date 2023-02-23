@@ -8,7 +8,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: NavigationDrawer(currentItem: DrawerItem.settings),
+        drawer: NavDrawer(currentItem: DrawerItem.settings),
         appBar: buildNavAppBar(context),
         body: SettingsBody(),
       );

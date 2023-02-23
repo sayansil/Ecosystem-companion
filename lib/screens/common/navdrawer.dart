@@ -8,10 +8,10 @@ import 'package:ecosystem/screens/settings/settings_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 
-class NavigationDrawer extends StatelessWidget {
+class NavDrawer extends StatelessWidget {
   final DrawerItem? currentItem;
 
-  NavigationDrawer({required DrawerItem? currentItem})
+  NavDrawer({required DrawerItem? currentItem})
       : currentItem = currentItem;
 
   @override

@@ -7,7 +7,7 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: NavigationDrawer(currentItem: DrawerItem.about),
+        drawer: NavDrawer(currentItem: DrawerItem.about),
         appBar: buildNavAppBar(context),
         body: AboutBody(),
       );
