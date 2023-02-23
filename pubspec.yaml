@@ -16,7 +16,7 @@ dependencies:
   sqflite: ^2.2.4+1
   file_picker: ^5.2.5
   cupertino_icons: ^1.0.3
-  flutter_svg: ^1.1.6
+  flutter_svg: ^2.0.2
   shared_preferences: ^2.0.6
   syncfusion_flutter_gauges: ^20.4.50
 
