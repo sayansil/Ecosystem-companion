@@ -8,7 +8,6 @@ const headerPadding = EdgeInsets.only(
   left: defaultPadding,
   right: defaultPadding,
   top: defaultSmallPadding,
-  bottom: defaultPadding + 210 - defaultSmallPadding,
 );
 
 const editTextStyle = TextStyle(color: colorTextDark, fontSize: 18, fontFamily: 'Poppins');

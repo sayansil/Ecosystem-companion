@@ -58,7 +58,7 @@ class NavigationDrawer extends StatelessWidget {
             const SizedBox(height: 10),
             buildMenuItem(
                 text: "Contribute",
-                icon: Icons.code_rounded,
+                icon: Icons.rocket_rounded,
                 onClicked: () => (currentItem == DrawerItem.contribute)
                     ? {Navigator.of(context).pop()}
                     : selectedItem(context, DrawerItem.contribute)),
@@ -109,7 +109,7 @@ class NavigationDrawer extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: defaultPadding),
       leading: Icon(icon, color: color),
-      title: Text(text, style: TextStyle(color: color)),
+      title: Text(text, style: TextStyle(color: color, fontFamily: 'Poppins')),
       hoverColor: hoverColor,
       onTap: onClicked,
     );
