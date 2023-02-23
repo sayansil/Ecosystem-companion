@@ -8,7 +8,7 @@ class ConfigScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: NavigationDrawer(currentItem: DrawerItem.config),
+        drawer: NavDrawer(currentItem: DrawerItem.config),
         appBar: buildNavAppBar(context),
         body: ConfigBody(),
       );

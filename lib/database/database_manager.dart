@@ -24,11 +24,11 @@ class MasterDatabase {
   }
 
   Future _createDB(Database db, int version) async {
-    final idType = 'NUMBER PRIMARY NOT NULL';
+    final idType = 'NUMBER NOT NULL PRIMARY KEY';
     final blobType = 'LONGBLOB NOT NULL';
 
     await db.execute('''
-      CREATE TABLE $masterTable ( 
+      CREATE TABLE $masterTable (
         ${WorldInstanceFields.year} $idType, 
         ${WorldInstanceFields.avgWorld} $blobType,
         ${WorldInstanceFields.populationWorld} $blobType
