@@ -37,7 +37,7 @@ class MasterDatabase {
     );
   }
 
-  Future<void> create(WorldInstance worldInstance) async {
+  Future<void> write(WorldInstance worldInstance) async {
     final db = await instance.database;
     await db.insert(masterTable, worldInstance.toMap());
   }
