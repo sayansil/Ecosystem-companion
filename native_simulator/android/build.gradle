@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.0'
+        classpath 'com.android.tools.build:gradle:7.2.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -41,23 +41,6 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
-        externalNativeBuild {
-            cmake {
-                // Enabling exceptions, RTTI
-                // And setting C++ standard version
-                cppFlags '-std=c++17'
-
-                // Shared runtime for shared libraries
-                // arguments "-DANDROID_STL=c++_shared"
-            }
-        }
-    }
-
-    externalNativeBuild {
-        cmake {
-            path "CMakeLists.txt"
-            version "3.22.1"
-        }
+        minSdkVersion 19
     }
 }
