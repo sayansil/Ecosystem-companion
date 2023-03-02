@@ -6,6 +6,7 @@ import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 import '../../common/transition.dart';
 import '../../config/config_screen.dart';
 import 'header.dart';
@@ -62,6 +63,16 @@ class _HomeBodyState extends State<HomeBody> {
     });
 
     valueChanged('years');
+    setEcosystemPath();
+  }
+
+  Future<void> setEcosystemPath() async {
+    var ecosystemRoot = prefs.getString('ecosystemRoot') ?? "";
+
+    if (ecosystemRoot.isEmpty) {
+      ecosystemRoot = await getDatabasesPath();
+      prefs.setString('ecosystemRoot', ecosystemRoot);
+    }
   }
 
   Future<void> saveAllValues() async {

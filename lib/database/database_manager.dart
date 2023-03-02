@@ -1,5 +1,7 @@
+import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MasterDatabase {
@@ -17,8 +19,9 @@ class MasterDatabase {
   }
 
   Future<Database> _initDB(String filePath) async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, filePath);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final ecosystemRoot = prefs.getString('ecosystemRoot') ?? await getDatabasesPath();
+    final path = join(ecosystemRoot, dataDir, filePath);
 
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }

@@ -17,6 +17,8 @@ const defaultSmallPadding = 20.0;
 
 // * Global parameters
 
+const dataDir = "data";
+
 enum DrawerItem { home, config, settings, about, contribute }
 
 const completeSpeciesList = {

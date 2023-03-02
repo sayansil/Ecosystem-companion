@@ -1,6 +1,7 @@
 import 'package:ecosystem/database/database_manager.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:native_simulator/native_simulator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void testDb() async {
   List<WorldInstance> rows = await MasterDatabase.instance.readAllRows();
@@ -9,7 +10,9 @@ void testDb() async {
   print(rows.last.year.toString() + " is the last year.");
 }
 
-void testFfi(int a, int b) {
-  var sum = add(a, b);
-  print("Sum: " + sum.toString());
+Future<void> testFfi() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final ecosystemRoot = prefs.getString('ecosystemRoot') ?? "";
+
+  nativeCreateGod(false, ecosystemRoot);
 }

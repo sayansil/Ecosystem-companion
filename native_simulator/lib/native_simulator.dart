@@ -1,40 +1,20 @@
-
 import 'dart:ffi';
 import 'dart:io';
+import 'package:ffi/ffi.dart';
 
 
 // Getting a library that holds needed symbols
 DynamicLibrary _lib = Platform.isAndroid
-    ? DynamicLibrary.open('libnative_simulator.so')
+    ? DynamicLibrary.open('libecosystem_wrapper.so')
     : DynamicLibrary.process();
 
 // Create the dart functions
 
-typedef NativeAdd = Int32 Function(Int32, Int32);
-final int Function(int a, int b) add = _lib
-    .lookup<NativeFunction<NativeAdd>>('add')
+typedef CreateGod = Void Function(Uint8, Pointer<Utf8>);
+final void Function(int godsEye, Pointer<Utf8> ecosystemRoot) createGod = _lib
+    .lookup<NativeFunction<CreateGod>>('create_god')
     .asFunction();
 
-
-//
-// class NativeSimulator {
-//
-//   // final DynamicLibrary nativeSimulatorLib = Platform.isAndroid
-//   //     ? DynamicLibrary.open('libnative_simulator.so')
-//   //     : DynamicLibrary.process();
-//   //
-//   // final int Function(int x, int y) add = nativeSimulatorLib
-//   //     .lookup<NativeFunction<Int32 Function(Int32, Int32)>>('add')
-//   //     .asFunction();
-//   //
-//   // void test() {
-//   //
-//   // }
-//
-//
-//
-//
-//   Future<String?> getPlatformVersion() {
-//     return NativeSimulatorPlatform.instance.getPlatformVersion();
-//   }
-// }
+void nativeCreateGod(bool godsEye, String ecosystemRoot) {
+  createGod(godsEye ? 1 : 0, ecosystemRoot.toNativeUtf8());
+}
