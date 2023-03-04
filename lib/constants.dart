@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 // * Global colors for application
 
@@ -18,6 +19,10 @@ const defaultSmallPadding = 20.0;
 // * Global parameters
 
 const dataDir = "data";
+final templateDir = join("data", "json");
+const ecosystemDir = "Ecosystem";
+
+const assetSpeciesTemplatePath = "assets/json/simulationTemplates";
 
 enum DrawerItem { home, config, settings, about, contribute, organism }
 

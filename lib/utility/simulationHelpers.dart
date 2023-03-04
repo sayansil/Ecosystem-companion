@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ecosystem/constants.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class SimulationSet {
   String kingdom;
@@ -51,9 +54,8 @@ enum SimulationStatus {
 }
 
 Future<String> getEcosystemRoot() async {
-  SharedPreferences prefs;
-  prefs = await SharedPreferences.getInstance();
-  final ecosystemRoot = prefs.getString('ecosystemRoot') ?? "";
+  Directory appDocDir = await getApplicationDocumentsDirectory();
+  final String ecosystemRoot = join(appDocDir.path, ecosystemDir);
 
   return ecosystemRoot;
 }
