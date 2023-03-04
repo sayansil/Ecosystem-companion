@@ -23,3 +23,5 @@ const dialogSubtitleStyle = TextStyle(color: colorSecondary, fontSize: 15, fontF
 const dialogButtonStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');
 
 const snackBarTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');
+
+const dropdownOptionStyle = TextStyle(fontSize: 18, fontFamily: 'Poppins', color: colorSecondary);

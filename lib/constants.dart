@@ -31,12 +31,13 @@ const completeSpeciesList = {
   "plant": ["bamboo"]
 };
 
-enum KingdomName { animal, plant }
+enum KingdomName {
+  animal("animal"),
+  plant("plant");
 
-const kingdomTextMap = {
-  "animal": KingdomName.animal,
-  "plant": KingdomName.plant,
-};
+  const KingdomName(this.value);
+  final String value;
+}
 
 // * String constants
 
@@ -61,3 +62,9 @@ const simulateStopBtn = "Stop";
 
 const configLocalDbPathText = "Local database directory path";
 const configLocalReportDirText = "Simulation report directory path";
+
+
+const configKingdomInputText = "Select a Kingdom";
+const configKindInputText = "Species name";
+
+const snackBarAddedSpeciesText = "Species added successfully";

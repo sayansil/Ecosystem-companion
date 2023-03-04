@@ -15,7 +15,19 @@ class SpeciesBody extends StatefulWidget {
 }
 
 class _SpeciesBodyState extends State<SpeciesBody> {
-  void createSpecies(String kingdomName, String speciesName) async {
+  String kingdomName = "";
+
+  final textKindController = TextEditingController();
+
+  @override
+  void dispose() {
+    textKindController.dispose();
+    super.dispose();
+  }
+
+  void createSpecies(BuildContext context) async {
+    final speciesName = textKindController.text.toLowerCase();
+
     final ecosystemRoot = await getEcosystemRoot();
     final speciesRoot = join(ecosystemRoot, templateDir, kingdomName, speciesName);
 
@@ -27,7 +39,19 @@ class _SpeciesBodyState extends State<SpeciesBody> {
 
     baseFile.writeAsStringSync(baseText);
     modifyFile.writeAsStringSync(modifyText);
-    print("Created species successfully.");
+
+    setState(() {
+      textKindController.clear();
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(snackBarAddedSpeciesText),
+    ));
+  }
+
+  bool isValid() {
+    final kindName = textKindController.text;
+    return kingdomName.isNotEmpty && kindName.isNotEmpty;
   }
 
   @override
@@ -40,6 +64,77 @@ class _SpeciesBodyState extends State<SpeciesBody> {
         children: <Widget>[
           // * Header bar
           BodyHeader(parentSize: size),
+
+          // * Form 1
+          Container(
+            constraints: BoxConstraints(maxWidth: 600),
+            height: 200,
+            margin: EdgeInsets.only(
+              left: defaultPadding,
+              right: defaultPadding,
+              top: size.height * 0.15,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0, 10),
+                  blurRadius: 50,
+                  color: colorPrimary.withOpacity(0.23),
+                ),
+              ],
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+
+                  // Kingdom input
+                  DropdownButtonFormField<KingdomName>(
+                    icon: const Icon(Icons.arrow_downward_rounded),
+                    elevation: 15,
+                    style: dropdownOptionStyle,
+                    onChanged: (KingdomName? item) {
+                      if (item != null) {
+                        kingdomName = item.name;
+                      }
+                    },
+                    items: KingdomName.values.map((KingdomName item) {
+                      return DropdownMenuItem<KingdomName>(
+                        value: item,
+                        child: Text(item.name),
+                      );
+                    }).toList(),
+                    decoration: InputDecoration(
+                      labelText: configKingdomInputText,
+                      labelStyle: editTextStyle,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                    ),
+                  ),
+
+
+                  const Divider(
+                    height: 0,
+                    thickness: 1,
+                  ),
+
+                  // Species input
+                  TextField(
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: configKindInputText,
+                      labelStyle: editTextStyle,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                    ),
+                    controller: textKindController,
+                  ),
+                ]),
+          ),
 
           // * Bottom Submit Button
           Positioned(
@@ -56,7 +151,9 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                 ),
                 padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
               ),
-              onPressed: () {},
+              onPressed: isValid() ? () {
+                createSpecies(context);
+              } : null,
               child: const Text(addSpeciesBtn),
             ),
           ),
