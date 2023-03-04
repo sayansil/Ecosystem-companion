@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class SimulationSet {
   String kingdom;
   String species;
@@ -46,4 +48,12 @@ enum SimulationStatus {
   running,
   completed,
   stopped,
+}
+
+Future<String> getEcosystemRoot() async {
+  SharedPreferences prefs;
+  prefs = await SharedPreferences.getInstance();
+  final ecosystemRoot = prefs.getString('ecosystemRoot') ?? "";
+
+  return ecosystemRoot;
 }

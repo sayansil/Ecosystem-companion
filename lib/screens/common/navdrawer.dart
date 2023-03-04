@@ -1,5 +1,6 @@
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/screens/common/transition.dart';
+import 'package:ecosystem/screens/species/species_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/home/home_screen.dart';
 import 'package:ecosystem/screens/config/config_screen.dart';
@@ -35,6 +36,13 @@ class NavDrawer extends StatelessWidget {
                 onClicked: () => (currentItem == DrawerItem.config)
                     ? {Navigator.of(context).pop()}
                     : selectedItem(context, DrawerItem.config)),
+            const SizedBox(height: 10),
+            buildMenuItem(
+                text: "New species",
+                icon: Icons.add,
+                onClicked: () => (currentItem == DrawerItem.organism)
+                    ? {Navigator.of(context).pop()}
+                    : selectedItem(context, DrawerItem.organism)),
             const SizedBox(height: 10),
             buildMenuItem(
                 text: "Settings",
@@ -87,6 +95,9 @@ class NavDrawer extends StatelessWidget {
         break;
       case DrawerItem.config:
         Navigator.push(context, buildPageRoute(ConfigScreen()));
+        break;
+      case DrawerItem.organism:
+        Navigator.push(context, buildPageRoute(SpeciesScreen()));
         break;
       case DrawerItem.settings:
         Navigator.push(context, buildPageRoute(SettingsScreen()));

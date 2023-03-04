@@ -19,7 +19,7 @@ const defaultSmallPadding = 20.0;
 
 const dataDir = "data";
 
-enum DrawerItem { home, config, settings, about, contribute }
+enum DrawerItem { home, config, settings, about, contribute, organism }
 
 const completeSpeciesList = {
   "animal": ["lion", "deer"],
