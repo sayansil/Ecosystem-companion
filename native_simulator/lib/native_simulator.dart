@@ -59,8 +59,8 @@ void nativeCreateWorld() {
   createWorld();
 }
 
-void nativeHappyNewYear() {
-  final bf = happyNewYear();
-  final arrReal = bf.data.asTypedList(bf.length);
-  print(arrReal);
+List<int> nativeHappyNewYear() {
+  final buffer = happyNewYear();
+  final bufferArray = buffer.data.asTypedList(buffer.length);
+  return bufferArray;
 }

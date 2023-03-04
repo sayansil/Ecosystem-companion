@@ -31,6 +31,12 @@ const completeSpeciesList = {
   "plant": ["bamboo"]
 };
 
+enum KingdomName { animal, plant }
+
+const kingdomTextMap = {
+  "animal": KingdomName.animal,
+  "plant": KingdomName.plant,
+};
 
 // * String constants
 
