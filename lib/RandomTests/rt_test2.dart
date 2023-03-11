@@ -8,20 +8,20 @@ import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:native_simulator/native_simulator.dart';
 
+
 Future<void> testSimulation() async {
   final ecosystemRoot = await getEcosystemRoot();
 
-  nativeCreateGod(true, ecosystemRoot);
+  NativeSimulator simulator = NativeSimulator(ecosystemRoot);
 
-  nativeSetInitialOrganisms(KingdomName.animal.index, "deer", 10, 50000);
-  nativeSetInitialOrganisms(KingdomName.animal.index, "deer", 20, 100);
-  nativeSetInitialOrganisms(KingdomName.animal.index, "deer", 30, 50000);
+  simulator.createInitialOrganisms(KingdomName.animal.index, "deer", 10, 500);
+  simulator.createInitialOrganisms(KingdomName.animal.index, "deer", 20, 100);
+  simulator.createInitialOrganisms(KingdomName.animal.index, "deer", 30, 500);
 
-  nativeCleanSlate();
-  nativeCreateWorld();
+  simulator.prepareWorld();
 
   for( var i = 0 ; i < 1000; i++ ) {
-    final fbList = nativeHappyNewYear();
+    final fbList = simulator.simulateOneYear();
     final bufferSize = fbList.length;
     int population = 0;
 
@@ -35,7 +35,7 @@ Future<void> testSimulation() async {
     print("Year: ${world.year} - Buffer Size: $bufferSize - Population: $population");
   }
 
-  nativeFreeGod();
+  simulator.cleanup();
 }
 
 Future<void> testSimulationDb() async {
