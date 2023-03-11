@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:path/path.dart' as Path;
 import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/results/results_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
@@ -16,19 +19,18 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
-  bool correctKingdom = false;
-  bool correctSpecies = false;
-  bool correctCount = false;
-  bool correctYears = false;
+  List<String> kingdomList = [];
+  List<String> speciesList = [];
 
-  final textKingdomController = TextEditingController();
-  final textSpeciesController = TextEditingController();
   final textCountController = TextEditingController();
   final textYearsController = TextEditingController();
 
   List<SimulationSet> allSets = [];
+
   int years = 0;
-  
+  String kingdomName = "";
+  String speciesName = "";
+
   late SharedPreferences prefs;
 
   @override
@@ -39,11 +41,41 @@ class _HomeBodyState extends State<HomeBody> {
 
   @override
   void dispose() {
-    textKingdomController.dispose();
-    textSpeciesController.dispose();
     textCountController.dispose();
     textYearsController.dispose();
     super.dispose();
+  }
+
+  Future<void> fetchKingdomList() async {
+    final ecosystemRoot = await getEcosystemRoot();
+    final ecosystemDataDir = Directory(Path.join(ecosystemRoot, templateDir));
+
+    final children = await ecosystemDataDir.list().toList();
+    final Iterable<Directory> dirs = children.whereType<Directory>();
+    final List<String> dirNames = dirs.map((e) => Path.basename(e.path)).toList();
+
+    setState(() {
+      kingdomList = dirNames;
+    });
+  }
+
+  Future<void> fetchSpeciesList(String kingdom) async {
+    final ecosystemRoot = await getEcosystemRoot();
+    final ecosystemKingdomDir = Directory(Path.join(ecosystemRoot, templateDir, kingdom));
+
+    final children = await ecosystemKingdomDir.list().toList();
+    final Iterable<Directory> dirs = children.whereType<Directory>();
+    final List<String> dirNames = dirs.map((e) => Path.basename(e.path)).toList();
+
+    if (dirNames.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(noSpeciesFound),
+      ));
+    }
+
+    setState(() {
+      speciesList = dirNames;
+    });
   }
 
   Future<void> loadAllValues() async {
@@ -56,12 +88,11 @@ class _HomeBodyState extends State<HomeBody> {
       allSets = SimulationSet.fromString(_sets);
       if (_years > 0) {
         years = _years;
-
         setTextValue(textYearsController, years.toString());
       }
     });
 
-    valueChanged('years');
+    fetchKingdomList();
   }
 
   Future<void> saveAllValues() async {
@@ -80,57 +111,21 @@ class _HomeBodyState extends State<HomeBody> {
     );
   }
 
-  void valueChanged(String valueType) {
-    setState(() {
-      if (valueType == "kingdom" || valueType == "species") {
-        String kingdom = textKingdomController.text.toLowerCase();
-        String species = textSpeciesController.text.toLowerCase();
-
-        correctKingdom = false;
-        correctSpecies = false;
-
-        var speciesList = completeSpeciesList;
-        if (speciesList.containsKey(kingdom)) {
-          correctKingdom = true;
-
-          if (speciesList[kingdom]!.contains(species)) {
-            correctSpecies = true;
-          }
-        }
-      } else if (valueType == "count") {
-        int count = int.tryParse(textCountController.text) ?? 0;
-
-        correctCount = false;
-
-        if (count > 0) {
-          correctCount = true;
-        }
-      } else if (valueType == "years") {
-        years = int.tryParse(textYearsController.text) ?? 0;
-        correctYears = false;
-
-        if (years > 0) {
-          correctYears = true;
-        }
-      }
-    });
+  bool isValidSet() {
+    int count = int.tryParse(textCountController.text) ?? 0;
+    return count > 0 && kingdomName.isNotEmpty && speciesName.isNotEmpty;
   }
 
   void addSet() {
     if (isValidSet()) {
       setState(() {
         allSets.add(SimulationSet(
-            textKingdomController.text.toLowerCase(),
-            textSpeciesController.text.toLowerCase(),
+            kingdomName,
+            speciesName,
             int.tryParse(textCountController.text) ?? 0));
 
-        textKingdomController.clear();
-        textSpeciesController.clear();
         textCountController.clear();
       });
-      valueChanged('kingdom');
-      valueChanged('species');
-      valueChanged('count');
 
       saveAllValues();
     }
@@ -146,11 +141,7 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   bool isReady() {
-    return allSets.isNotEmpty && correctYears;
-  }
-
-  bool isValidSet() {
-    return correctSpecies && correctKingdom && correctCount;
+    return allSets.isNotEmpty && years > 0;
   }
 
   void simulate() async {
@@ -303,10 +294,10 @@ class _HomeBodyState extends State<HomeBody> {
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
-                onChanged: (text) {
-                  valueChanged("years");
-                },
                 controller: textYearsController,
+                onChanged: (String? text) {
+                  years = int.tryParse(textYearsController.text) ?? 0;
+                },
               ),
             ),
 
@@ -334,72 +325,63 @@ class _HomeBodyState extends State<HomeBody> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Flexible(
-                            child: TextField(
-                              style: TextStyle(
-                                fontSize: 20.0,
-                              ),
-                              decoration: InputDecoration(
-                                labelText: "Kingdom",
-                                labelStyle: editTextStyle,
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                              ),
-                              onChanged: (text) {
-                                valueChanged("kingdom");
-                              },
-                              controller: textKingdomController,
-                            ),
-                          ),
-                          Visibility(
-                            child: Icon(
-                              Icons.check_rounded,
-                              color: Colors.green,
-                              size: 30.0,
-                            ),
-                            visible: correctKingdom,
-                          ),
-                        ]),
+
+                    // Kingdom input
+                    DropdownButtonFormField<String>(
+                      icon: const Icon(Icons.arrow_downward_rounded),
+                      elevation: 20,
+                      style: dropdownOptionStyle,
+                      onChanged: (String? item) {
+                        if (item != null && item.isNotEmpty) {
+                          kingdomName = item;
+                          fetchSpeciesList(kingdomName);
+                        }
+                      },
+                      items: kingdomList.map((e) => DropdownMenuItem<String>(
+                        value: e,
+                        child: Text(e),
+                      )).toList(),
+                      decoration: InputDecoration(
+                        labelText: simulationKingdomInputText,
+                        labelStyle: editTextStyle,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                      ),
+                    ),
+
                     const Divider(
                       height: 0,
                       thickness: 1,
                     ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Flexible(
-                            child: TextField(
-                              style: TextStyle(
-                                fontSize: 20.0,
-                              ),
-                              decoration: InputDecoration(
-                                labelText: "Species",
-                                labelStyle: editTextStyle,
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                              ),
-                              onChanged: (text) {
-                                valueChanged("species");
-                              },
-                              controller: textSpeciesController,
-                            ),
-                          ),
-                          Visibility(
-                            child: Icon(
-                              Icons.check_rounded,
-                              color: Colors.green,
-                              size: 30.0,
-                            ),
-                            visible: correctSpecies,
-                          ),
-                        ]),
+
+                    // Species input
+                    DropdownButtonFormField<String>(
+                      icon: const Icon(Icons.arrow_downward_rounded),
+                      elevation: 20,
+                      style: dropdownOptionStyle,
+                      onChanged: (String? item) {
+                        if (item != null && item.isNotEmpty) {
+                          speciesName = item;
+                        }
+                      },
+                      items: speciesList.map((e) => DropdownMenuItem<String>(
+                        value: e,
+                        child: Text(e),
+                      )).toList(),
+                      decoration: InputDecoration(
+                        labelText: simulationKindInputText,
+                        labelStyle: editTextStyle,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                      ),
+                    ),
+
                     const Divider(
                       height: 0,
                       thickness: 1,
                     ),
+
+                    // Count input
                     Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -418,9 +400,6 @@ class _HomeBodyState extends State<HomeBody> {
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
                               ),
-                              onChanged: (text) {
-                                valueChanged("count");
-                              },
                               controller: textCountController,
                             ),
                           ),
@@ -430,7 +409,7 @@ class _HomeBodyState extends State<HomeBody> {
                               color: Colors.green,
                               size: 30.0,
                             ),
-                            visible: correctCount,
+                            visible: (int.tryParse(textCountController.text) ?? 0) > 0,
                           ),
                         ]),
                     ElevatedButton(

@@ -73,3 +73,7 @@ const snackBarAddedSpeciesText = "Species added successfully";
 
 const permissionStorageNotGranted = "Could not access device storage :(";
 const permissionStorageGrantRequest = "Please grant storage permission to proceed";
+
+const noSpeciesFound = "No species found in that Kingdom. Please create one.";
+const simulationKingdomInputText = "Select a Kingdom";
+const simulationKindInputText = "Select a Species";
