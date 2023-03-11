@@ -63,8 +63,13 @@ const simulateStopBtn = "Stop";
 const configLocalDbPathText = "Local database directory path";
 const configLocalReportDirText = "Simulation report directory path";
 
+const speciesSelectBaseJsonPath = "Base Json config (optional)";
+const speciesSelectModifyJsonPath = "Modify Json config (optional)";
 
 const configKingdomInputText = "Select a Kingdom";
 const configKindInputText = "Species name";
 
 const snackBarAddedSpeciesText = "Species added successfully";
+
+const permissionStorageNotGranted = "Could not access device storage :(";
+const permissionStorageGrantRequest = "Please grant storage permission to proceed";

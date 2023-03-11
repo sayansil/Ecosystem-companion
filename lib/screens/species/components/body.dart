@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'header.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +20,35 @@ class _SpeciesBodyState extends State<SpeciesBody> {
   String kingdomName = "";
 
   final textKindController = TextEditingController();
+  final textBaseJsonPathController = TextEditingController();
+  final textModifyJsonPathController = TextEditingController();
 
   @override
   void dispose() {
     textKindController.dispose();
+    textBaseJsonPathController.dispose();
+    textModifyJsonPathController.dispose();
     super.dispose();
+  }
+
+  void setTextValue(TextEditingController controller, String text) {
+    controller.value = controller.value.copyWith(
+      text: text,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: text.length),
+      ),
+    );
+  }
+
+  void fillPath(TextEditingController controller) async {
+    FilePickerResult? selectedFile = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json', 'JSON'],
+    );
+
+    if (selectedFile?.files.single.path != null) {
+      setTextValue(controller, selectedFile!.files.single.path!);
+    }
   }
 
   void createSpecies(BuildContext context) async {
@@ -31,17 +57,52 @@ class _SpeciesBodyState extends State<SpeciesBody> {
     final ecosystemRoot = await getEcosystemRoot();
     final speciesRoot = join(ecosystemRoot, templateDir, kingdomName, speciesName);
 
-    final baseFile = await File(join(speciesRoot, "base.json")).create(recursive: true);
-    final modifyFile = await File(join(speciesRoot, "modify.json")).create(recursive: true);
+    var baseJsonFilePath = textBaseJsonPathController.text;
+    var modifyJsonFilePath = textModifyJsonPathController.text;
 
-    final baseText = await rootBundle.loadString(join(assetSpeciesTemplatePath, kingdomName, "base.json"));
-    final modifyText = await rootBundle.loadString(join(assetSpeciesTemplatePath, kingdomName, "modify.json"));
+    if (baseJsonFilePath.isNotEmpty || modifyJsonFilePath.isNotEmpty) {
+      if (await Permission.storage.isRestricted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(permissionStorageNotGranted),
+        ));
+        return;
+      } else if (!await Permission.storage.request().isGranted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(permissionStorageGrantRequest),
+        ));
+        return;
+      }
+    }
+
+    final baseFile = File(join(speciesRoot, "base.json"));
+    final modifyFile = File(join(speciesRoot, "modify.json"));
+    baseFile.createSync(recursive: true);
+    modifyFile.createSync(recursive: true);
+
+    String baseText = "";
+    String modifyText = "";
+
+    if (baseJsonFilePath.isNotEmpty) {
+      final baseReadFile = File(baseJsonFilePath);
+      baseText = baseReadFile.readAsStringSync();
+    } else {
+      baseText = await rootBundle.loadString(join(assetSpeciesTemplatePath, kingdomName, "base.json"));
+    }
+
+    if (modifyJsonFilePath.isNotEmpty) {
+      final modifyReadFile = File(modifyJsonFilePath);
+      modifyText = modifyReadFile.readAsStringSync();
+    } else {
+      modifyText = await rootBundle.loadString(join(assetSpeciesTemplatePath, kingdomName, "modify.json"));
+    }
 
     baseFile.writeAsStringSync(baseText);
     modifyFile.writeAsStringSync(modifyText);
 
     setState(() {
       textKindController.clear();
+      textBaseJsonPathController.clear();
+      textModifyJsonPathController.clear();
     });
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -68,13 +129,17 @@ class _SpeciesBodyState extends State<SpeciesBody> {
           // * Form 1
           Container(
             constraints: BoxConstraints(maxWidth: 600),
-            height: 200,
+            height: 350,
             margin: EdgeInsets.only(
               left: defaultPadding,
               right: defaultPadding,
-              top: size.height * 0.15,
+              top: size.height * 0.10,
             ),
-            padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+            padding: EdgeInsets.only(
+              left: defaultPadding,
+              right: defaultPadding,
+              top: defaultPadding / 2,
+            ),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -93,7 +158,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                   // Kingdom input
                   DropdownButtonFormField<KingdomName>(
                     icon: const Icon(Icons.arrow_downward_rounded),
-                    elevation: 15,
+                    elevation: 20,
                     style: dropdownOptionStyle,
                     onChanged: (KingdomName? item) {
                       if (item != null) {
@@ -132,6 +197,74 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                       focusedBorder: InputBorder.none,
                     ),
                     controller: textKindController,
+                  ),
+
+
+                  const Divider(
+                    height: 0,
+                    thickness: 1,
+                  ),
+
+
+                  // Base Json file input
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: TextField(
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: speciesSelectBaseJsonPath,
+                            labelStyle: editTextStyle,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          controller: textBaseJsonPathController,
+                        ),
+                      ),
+
+                      IconButton(
+                        icon: Image.asset('assets/images/folder.png'),
+                        iconSize: 30,
+                        onPressed: () {fillPath(textBaseJsonPathController);},
+                      )
+                    ],
+                  ),
+
+
+                  const Divider(
+                    height: 0,
+                    thickness: 1,
+                  ),
+
+
+                  // Modify json file input
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: TextField(
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                          decoration: InputDecoration(
+                            labelText: speciesSelectModifyJsonPath,
+                            labelStyle: editTextStyle,
+                            enabledBorder: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
+                          controller: textModifyJsonPathController,
+                        ),
+                      ),
+
+                      IconButton(
+                        icon: Image.asset('assets/images/folder.png'),
+                        iconSize: 30,
+                        onPressed: () {fillPath(textModifyJsonPathController);},
+                      )
+                    ],
                   ),
                 ]),
           ),
