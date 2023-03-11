@@ -1,7 +1,7 @@
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
+import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MasterDatabase {
@@ -14,30 +14,15 @@ class MasterDatabase {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB(dbName);
+    _database = await _initDB(dbFileName);
     return _database!;
   }
 
-  Future<Database> _initDB(String filePath) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final ecosystemRoot = prefs.getString('ecosystemRoot') ?? await getDatabasesPath();
-    final path = join(ecosystemRoot, dataDir, filePath);
+  Future<Database> _initDB(String dbFileName) async {
+    final ecosystemRoot = await getEcosystemRoot();
+    final path = join(ecosystemRoot, dataDir, dbFileName);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
-  }
-
-  Future _createDB(Database db, int version) async {
-    final idType = 'NUMBER NOT NULL PRIMARY KEY';
-    final blobType = 'LONGBLOB NOT NULL';
-
-    await db.execute('''
-      CREATE TABLE $masterTable (
-        ${WorldInstanceFields.year} $idType, 
-        ${WorldInstanceFields.avgWorld} $blobType,
-        ${WorldInstanceFields.populationWorld} $blobType
-      )
-      '''
-    );
+    return await openDatabase(path);
   }
 
   Future<void> write(WorldInstance worldInstance) async {

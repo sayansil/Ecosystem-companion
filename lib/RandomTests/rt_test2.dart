@@ -1,24 +1,78 @@
+import 'dart:io';
+
+import 'package:path/path.dart';
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/database/database_manager.dart';
+import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:native_simulator/native_simulator.dart';
 
-void testSimulation() async {
+Future<void> testSimulation() async {
   final ecosystemRoot = await getEcosystemRoot();
 
   nativeCreateGod(true, ecosystemRoot);
 
-  nativeSetInitialOrganisms(KingdomName.animal.index, "deer", 10, 10);
+  nativeSetInitialOrganisms(KingdomName.animal.index, "deer", 10, 50000);
   nativeSetInitialOrganisms(KingdomName.animal.index, "deer", 20, 100);
-  nativeSetInitialOrganisms(KingdomName.animal.index, "deer", 30, 50);
+  nativeSetInitialOrganisms(KingdomName.animal.index, "deer", 30, 50000);
 
   nativeCleanSlate();
   nativeCreateWorld();
 
-  nativeHappyNewYear();
-  nativeHappyNewYear();
+  for( var i = 0 ; i < 1000; i++ ) {
+    final fbList = nativeHappyNewYear();
+    final bufferSize = fbList.length;
+    int population = 0;
 
-  final fbList = nativeHappyNewYear();
-  var world = new World(fbList);
-  print(world.year);
+    var world = new World(fbList);
+    if (world.species != null) {
+      world.species!.forEach((species) {
+        population += species.organism!.length;
+      });
+    }
+
+    print("Year: ${world.year} - Buffer Size: $bufferSize - Population: $population");
+  }
+
+  nativeFreeGod();
+}
+
+Future<void> testSimulationDb() async {
+  final dbInstance = MasterDatabase.instance;
+  List<WorldInstance> rows = await dbInstance.readAllRows();
+
+
+  final world = World(rows.last.avgWorld);
+
+  print(rows.length.toString() + " number of rows");
+  print(world.year.toString() + " is the last year.");
+  print(world.species!.length.toString() + " number of species");
+
+  await dbInstance.close();
+}
+
+Future<void> deleteDB() async {
+  final ecosystemRoot = await getEcosystemRoot();
+
+  try {
+    final dbFile = File(join(ecosystemRoot, dataDir, dbFileName));
+    await dbFile.delete();
+    print("DB deleted successfully");
+  } catch (e) {
+    print("Error in deleteDB: " + e.toString());
+  }
+}
+
+
+Future<void> deleteSpecies(String kingdom, String kind) async {
+  final ecosystemRoot = await getEcosystemRoot();
+
+  try {
+    final speciesDir = Directory(join(ecosystemRoot, templateDir, kingdom, kind));
+    speciesDir.deleteSync(recursive: true);
+    print("Species config deleted successfully");
+  } catch (e) {
+    print("Error in deleteSpecies: " + e.toString());
+  }
 }

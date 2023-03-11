@@ -22,6 +22,7 @@ typedef SetInitialOrganisms = Void Function(Uint32, Pointer<Utf8>, Uint32, Uint3
 typedef CleanSlate = Void Function();
 typedef CreateWorld = Void Function();
 typedef HappyNewYear = BufferData Function();
+typedef FreeGod = Void Function();
 
 // Link them to C functions
 
@@ -39,6 +40,9 @@ final void Function() createWorld = _lib
     .asFunction();
 final BufferData Function() happyNewYear = _lib
     .lookup<NativeFunction<HappyNewYear>>('happy_new_year')
+    .asFunction();
+final void Function() freeGod = _lib
+    .lookup<NativeFunction<FreeGod>>('free_god')
     .asFunction();
 
 // Convenient functions
@@ -63,4 +67,8 @@ List<int> nativeHappyNewYear() {
   final buffer = happyNewYear();
   final bufferArray = buffer.data.asTypedList(buffer.length);
   return bufferArray;
+}
+
+void nativeFreeGod() {
+  freeGod();
 }

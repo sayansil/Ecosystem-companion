@@ -22,7 +22,7 @@ const dataDir = "data";
 final templateDir = join("data", "json");
 const ecosystemDir = "Ecosystem";
 
-const assetSpeciesTemplatePath = "assets/json/simulationTemplates";
+final assetSpeciesTemplatePath = join("assets", "json", "simulationTemplates");
 
 enum DrawerItem { home, config, settings, about, contribute, organism }
 

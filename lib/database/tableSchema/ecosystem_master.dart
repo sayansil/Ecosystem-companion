@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-final String dbName = "ecosystem_master.db";
+final String dbFileName = "ecosystem_master.db";
 final String masterTable = 'ECOSYSTEM_MASTER';
 
 class WorldInstanceFields {
