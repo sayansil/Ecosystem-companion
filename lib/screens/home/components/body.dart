@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart' as path;
 import 'package:ecosystem/screens/common/dialog.dart';
-import 'package:ecosystem/screens/results/results_screen.dart';
+import 'package:ecosystem/screens/progress/progress_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
@@ -163,7 +163,7 @@ class _HomeBodyState extends State<HomeBody> {
       // Config values set properly
       Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => ResultScreen(years, allSets)
+              builder: (context) => ProgressScreen(years, allSets)
           )
       );
     }

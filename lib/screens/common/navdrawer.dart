@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/home/home_screen.dart';
 import 'package:ecosystem/screens/config/config_screen.dart';
 import 'package:ecosystem/screens/about/about_screen.dart';
-import 'package:ecosystem/screens/settings/settings_screen.dart';
+import 'package:ecosystem/screens/settings/history_screen.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -43,11 +43,11 @@ class NavDrawer extends StatelessWidget {
                     : selectedItem(context, DrawerItem.organism)),
             const SizedBox(height: 10),
             buildMenuItem(
-                text: "Settings",
-                icon: Icons.settings_rounded,
-                onClicked: () => (currentItem == DrawerItem.settings)
+                text: "History",
+                icon: Icons.checklist_rtl_rounded,
+                onClicked: () => (currentItem == DrawerItem.history)
                     ? {Navigator.of(context).pop()}
-                    : selectedItem(context, DrawerItem.settings)),
+                    : selectedItem(context, DrawerItem.history)),
             const SizedBox(height: 20),
             const Divider(
               color: Colors.white30,
@@ -97,8 +97,8 @@ class NavDrawer extends StatelessWidget {
       case DrawerItem.organism:
         Navigator.push(context, buildPageRoute(SpeciesScreen()));
         break;
-      case DrawerItem.settings:
-        Navigator.push(context, buildPageRoute(SettingsScreen()));
+      case DrawerItem.history:
+        Navigator.push(context, buildPageRoute(HistoryScreen()));
         break;
       case DrawerItem.about:
         Navigator.push(context, buildPageRoute(AboutScreen()));

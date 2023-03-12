@@ -1,6 +1,8 @@
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
+import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'header.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,8 +14,10 @@ class ConfigBody extends StatefulWidget {
 
 class _ConfigBodyState extends State<ConfigBody> {
   final textReportLocationController = TextEditingController();
+  final textRootController = TextEditingController();
 
   String textReportLocation = "";
+  String textEcosystemRoot = "";
 
   bool updatedConfigs = false;
 
@@ -28,6 +32,7 @@ class _ConfigBodyState extends State<ConfigBody> {
   @override
   void dispose() {
     textReportLocationController.dispose();
+    textRootController.dispose();
     super.dispose();
   }
 
@@ -64,10 +69,13 @@ class _ConfigBodyState extends State<ConfigBody> {
 
   Future<void> loadAllValues() async {
     prefs = await SharedPreferences.getInstance();
+    final ecosystemRoot = await getEcosystemRoot();
 
     textReportLocation = prefs.getString('textReportLocation') ?? "";
+    textEcosystemRoot = ecosystemRoot;
 
     setTextValue(textReportLocationController, textReportLocation);
+    setTextValue(textRootController, textEcosystemRoot);
   }
 
   void fillPath() async {
@@ -80,6 +88,15 @@ class _ConfigBodyState extends State<ConfigBody> {
     }
   }
 
+  void copyRootPath() {
+    Clipboard.setData(ClipboardData(text: textEcosystemRoot))
+        .then((_) => ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text(
+            'Copied!',
+            style: snackBarTextStyle,
+          ))));
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -90,6 +107,74 @@ class _ConfigBodyState extends State<ConfigBody> {
         children: <Widget>[
           // * Header bar
           BodyHeader(parentSize: size),
+
+          Container(
+            constraints: const BoxConstraints(maxWidth: 600),
+            height: 100,
+            margin: EdgeInsets.only(
+              left: defaultPadding,
+              right: defaultPadding,
+              top: size.height * 0.15 - 40,
+            ),
+            padding: const EdgeInsets.only(
+              left: defaultPadding,
+              right: defaultPadding,
+              top: defaultPadding / 2
+            ),
+            decoration: BoxDecoration(
+              color: colorPrimaryLight,
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                  offset: const Offset(0, 10),
+                  blurRadius: 50,
+                  color: colorPrimary.withOpacity(0.23),
+                ),
+              ],
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Flexible(
+                  child: TextField(
+                    enabled: false,
+                    style: TextStyle(
+                        fontSize: 18.0, color: Colors.white.withOpacity(0.8)),
+                    decoration: const InputDecoration(
+                      labelText: "Ecosystem root path",
+                      labelStyle: editTextDarkStyle,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                    ),
+                    controller: textRootController,
+                    onTap: () {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(const SnackBar(content: Text(
+                        'Cannot be edited!',
+                        style: snackBarTextStyle,
+                      )));
+                    },
+                  ),
+                ),
+
+                Container(
+                  margin: const EdgeInsets.only(
+                    top: defaultPadding / 3
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.copy_rounded, color: colorSecondary),
+                    iconSize: 25,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: copyRootPath,
+                  ),
+                ),
+              ],
+            )
+          ),
 
           Container(
             constraints: const BoxConstraints(maxWidth: 600),
@@ -119,7 +204,7 @@ class _ConfigBodyState extends State<ConfigBody> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Flexible(
+                      Expanded(
                         child: TextField(
                           style: const TextStyle(
                             fontSize: 20.0,

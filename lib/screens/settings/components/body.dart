@@ -1,12 +1,12 @@
 import 'header.dart';
 import 'package:flutter/material.dart';
 
-class SettingsBody extends StatefulWidget {
+class HistoryBody extends StatefulWidget {
   @override
-  _SettingsBodyState createState() => _SettingsBodyState();
+  _HistoryBodyState createState() => _HistoryBodyState();
 }
 
-class _SettingsBodyState extends State<SettingsBody> {
+class _HistoryBodyState extends State<HistoryBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

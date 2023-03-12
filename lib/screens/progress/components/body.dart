@@ -9,17 +9,17 @@ import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 
-class ResultProgress extends StatefulWidget {
+class ProgressBody extends StatefulWidget {
   final int years;
   final List<SimulationSet> initOrganisms;
 
-  ResultProgress(this.years, this.initOrganisms, {Key? key}): super(key: key);
+  ProgressBody(this.years, this.initOrganisms, {Key? key}): super(key: key);
 
   @override
-  _ResultProgressState createState() => _ResultProgressState();
+  _ProgressBodyState createState() => _ProgressBodyState();
 }
 
-class _ResultProgressState extends State<ResultProgress> {
+class _ProgressBodyState extends State<ProgressBody> {
   int currentYear = 0;
   int population = 0;
 

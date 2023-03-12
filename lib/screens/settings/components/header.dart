@@ -23,7 +23,7 @@ class BodyHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const <Widget>[
           Text(
-            "Settings",
+            "History",
             style: headerStyle,
           ),
         ],

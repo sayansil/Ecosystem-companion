@@ -24,7 +24,7 @@ const ecosystemDir = "Ecosystem";
 
 final assetSpeciesTemplatePath = join("assets", "json", "simulationTemplates");
 
-enum DrawerItem { home, config, settings, about, contribute, organism }
+enum DrawerItem { home, config, history, about, contribute, organism }
 
 // * String constants
 
