@@ -89,13 +89,16 @@ class _HomeBodyState extends State<HomeBody> {
     final fetchedYears = prefs.getInt('simulationYears') ?? 0;
     final fetchedSets = prefs.getString('simulationSet') ?? "[]";
 
-    setState(() {
-      allSets = SimulationSet.fromString(fetchedSets);
-      if (fetchedYears > 0) {
+    final unpackedSets = SimulationSet.fromString(fetchedSets);
+    final unpackValid = await SimulationSet.isValidSets(unpackedSets);
+
+    if (fetchedYears > 0 && unpackValid) {
+      setState(() {
         years = fetchedYears;
+        allSets = unpackedSets;
         setTextValue(textYearsController, years.toString());
-      }
-    });
+      });
+    }
 
     fetchKingdomList();
   }

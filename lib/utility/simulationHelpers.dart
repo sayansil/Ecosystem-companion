@@ -45,8 +45,19 @@ class SimulationSet {
     return jsonEncode(setList);
   }
 
-  bool isValidSet(SimulationSet set) {
-    return false;
+  static Future<bool> isValidSets(List<SimulationSet> sets) async {
+    final speciesMap = await getEligibleSpeciesMap();
+
+    for (SimulationSet set in sets) {
+      if (set.age < 0 || // Invalid age
+          set.count < 0 || // Invalid count
+          !speciesMap.containsKey(set.kingdom) || // Kingdom does not exist
+          speciesMap[set.kingdom] == null || // No species in that kingdom
+          !speciesMap[set.kingdom]!.contains(set.species)) { // Species does not exist
+        return false;
+      }
+    }
+    return true;
   }
 }
 
@@ -62,6 +73,30 @@ Future<String> getEcosystemRoot() async {
   final String ecosystemRoot = join(appDocDir.path, ecosystemDir);
 
   return ecosystemRoot;
+}
+
+Future<Map<String, List<String>>> getEligibleSpeciesMap() async {
+  Map<String, List<String>> speciesMap = {};
+
+  final ecosystemRoot = await getEcosystemRoot();
+  final ecosystemDataDir = Directory(join(ecosystemRoot, templateDir));
+
+  if (ecosystemDataDir.existsSync()) {
+    final children = await ecosystemDataDir.list().toList();
+    final Iterable<Directory> dirs = children.whereType<Directory>();
+    final List<String> kingdomNames = dirs.map((e) => basename(e.path)).toList();
+
+    for (String dirName in kingdomNames) {
+      final ecosystemKingdomDir = Directory(join(ecosystemRoot, templateDir, dirName));
+      final children = await ecosystemKingdomDir.list().toList();
+      final Iterable<Directory> dirs = children.whereType<Directory>();
+      final List<String> speciesNames = dirs.map((e) => basename(e.path)).toList();
+
+      speciesMap[dirName] = speciesNames;
+    }
+  }
+
+  return speciesMap;
 }
 
 enum KingdomName {
