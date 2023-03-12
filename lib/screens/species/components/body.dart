@@ -120,7 +120,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      constraints: BoxConstraints.expand(),
+      constraints: const BoxConstraints.expand(),
       child: Stack(
         children: <Widget>[
           // * Header bar
@@ -128,14 +128,14 @@ class _SpeciesBodyState extends State<SpeciesBody> {
 
           // * Form 1
           Container(
-            constraints: BoxConstraints(maxWidth: 600),
+            constraints: const BoxConstraints(maxWidth: 600),
             height: 350,
             margin: EdgeInsets.only(
               left: defaultPadding,
               right: defaultPadding,
               top: size.height * 0.10,
             ),
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: defaultPadding,
               right: defaultPadding,
               top: defaultPadding / 2,
@@ -145,7 +145,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 10),
+                  offset: const Offset(0, 10),
                   blurRadius: 50,
                   color: colorPrimary.withOpacity(0.23),
                 ),
@@ -171,7 +171,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                         child: Text(item.name),
                       );
                     }).toList(),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: configKingdomInputText,
                       labelStyle: editTextStyle,
                       enabledBorder: InputBorder.none,
@@ -187,10 +187,10 @@ class _SpeciesBodyState extends State<SpeciesBody> {
 
                   // Species input
                   TextField(
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20.0,
                     ),
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: configKindInputText,
                       labelStyle: editTextStyle,
                       enabledBorder: InputBorder.none,
@@ -212,10 +212,10 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                     children: [
                       Flexible(
                         child: TextField(
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20.0,
                           ),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: speciesSelectBaseJsonPath,
                             labelStyle: editTextStyle,
                             enabledBorder: InputBorder.none,
@@ -246,10 +246,10 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                     children: [
                       Flexible(
                         child: TextField(
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20.0,
                           ),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: speciesSelectModifyJsonPath,
                             labelStyle: editTextStyle,
                             enabledBorder: InputBorder.none,
@@ -282,7 +282,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0),
                 ),
-                padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
+                padding: const EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
               ),
               onPressed: isValid() ? () {
                 createSpecies(context);

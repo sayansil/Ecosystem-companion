@@ -50,7 +50,7 @@ class MasterDatabase {
   Future<List<WorldInstance>> readAllRows() async {
     final db = await instance.database;
 
-    final orderBy = '${WorldInstanceFields.year} ASC';
+    const orderBy = '${WorldInstanceFields.year} ASC';
 
     final result = await db.query(masterTable, orderBy: orderBy);
     return result.map((rowData) => WorldInstance.fromMap(rowData)).toList();

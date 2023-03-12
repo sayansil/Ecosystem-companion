@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 class BodyHeader extends StatelessWidget {
   final Size parentSize;
 
-  BodyHeader({Key? key, required this.parentSize}) : super(key: key);
+  const BodyHeader({Key? key, required this.parentSize}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: headerPadding,
       height: parentSize.height * 0.3,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: colorPrimary,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(36),
@@ -21,7 +21,7 @@ class BodyHeader extends StatelessWidget {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: const <Widget>[
           Text(
             "Settings",
             style: headerStyle,

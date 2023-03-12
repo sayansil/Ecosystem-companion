@@ -7,7 +7,7 @@ AppBar buildNavAppBar(BuildContext context) {
   return AppBar(
     elevation: 0,
     systemOverlayStyle:
-        SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
+        const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
     backgroundColor: colorPrimary,
     leading: Builder(
       builder: (context) => IconButton(

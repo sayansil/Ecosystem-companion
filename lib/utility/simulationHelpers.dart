@@ -10,23 +10,20 @@ class SimulationSet {
   String species;
   int count;
 
-  SimulationSet(String kingdom, String species, int count)
-      : kingdom = kingdom,
-        species = species,
-        count = count;
+  SimulationSet(this.kingdom, this.species, this.count);
 
   static List<SimulationSet> fromString(String value) {
     final setList = jsonDecode(value) as List;
 
     List<SimulationSet> sets = [];
-    setList.forEach((element) {
+    for (var element in setList) {
       final setElement = element as Map;
       sets.add(SimulationSet(
           setElement["kingdom"],
           setElement["species"],
           setElement["count"]
       ));
-    });
+    }
 
     return sets;
   }
@@ -34,13 +31,13 @@ class SimulationSet {
   static String asString(List<SimulationSet> sets) {
     List<Map<String, dynamic>> setList = [];
 
-    sets.forEach((element) {
+    for (var element in sets) {
       setList.add({
         "kingdom": element.kingdom,
         "species": element.species,
         "count": element.count
       });
-    });
+    }
 
     return jsonEncode(setList);
   }

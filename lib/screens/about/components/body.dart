@@ -2,6 +2,7 @@ import 'header.dart';
 import 'package:flutter/material.dart';
 
 class AboutBody extends StatefulWidget {
+
   @override
   _AboutBodyState createState() => _AboutBodyState();
 }
@@ -12,7 +13,7 @@ class _AboutBodyState extends State<AboutBody> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      constraints: BoxConstraints.expand(),
+      constraints: const BoxConstraints.expand(),
       child: Stack(
         children: <Widget>[
           // * Header bar

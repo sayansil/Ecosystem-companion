@@ -5,7 +5,7 @@ import 'package:ecosystem/screens/home/home_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(CompanionApp());
 }
 

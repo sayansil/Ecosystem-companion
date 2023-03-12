@@ -12,7 +12,7 @@ class BodyHeader extends StatelessWidget {
     return Container(
       padding: headerPadding,
       height: parentSize.height * 0.3,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: colorPrimary,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(36),
@@ -21,7 +21,7 @@ class BodyHeader extends StatelessWidget {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: const <Widget>[
           Text(
             "New Species",
             style: headerStyle,

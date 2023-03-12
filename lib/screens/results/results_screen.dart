@@ -9,7 +9,7 @@ class ResultScreen extends StatelessWidget {
   final int year;
   final List<SimulationSet> initOrganisms;
 
-  ResultScreen(this.year, this.initOrganisms, {Key? key}): super(key: key);
+  const ResultScreen(this.year, this.initOrganisms, {Key? key}): super(key: key);
 
   @override
   Widget build(BuildContext context) => WillPopScope(
@@ -24,6 +24,6 @@ class ResultScreen extends StatelessWidget {
     child: Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: buildAppBar(context),
-      body: ResultProgress(this.year, this.initOrganisms),
+      body: ResultProgress(year, initOrganisms),
   ));
 }

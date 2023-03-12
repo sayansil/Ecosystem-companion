@@ -1,16 +1,16 @@
 import 'dart:typed_data';
 
-final String dbFileName = "ecosystem_master.db";
-final String masterTable = 'ECOSYSTEM_MASTER';
+const String dbFileName = "ecosystem_master.db";
+const String masterTable = 'ECOSYSTEM_MASTER';
 
 class WorldInstanceFields {
   static final List<String> values = [
     year, avgWorld, populationWorld
   ];
 
-  static final String year = 'YEAR';
-  static final String avgWorld = 'AVG_WORLD';
-  static final String populationWorld = 'POPULATION_WORLD';
+  static const String year = 'YEAR';
+  static const String avgWorld = 'AVG_WORLD';
+  static const String populationWorld = 'POPULATION_WORLD';
 }
 
 class WorldInstance {

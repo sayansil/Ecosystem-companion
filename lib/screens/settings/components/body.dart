@@ -12,7 +12,7 @@ class _SettingsBodyState extends State<SettingsBody> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      constraints: BoxConstraints.expand(),
+      constraints: const BoxConstraints.expand(),
       child: Stack(
         children: <Widget>[
           // * Header bar

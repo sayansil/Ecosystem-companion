@@ -6,14 +6,12 @@ import 'package:ecosystem/screens/home/home_screen.dart';
 import 'package:ecosystem/screens/config/config_screen.dart';
 import 'package:ecosystem/screens/about/about_screen.dart';
 import 'package:ecosystem/screens/settings/settings_screen.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class NavDrawer extends StatelessWidget {
   final DrawerItem? currentItem;
 
-  NavDrawer({required DrawerItem? currentItem})
-      : currentItem = currentItem;
+  NavDrawer({this.currentItem});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +49,7 @@ class NavDrawer extends StatelessWidget {
                     ? {Navigator.of(context).pop()}
                     : selectedItem(context, DrawerItem.settings)),
             const SizedBox(height: 20),
-            Divider(
+            const Divider(
               color: Colors.white30,
               endIndent: defaultPadding,
               indent: defaultPadding,
@@ -78,8 +76,8 @@ class NavDrawer extends StatelessWidget {
   }
 
   _launchURL({required String url}) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
     } else {
       throw 'Could not launch $url';
     }
@@ -110,17 +108,18 @@ class NavDrawer extends StatelessWidget {
         break;
       default:
     }
+    return null;
   }
 
   Widget buildMenuItem(
       {required String text, required IconData icon, VoidCallback? onClicked}) {
-    final color = Colors.white;
-    final hoverColor = Colors.white10;
+    const color = Colors.white;
+    const hoverColor = Colors.white10;
 
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: defaultPadding),
+      contentPadding: const EdgeInsets.symmetric(horizontal: defaultPadding),
       leading: Icon(icon, color: color),
-      title: Text(text, style: TextStyle(color: color, fontFamily: 'Poppins')),
+      title: Text(text, style: const TextStyle(color: color, fontFamily: 'Poppins')),
       hoverColor: hoverColor,
       onTap: onClicked,
     );

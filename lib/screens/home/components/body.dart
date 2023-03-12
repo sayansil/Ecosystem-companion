@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:path/path.dart' as Path;
+import 'package:path/path.dart' as path;
 import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/results/results_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
@@ -48,11 +48,11 @@ class _HomeBodyState extends State<HomeBody> {
 
   Future<void> fetchKingdomList() async {
     final ecosystemRoot = await getEcosystemRoot();
-    final ecosystemDataDir = Directory(Path.join(ecosystemRoot, templateDir));
+    final ecosystemDataDir = Directory(path.join(ecosystemRoot, templateDir));
 
     final children = await ecosystemDataDir.list().toList();
     final Iterable<Directory> dirs = children.whereType<Directory>();
-    final List<String> dirNames = dirs.map((e) => Path.basename(e.path)).toList();
+    final List<String> dirNames = dirs.map((e) => path.basename(e.path)).toList();
 
     setState(() {
       kingdomList = dirNames;
@@ -61,11 +61,11 @@ class _HomeBodyState extends State<HomeBody> {
 
   Future<void> fetchSpeciesList(String kingdom) async {
     final ecosystemRoot = await getEcosystemRoot();
-    final ecosystemKingdomDir = Directory(Path.join(ecosystemRoot, templateDir, kingdom));
+    final ecosystemKingdomDir = Directory(path.join(ecosystemRoot, templateDir, kingdom));
 
     final children = await ecosystemKingdomDir.list().toList();
     final Iterable<Directory> dirs = children.whereType<Directory>();
-    final List<String> dirNames = dirs.map((e) => Path.basename(e.path)).toList();
+    final List<String> dirNames = dirs.map((e) => path.basename(e.path)).toList();
 
     if (dirNames.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -81,13 +81,13 @@ class _HomeBodyState extends State<HomeBody> {
   Future<void> loadAllValues() async {
     prefs = await SharedPreferences.getInstance();
 
-    final _years = prefs.getInt('simulationYears') ?? 0;
-    final _sets = prefs.getString('simulationSet') ?? "[]";
+    final fetchedYears = prefs.getInt('simulationYears') ?? 0;
+    final fetchedSets = prefs.getString('simulationSet') ?? "[]";
 
     setState(() {
-      allSets = SimulationSet.fromString(_sets);
-      if (_years > 0) {
-        years = _years;
+      allSets = SimulationSet.fromString(fetchedSets);
+      if (fetchedYears > 0) {
+        years = fetchedYears;
         setTextValue(textYearsController, years.toString());
       }
     });
@@ -96,10 +96,10 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   Future<void> saveAllValues() async {
-    final _sets = SimulationSet.asString(allSets);
+    final currentSets = SimulationSet.asString(allSets);
 
     prefs.setInt('simulationYears', years);
-    prefs.setString('simulationSet', _sets);
+    prefs.setString('simulationSet', currentSets);
   }
 
   void setTextValue(TextEditingController controller, String text) {
@@ -136,8 +136,8 @@ class _HomeBodyState extends State<HomeBody> {
       allSets = [];
     });
 
-    final _sets = SimulationSet.asString([]);
-    prefs.setString('simulationSet', _sets);
+    final currentSets = SimulationSet.asString([]);
+    prefs.setString('simulationSet', currentSets);
   }
 
   bool isReady() {
@@ -163,7 +163,7 @@ class _HomeBodyState extends State<HomeBody> {
       // Config values set properly
       Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => ResultScreen(this.years, this.allSets)
+              builder: (context) => ResultScreen(years, allSets)
           )
       );
     }
@@ -174,7 +174,7 @@ class _HomeBodyState extends State<HomeBody> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         child: Stack(
           children: <Widget>[
             // * Header bar
@@ -188,9 +188,9 @@ class _HomeBodyState extends State<HomeBody> {
                 top: size.height * 0.3 + 160,
               ),
               child: GridView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 padding: EdgeInsets.only(top: 40, bottom: size.height * 0.1),
-                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 200,
                     childAspectRatio: 3 / 2,
                     crossAxisSpacing: 20,
@@ -199,48 +199,45 @@ class _HomeBodyState extends State<HomeBody> {
                 itemBuilder: (BuildContext context, index) {
                   return index < allSets.length
                       ? Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
                           child: Stack(children: <Widget>[
                             Positioned(
                               top: 10,
                               left: 15,
                               right: 15,
-                              child: Container(
-                                child: Text(
-                                  allSets[index].species,
-                                  style: TextStyle(fontSize: 30),
-                                ),
+                              child: Text(
+                                allSets[index].species,
+                                style: const TextStyle(fontSize: 30),
                               ),
                             ),
                             Positioned(
                               top: 50,
                               left: 15,
                               right: 15,
-                              child: Container(
-                                child: Text(
-                                  allSets[index].kingdom,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontStyle: FontStyle.italic),
-                                ),
+                              child: Text(
+                                allSets[index].kingdom,
+                                style: const TextStyle(
+                                    fontSize: 15,
+                                    fontStyle: FontStyle.italic),
                               ),
                             ),
                             Positioned(
                               bottom: 10,
                               right: 15,
-                              child: Container(
-                                child: Text(
-                                  allSets[index].count.toString(),
-                                  style: TextStyle(fontSize: 25),
-                                ),
+                              child: Text(
+                                allSets[index].count.toString(),
+                                style: const TextStyle(fontSize: 25),
                               ),
                             ),
                           ]),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
                         )
                       : Container(
                           alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)),
                           child: IconButton(
                             icon: const Icon(Icons.delete),
                             color: colorSecondary,
@@ -249,9 +246,6 @@ class _HomeBodyState extends State<HomeBody> {
                               clearSets();
                             },
                           ),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
                         );
                 },
               ),
@@ -259,22 +253,22 @@ class _HomeBodyState extends State<HomeBody> {
 
             // * Form 1
             Container(
-              constraints: BoxConstraints(maxWidth: 600),
+              constraints: const BoxConstraints(maxWidth: 600),
               height: 100,
               margin: EdgeInsets.only(
                 left: defaultPadding,
                 right: defaultPadding,
                 top: size.height * 0.15 - 60,
               ),
-              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
               decoration: BoxDecoration(
                 color: colorPrimaryLight,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20)),
                 boxShadow: [
                   BoxShadow(
-                    offset: Offset(0, 10),
+                    offset: const Offset(0, 10),
                     blurRadius: 50,
                     color: colorPrimary.withOpacity(0.23),
                   ),
@@ -287,7 +281,7 @@ class _HomeBodyState extends State<HomeBody> {
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Years to Simulate",
                   labelStyle: editTextDarkStyle,
                   enabledBorder: InputBorder.none,
@@ -302,20 +296,20 @@ class _HomeBodyState extends State<HomeBody> {
 
             // * Form 2
             Container(
-              constraints: BoxConstraints(maxWidth: 600),
+              constraints: const BoxConstraints(maxWidth: 600),
               height: 300,
               margin: EdgeInsets.only(
                 left: defaultPadding,
                 right: defaultPadding,
                 top: size.height * 0.15,
               ),
-              padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    offset: Offset(0, 10),
+                    offset: const Offset(0, 10),
                     blurRadius: 50,
                     color: colorPrimary.withOpacity(0.23),
                   ),
@@ -340,7 +334,7 @@ class _HomeBodyState extends State<HomeBody> {
                         value: e,
                         child: Text(e),
                       )).toList(),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: simulationKingdomInputText,
                         labelStyle: editTextStyle,
                         enabledBorder: InputBorder.none,
@@ -367,7 +361,7 @@ class _HomeBodyState extends State<HomeBody> {
                         value: e,
                         child: Text(e),
                       )).toList(),
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: simulationKindInputText,
                         labelStyle: editTextStyle,
                         enabledBorder: InputBorder.none,
@@ -386,14 +380,14 @@ class _HomeBodyState extends State<HomeBody> {
                         children: <Widget>[
                           Flexible(
                             child: TextField(
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20.0,
                               ),
                               keyboardType: TextInputType.number,
                               inputFormatters: <TextInputFormatter>[
                                 FilteringTextInputFormatter.digitsOnly
                               ],
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 labelText: "Count",
                                 labelStyle: editTextStyle,
                                 enabledBorder: InputBorder.none,
@@ -403,12 +397,12 @@ class _HomeBodyState extends State<HomeBody> {
                             ),
                           ),
                           Visibility(
-                            child: Icon(
+                            visible: (int.tryParse(textCountController.text) ?? 0) > 0,
+                            child: const Icon(
                               Icons.check_rounded,
                               color: Colors.green,
                               size: 30.0,
                             ),
-                            visible: (int.tryParse(textCountController.text) ?? 0) > 0,
                           ),
                         ]),
                     ElevatedButton(
@@ -417,16 +411,16 @@ class _HomeBodyState extends State<HomeBody> {
                               addSet();
                             }
                           : null,
-                      child: Text(addSpeciesBtn),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: colorPrimary,
                         foregroundColor: Colors.white,
                         textStyle: buttonStyle,
-                        minimumSize: Size(double.infinity, 30),
-                        shape: StadiumBorder(),
-                        padding: EdgeInsets.symmetric(
+                        minimumSize: const Size(double.infinity, 30),
+                        shape: const StadiumBorder(),
+                        padding: const EdgeInsets.symmetric(
                             vertical: defaultPadding / 1.5),
                       ),
+                      child: const Text(addSpeciesBtn),
                     ),
                     const SizedBox(
                       height: 10.0,
@@ -447,7 +441,7 @@ class _HomeBodyState extends State<HomeBody> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0), // <-- Radius
                   ),
-                  padding: EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
+                  padding: const EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
                 ),
                 onPressed: isReady() ? () {
                   simulate();

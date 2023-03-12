@@ -47,7 +47,7 @@ class _ConfigBodyState extends State<ConfigBody> {
     });
 
     ScaffoldMessenger.of(context)
-      .showSnackBar(SnackBar(content: Text(
+      .showSnackBar(const SnackBar(content: Text(
         'Saved successfully!',
         style: snackBarTextStyle,
       )));
@@ -85,27 +85,27 @@ class _ConfigBodyState extends State<ConfigBody> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-      constraints: BoxConstraints.expand(),
+      constraints: const BoxConstraints.expand(),
       child: Stack(
         children: <Widget>[
           // * Header bar
           BodyHeader(parentSize: size),
 
           Container(
-            constraints: BoxConstraints(maxWidth: 600),
+            constraints: const BoxConstraints(maxWidth: 600),
             height: 200,
             margin: EdgeInsets.only(
               left: defaultPadding,
               right: defaultPadding,
               top: size.height * 0.20,
             ),
-            padding: EdgeInsets.symmetric(horizontal: defaultPadding),
+            padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  offset: Offset(0, 10),
+                  offset: const Offset(0, 10),
                   blurRadius: 50,
                   color: colorPrimary.withOpacity(0.23),
                 ),
@@ -121,10 +121,10 @@ class _ConfigBodyState extends State<ConfigBody> {
                     children: [
                       Flexible(
                         child: TextField(
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20.0,
                           ),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: configLocalReportDirText,
                             labelStyle: editTextStyle,
                             enabledBorder: InputBorder.none,
@@ -148,16 +148,16 @@ class _ConfigBodyState extends State<ConfigBody> {
                     onPressed: updatedConfigs ? () {
                       saveValues();
                     } : null,
-                    child: Text(saveConfigBtn),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorPrimary,
                       foregroundColor: Colors.white,
                       textStyle: buttonStyle,
-                      minimumSize: Size(double.infinity, 30),
-                      shape: StadiumBorder(),
-                      padding: EdgeInsets.symmetric(
+                      minimumSize: const Size(double.infinity, 30),
+                      shape: const StadiumBorder(),
+                      padding: const EdgeInsets.symmetric(
                           vertical: defaultPadding / 1.5),
                     ),
+                    child: const Text(saveConfigBtn),
                   ),
                   const SizedBox(
                     height: 10.0,
