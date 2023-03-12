@@ -9,6 +9,7 @@ import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../common/list_items.dart';
 import '../../common/transition.dart';
 import '../../config/config_screen.dart';
 import 'header.dart';
@@ -23,6 +24,7 @@ class _HomeBodyState extends State<HomeBody> {
   List<String> speciesList = [];
 
   final textCountController = TextEditingController();
+  final textAgeController = TextEditingController();
   final textYearsController = TextEditingController();
 
   List<SimulationSet> allSets = [];
@@ -43,6 +45,7 @@ class _HomeBodyState extends State<HomeBody> {
   void dispose() {
     textCountController.dispose();
     textYearsController.dispose();
+    textAgeController.dispose();
     super.dispose();
   }
 
@@ -50,13 +53,15 @@ class _HomeBodyState extends State<HomeBody> {
     final ecosystemRoot = await getEcosystemRoot();
     final ecosystemDataDir = Directory(path.join(ecosystemRoot, templateDir));
 
-    final children = await ecosystemDataDir.list().toList();
-    final Iterable<Directory> dirs = children.whereType<Directory>();
-    final List<String> dirNames = dirs.map((e) => path.basename(e.path)).toList();
+    if (ecosystemDataDir.existsSync()) {
+      final children = await ecosystemDataDir.list().toList();
+      final Iterable<Directory> dirs = children.whereType<Directory>();
+      final List<String> dirNames = dirs.map((e) => path.basename(e.path)).toList();
 
-    setState(() {
-      kingdomList = dirNames;
-    });
+      setState(() {
+        kingdomList = dirNames;
+      });
+    }
   }
 
   Future<void> fetchSpeciesList(String kingdom) async {
@@ -113,18 +118,28 @@ class _HomeBodyState extends State<HomeBody> {
 
   bool isValidSet() {
     int count = int.tryParse(textCountController.text) ?? 0;
-    return count > 0 && kingdomName.isNotEmpty && speciesName.isNotEmpty;
+    int age = int.tryParse(textAgeController.text) ?? 0;
+    return count > 0 &&
+        age > 0 &&
+        kingdomName.isNotEmpty &&
+        speciesName.isNotEmpty;
   }
 
   void addSet() {
     if (isValidSet()) {
+      int count = int.tryParse(textCountController.text) ?? 0;
+      int age = int.tryParse(textAgeController.text) ?? 0;
+
       setState(() {
         allSets.add(SimulationSet(
             kingdomName,
             speciesName,
-            int.tryParse(textCountController.text) ?? 0));
+            count,
+            age
+        ));
 
         textCountController.clear();
+        textAgeController.clear();
       });
 
       saveAllValues();
@@ -140,32 +155,36 @@ class _HomeBodyState extends State<HomeBody> {
     prefs.setString('simulationSet', currentSets);
   }
 
+  bool isValidNumber(controller) {
+    return (int.tryParse(controller.text) ?? 0) > 0;
+  }
+
   bool isReady() {
     return allSets.isNotEmpty && years > 0;
   }
 
-  void simulate() async {
+  void simulate() {
     saveAllValues();
 
     final textReportLocation = prefs.getString('textReportLocation') ?? "";
 
-    if (textReportLocation.isEmpty) {
-      // Configs not yet set
-      if (await showYesNoDialog(
-          context,
-          addConfigsTitle,
-          addConfigsMessage,
-          addConfigsAccept,
-          addConfigsReject)) {
-        Navigator.push(context, buildPageRoute(ConfigScreen()));
-      }
-    } else {
+    if (textReportLocation.isNotEmpty) {
       // Config values set properly
       Navigator.of(context).push(
           MaterialPageRoute(
               builder: (context) => ProgressScreen(years, allSets)
           )
       );
+    } else {
+      // Configs not yet set
+      showYesNoDialog(
+          context,
+          addConfigsTitle,
+          addConfigsMessage,
+          addConfigsAccept,
+          addConfigsReject).then((result) => {
+            if (result) { Navigator.push(context, buildPageRoute(ConfigScreen())) }
+          });
     }
   }
 
@@ -197,56 +216,25 @@ class _HomeBodyState extends State<HomeBody> {
                     mainAxisSpacing: 20),
                 itemCount: allSets.isNotEmpty ? allSets.length + 1 : 0,
                 itemBuilder: (BuildContext context, index) {
-                  return index < allSets.length
-                      ? Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Stack(children: <Widget>[
-                            Positioned(
-                              top: 10,
-                              left: 15,
-                              right: 15,
-                              child: Text(
-                                allSets[index].species,
-                                style: const TextStyle(fontSize: 30),
-                              ),
-                            ),
-                            Positioned(
-                              top: 50,
-                              left: 15,
-                              right: 15,
-                              child: Text(
-                                allSets[index].kingdom,
-                                style: const TextStyle(
-                                    fontSize: 15,
-                                    fontStyle: FontStyle.italic),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 10,
-                              right: 15,
-                              child: Text(
-                                allSets[index].count.toString(),
-                                style: const TextStyle(fontSize: 25),
-                              ),
-                            ),
-                          ]),
-                        )
-                      : Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: IconButton(
-                            icon: const Icon(Icons.delete),
-                            color: colorSecondary,
-                            iconSize: 35,
-                            onPressed: () {
-                              clearSets();
-                            },
-                          ),
-                        );
+                  return index < allSets.length ? speciesSetItem(
+                      allSets[index].kingdom,
+                      allSets[index].species,
+                      allSets[index].age,
+                      allSets[index].count
+                  ) : Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: IconButton(
+                      icon: const Icon(Icons.delete),
+                      color: colorSecondary,
+                      iconSize: 35,
+                      onPressed: () {
+                        clearSets();
+                      },
+                    ),
+                  );
                 },
               ),
             ),
@@ -374,10 +362,11 @@ class _HomeBodyState extends State<HomeBody> {
                       thickness: 1,
                     ),
 
-                    // Count input
                     Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
+
+                          // Age input
                           Flexible(
                             child: TextField(
                               style: const TextStyle(
@@ -387,24 +376,47 @@ class _HomeBodyState extends State<HomeBody> {
                               inputFormatters: <TextInputFormatter>[
                                 FilteringTextInputFormatter.digitsOnly
                               ],
-                              decoration: const InputDecoration(
-                                labelText: "Count",
+                              decoration: InputDecoration(
+                                labelText: "Age",
                                 labelStyle: editTextStyle,
                                 enabledBorder: InputBorder.none,
                                 focusedBorder: InputBorder.none,
+                                errorText:
+                                textAgeController.text.isNotEmpty &&
+                                !isValidNumber(textAgeController) ?
+                                  "Invalid value" : null
+                              ),
+                              controller: textAgeController,
+                            ),
+                          ),
+
+
+                          // Count input
+                          Flexible(
+                            child: TextField(
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                  labelText: "Count",
+                                  labelStyle: editTextStyle,
+                                  enabledBorder: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  errorText:
+                                  textCountController.text.isNotEmpty &&
+                                  !isValidNumber(textCountController) ?
+                                      "Invalid value" : null
                               ),
                               controller: textCountController,
                             ),
-                          ),
-                          Visibility(
-                            visible: (int.tryParse(textCountController.text) ?? 0) > 0,
-                            child: const Icon(
-                              Icons.check_rounded,
-                              color: Colors.green,
-                              size: 30.0,
-                            ),
-                          ),
+                          )
                         ]),
+
+                    // Add set button
                     ElevatedButton(
                       onPressed: isValidSet()
                           ? () {

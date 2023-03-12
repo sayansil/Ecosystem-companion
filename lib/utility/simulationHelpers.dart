@@ -9,8 +9,9 @@ class SimulationSet {
   String kingdom;
   String species;
   int count;
+  int age;
 
-  SimulationSet(this.kingdom, this.species, this.count);
+  SimulationSet(this.kingdom, this.species, this.count, this.age);
 
   static List<SimulationSet> fromString(String value) {
     final setList = jsonDecode(value) as List;
@@ -21,7 +22,8 @@ class SimulationSet {
       sets.add(SimulationSet(
           setElement["kingdom"],
           setElement["species"],
-          setElement["count"]
+          setElement["count"],
+          setElement["age"]
       ));
     }
 
@@ -35,11 +37,16 @@ class SimulationSet {
       setList.add({
         "kingdom": element.kingdom,
         "species": element.species,
-        "count": element.count
+        "count": element.count,
+        "age": element.age,
       });
     }
 
     return jsonEncode(setList);
+  }
+
+  bool isValidSet(SimulationSet set) {
+    return false;
   }
 }
 

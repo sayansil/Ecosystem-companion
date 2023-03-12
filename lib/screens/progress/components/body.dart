@@ -13,7 +13,7 @@ class ProgressBody extends StatefulWidget {
   final int years;
   final List<SimulationSet> initOrganisms;
 
-  ProgressBody(this.years, this.initOrganisms, {Key? key}): super(key: key);
+  const ProgressBody(this.years, this.initOrganisms, {Key? key}): super(key: key);
 
   @override
   _ProgressBodyState createState() => _ProgressBodyState();
@@ -36,14 +36,14 @@ class _ProgressBodyState extends State<ProgressBody> {
     final ecosystemRoot = await getEcosystemRoot();
     simulator.initSimulation(ecosystemRoot);
 
-    widget.initOrganisms.forEach((element) {
+    for (var element in widget.initOrganisms) {
       simulator.createInitialOrganisms(
           getKingdomIndex(element.kingdom),
           element.species,
-          20, // Todo
+          element.age,
           element.count
       );
-    });
+    }
 
     simulator.prepareWorld();
   }
