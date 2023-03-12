@@ -26,19 +26,6 @@ final assetSpeciesTemplatePath = join("assets", "json", "simulationTemplates");
 
 enum DrawerItem { home, config, settings, about, contribute, organism }
 
-const completeSpeciesList = {
-  "animal": ["lion", "deer"],
-  "plant": ["bamboo"]
-};
-
-enum KingdomName {
-  animal("animal"),
-  plant("plant");
-
-  const KingdomName(this.value);
-  final String value;
-}
-
 // * String constants
 
 const githubUrl = "https://github.com/sayansil/Ecosystem-companion";

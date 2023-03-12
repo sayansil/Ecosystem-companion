@@ -147,10 +147,9 @@ class _HomeBodyState extends State<HomeBody> {
   void simulate() async {
     saveAllValues();
 
-    final textLocalDbPath = prefs.getString('textLocalDbPath') ?? "";
     final textReportLocation = prefs.getString('textReportLocation') ?? "";
 
-    if (textLocalDbPath.isEmpty || textReportLocation.isEmpty) {
+    if (textReportLocation.isEmpty) {
       // Configs not yet set
       if (await showYesNoDialog(
           context,

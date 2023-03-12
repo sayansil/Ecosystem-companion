@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
+import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
+import 'package:native_simulator/native_simulator.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flutter/material.dart';
@@ -19,24 +22,58 @@ class ResultProgress extends StatefulWidget {
 class _ResultProgressState extends State<ResultProgress> {
   int currentYear = 0;
   int population = 0;
-  var simulationState = SimulationStatus.ready;
+
+  SimulationStatus simulationState = SimulationStatus.ready;
+  NativeSimulator simulator = NativeSimulator();
+
+  @override
+  void initState() {
+    super.initState();
+    prepareSimulation();
+  }
+
+  Future<void> prepareSimulation() async {
+    final ecosystemRoot = await getEcosystemRoot();
+    simulator.initSimulation(ecosystemRoot);
+
+    widget.initOrganisms.forEach((element) {
+      simulator.createInitialOrganisms(
+          getKingdomIndex(element.kingdom),
+          element.species,
+          20, // Todo
+          element.count
+      );
+    });
+
+    simulator.prepareWorld();
+  }
 
   String getProgressText() {
     return currentYear.toString() + " / " + widget.years.toString();
   }
 
   Future<int> iterateSimulation() async {
-    await new Future.delayed(const Duration(seconds: 1)); // heavy task
+    final fbList = simulator.simulateOneYear();
+    final bufferSize = fbList.length;
+    int population = 0;
 
-    return 10; // Current overall population
+    var world = new World(fbList);
+    if (world.species != null) {
+      world.species!.forEach((species) {
+        population += species.organism!.length;
+      });
+    }
+
+    print("Year: ${world.year} - Buffer Size: $bufferSize - Population: $population");
+    await cap120fps();
+
+    return population;
   }
 
   Future<void> startSimulation() async {
     setState(() {
       simulationState = SimulationStatus.running;
     });
-
-    // Init simulation
 
     while(mounted && currentYear < widget.years && simulationState == SimulationStatus.running) {
       // Iterate simulation
@@ -52,6 +89,8 @@ class _ResultProgressState extends State<ResultProgress> {
 
     // Mark the simulation complete if it ran till end
     if (mounted && simulationState == SimulationStatus.running) {
+      simulator.cleanup();
+
       setState(() {
         simulationState = SimulationStatus.completed;
       });
@@ -59,9 +98,17 @@ class _ResultProgressState extends State<ResultProgress> {
   }
 
   Future<void> stopSimulation() async {
+    simulator.cleanup();
+
     setState(() {
       simulationState = SimulationStatus.stopped;
     });
+  }
+
+  @override
+  void dispose() {
+    simulator.cleanup();
+    super.dispose();
   }
 
   @override
@@ -137,7 +184,7 @@ class _ResultProgressState extends State<ResultProgress> {
                     ),
                     padding: EdgeInsets.symmetric(vertical: defaultPadding / 2),
                   ),
-                  onPressed: startSimulation,
+                  onPressed: () async => startSimulation(),
                   child: const Text(simulateStartBtn),
                 ),
               )

@@ -59,3 +59,20 @@ Future<String> getEcosystemRoot() async {
 
   return ecosystemRoot;
 }
+
+enum KingdomName {
+  animal("animal"),
+  plant("plant");
+
+  const KingdomName(this.value);
+  final String value;
+}
+
+int getKingdomIndex(String kingdomName) {
+  switch (kingdomName) {
+    case "animal": return 0;
+    case "plant": return 1;
+  }
+
+  return -1;
+}

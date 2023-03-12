@@ -8,3 +8,7 @@ PageRouteBuilder buildPageRoute(Widget screen) {
     transitionDuration: Duration(milliseconds: 500),
   );
 }
+
+Future<void> cap120fps() async {
+  await new Future.delayed(const Duration(milliseconds: 8));
+}

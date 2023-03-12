@@ -11,10 +11,8 @@ class ConfigBody extends StatefulWidget {
 }
 
 class _ConfigBodyState extends State<ConfigBody> {
-  final textLocalDbPathController = TextEditingController();
   final textReportLocationController = TextEditingController();
 
-  String textLocalDbPath = "";
   String textReportLocation = "";
 
   bool updatedConfigs = false;
@@ -29,7 +27,6 @@ class _ConfigBodyState extends State<ConfigBody> {
 
   @override
   void dispose() {
-    textLocalDbPathController.dispose();
     textReportLocationController.dispose();
     super.dispose();
   }
@@ -41,10 +38,8 @@ class _ConfigBodyState extends State<ConfigBody> {
   }
 
   void saveValues() {
-    textLocalDbPath = textLocalDbPathController.text;
     textReportLocation = textReportLocationController.text;
 
-    prefs.setString('textLocalDbPath', textLocalDbPath);
     prefs.setString('textReportLocation', textReportLocation);
 
     setState(() {
@@ -70,26 +65,17 @@ class _ConfigBodyState extends State<ConfigBody> {
   Future<void> loadAllValues() async {
     prefs = await SharedPreferences.getInstance();
 
-    textLocalDbPath = prefs.getString('textLocalDbPath') ?? "";
     textReportLocation = prefs.getString('textReportLocation') ?? "";
 
-    setTextValue(textLocalDbPathController, textLocalDbPath);
     setTextValue(textReportLocationController, textReportLocation);
   }
 
-  void fillPath(editText) async {
+  void fillPath() async {
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
     if (selectedDirectory != null) {
-
-      if (editText == "textLocalDbPath") {
-        setTextValue(textLocalDbPathController, selectedDirectory);
-        textLocalDbPath = selectedDirectory;
-      } else {
-        setTextValue(textReportLocationController, selectedDirectory);
-        textReportLocation = selectedDirectory;
-      }
-
+      setTextValue(textReportLocationController, selectedDirectory);
+      textReportLocation = selectedDirectory;
       configChanged();
     }
   }
@@ -107,11 +93,11 @@ class _ConfigBodyState extends State<ConfigBody> {
 
           Container(
             constraints: BoxConstraints(maxWidth: 600),
-            height: 300,
+            height: 200,
             margin: EdgeInsets.only(
               left: defaultPadding,
               right: defaultPadding,
-              top: size.height * 0.15,
+              top: size.height * 0.20,
             ),
             padding: EdgeInsets.symmetric(horizontal: defaultPadding),
             decoration: BoxDecoration(
@@ -128,40 +114,6 @@ class _ConfigBodyState extends State<ConfigBody> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-
-                  // DB Directory path input
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: TextField(
-                          style: TextStyle(
-                            fontSize: 20.0,
-                          ),
-                          decoration: InputDecoration(
-                            labelText: configLocalDbPathText,
-                            labelStyle: editTextStyle,
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                          ),
-                          controller: textLocalDbPathController,
-                          onChanged: (text) {configChanged();},
-                        ),
-                      ),
-
-                      IconButton(
-                        icon: Image.asset('assets/images/folder.png'),
-                        iconSize: 30,
-                        onPressed: () {fillPath("textLocalDbPath");},
-                      )
-                    ],
-                  ),
-
-
-                  const Divider(
-                    height: 0,
-                    thickness: 1,
-                  ),
 
                   // Report directory path input
                   Row(
@@ -186,7 +138,7 @@ class _ConfigBodyState extends State<ConfigBody> {
                       IconButton(
                         icon: Image.asset('assets/images/folder.png'),
                         iconSize: 30,
-                        onPressed: () {fillPath("textReportLocation");},
+                        onPressed: () {fillPath();},
                       )
                     ],
                   ),

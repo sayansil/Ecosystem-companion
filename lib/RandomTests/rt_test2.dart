@@ -12,7 +12,8 @@ import 'package:native_simulator/native_simulator.dart';
 Future<void> testSimulation() async {
   final ecosystemRoot = await getEcosystemRoot();
 
-  NativeSimulator simulator = NativeSimulator(ecosystemRoot);
+  NativeSimulator simulator = NativeSimulator();
+  simulator.initSimulation(ecosystemRoot);
 
   simulator.createInitialOrganisms(KingdomName.animal.index, "deer", 10, 500);
   simulator.createInitialOrganisms(KingdomName.animal.index, "deer", 20, 100);

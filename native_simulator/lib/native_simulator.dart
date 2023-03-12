@@ -3,8 +3,7 @@ import 'package:ffi/ffi.dart';
 import 'package:native_simulator/native_linker.dart';
 
 class NativeSimulator {
-
-  NativeSimulator(String ecosystemRoot) {
+  void initSimulation(String ecosystemRoot) {
     createGod(1, ecosystemRoot.toNativeUtf8());
     cleanSlate();
   }
@@ -26,6 +25,5 @@ class NativeSimulator {
   void cleanup() {
     freeGod();
   }
-
 }
 
