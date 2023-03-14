@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
+import 'package:ecosystem/screens/common/live_plot.dart';
 import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:native_simulator/native_simulator.dart';
@@ -8,6 +9,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class ProgressBody extends StatefulWidget {
   final int years;
@@ -23,6 +25,9 @@ class _ProgressBodyState extends State<ProgressBody> {
   int currentYear = 0;
   int population = 0;
 
+  List<int> x = [];
+  List<int> y = [];
+
   SimulationStatus simulationState = SimulationStatus.ready;
   NativeSimulator simulator = NativeSimulator();
 
@@ -33,6 +38,9 @@ class _ProgressBodyState extends State<ProgressBody> {
   }
 
   Future<void> prepareSimulation() async {
+    x = [];
+    y = [];
+
     final ecosystemRoot = await getEcosystemRoot();
     simulator.initSimulation(ecosystemRoot);
 
@@ -55,19 +63,19 @@ class _ProgressBodyState extends State<ProgressBody> {
   Future<int> iterateSimulation() async {
     final fbList = simulator.simulateOneYear();
     final bufferSize = fbList.length;
-    int population = 0;
+    int currentPopulation = 0;
 
     var world = World(fbList);
     if (world.species != null) {
       for (var species in world.species!) {
-        population += species.organism!.length;
+        currentPopulation += species.organism!.length;
       }
     }
 
     print("Year: ${world.year} - Buffer Size: $bufferSize - Population: $population");
     await cap120fps();
 
-    return population;
+    return currentPopulation;
   }
 
   Future<void> startSimulation() async {
@@ -83,6 +91,9 @@ class _ProgressBodyState extends State<ProgressBody> {
         setState(() {
           population = currentPopulation;
           currentYear = currentYear + 1;
+
+          x.add(currentYear);
+          y.add(population);
         });
       }
     }
@@ -120,6 +131,7 @@ class _ProgressBodyState extends State<ProgressBody> {
 
     return Stack(
       children: <Widget>[
+
         // Progress bar
         Container(
           alignment: Alignment.topCenter,
@@ -221,6 +233,24 @@ class _ProgressBodyState extends State<ProgressBody> {
             )
         ),
 
+        // Bottom Live Plot
+        Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Visibility(
+              visible: x.isNotEmpty,
+              child:
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: LineChart(
+                    liveData(x, y, widget.years.toDouble()),
+                    swapAnimationDuration: const Duration(milliseconds: 8), // Optional
+                    swapAnimationCurve: Curves.linear, // Optional
+                  ),
+                )
+            )
+        )
       ],
     );
   }

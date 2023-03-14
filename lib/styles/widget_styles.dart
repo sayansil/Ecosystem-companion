@@ -25,3 +25,5 @@ const dialogButtonStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');
 const snackBarTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');
 
 const dropdownOptionStyle = TextStyle(fontSize: 18, fontFamily: 'Poppins', color: colorSecondary);
+
+const chartTooltipTextStyle = TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Poppins', fontWeight: FontWeight.bold);

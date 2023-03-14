@@ -24,6 +24,7 @@ dependencies:
   path_provider: ^2.0.13
   permission_handler: ^10.2.0
   flutter_lints: ^2.0.1
+  fl_chart: ^0.61.0
   native_simulator:
     path: native_simulator
 
