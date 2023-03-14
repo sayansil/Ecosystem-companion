@@ -35,6 +35,9 @@ class _HomeBodyState extends State<HomeBody> {
 
   late SharedPreferences prefs;
 
+  bool isSetReady = false;
+  bool isSimulationReady = false;
+
   @override
   void initState() {
     super.initState();
@@ -84,6 +87,8 @@ class _HomeBodyState extends State<HomeBody> {
   }
 
   Future<void> loadAllValues() async {
+    isSetReady = false;
+    isSimulationReady = false;
     prefs = await SharedPreferences.getInstance();
 
     final fetchedYears = prefs.getInt('simulationYears') ?? 0;
@@ -98,6 +103,8 @@ class _HomeBodyState extends State<HomeBody> {
         allSets = unpackedSets;
         setTextValue(textYearsController, years.toString());
       });
+
+      simulationConfigChanged();
     }
 
     fetchKingdomList();
@@ -119,17 +126,8 @@ class _HomeBodyState extends State<HomeBody> {
     );
   }
 
-  bool isValidSet() {
-    int count = int.tryParse(textCountController.text) ?? 0;
-    int age = int.tryParse(textAgeController.text) ?? 0;
-    return count > 0 &&
-        age > 0 &&
-        kingdomName.isNotEmpty &&
-        speciesName.isNotEmpty;
-  }
-
   void addSet() {
-    if (isValidSet()) {
+    if (isSetReady) {
       int count = int.tryParse(textCountController.text) ?? 0;
       int age = int.tryParse(textAgeController.text) ?? 0;
 
@@ -143,8 +141,9 @@ class _HomeBodyState extends State<HomeBody> {
 
         textCountController.clear();
         textAgeController.clear();
+        isSetReady = false;
       });
-
+      simulationConfigChanged();
       saveAllValues();
     }
   }
@@ -154,6 +153,7 @@ class _HomeBodyState extends State<HomeBody> {
       allSets = [];
     });
 
+    simulationConfigChanged();
     final currentSets = SimulationSet.asString([]);
     prefs.setString('simulationSet', currentSets);
   }
@@ -162,8 +162,22 @@ class _HomeBodyState extends State<HomeBody> {
     return (int.tryParse(controller.text) ?? 0) > 0;
   }
 
-  bool isReady() {
-    return allSets.isNotEmpty && years > 0;
+  void configChanged() {
+    int count = int.tryParse(textCountController.text) ?? 0;
+    int age = int.tryParse(textAgeController.text) ?? 0;
+
+    setState(() {
+      isSetReady = count > 0 &&
+          age > 0 &&
+          kingdomName.isNotEmpty &&
+          speciesName.isNotEmpty;
+    });
+  }
+
+  void simulationConfigChanged() {
+    setState(() {
+      isSimulationReady = allSets.isNotEmpty && years > 0;
+    });
   }
 
   void simulate() {
@@ -281,6 +295,7 @@ class _HomeBodyState extends State<HomeBody> {
                 controller: textYearsController,
                 onChanged: (String? text) {
                   years = int.tryParse(textYearsController.text) ?? 0;
+                  simulationConfigChanged();
                 },
               ),
             ),
@@ -318,6 +333,7 @@ class _HomeBodyState extends State<HomeBody> {
                       onChanged: (String? item) {
                         if (item != null && item.isNotEmpty) {
                           kingdomName = item;
+                          configChanged();
                           fetchSpeciesList(kingdomName);
                         }
                       },
@@ -346,6 +362,7 @@ class _HomeBodyState extends State<HomeBody> {
                       onChanged: (String? item) {
                         if (item != null && item.isNotEmpty) {
                           speciesName = item;
+                          configChanged();
                         }
                       },
                       items: speciesList.map((e) => DropdownMenuItem<String>(
@@ -390,6 +407,7 @@ class _HomeBodyState extends State<HomeBody> {
                                   "Invalid value" : null
                               ),
                               controller: textAgeController,
+                              onChanged: (text) {configChanged();},
                             ),
                           ),
 
@@ -415,13 +433,14 @@ class _HomeBodyState extends State<HomeBody> {
                                       "Invalid value" : null
                               ),
                               controller: textCountController,
+                              onChanged: (text) {configChanged();},
                             ),
                           )
                         ]),
 
                     // Add set button
                     ElevatedButton(
-                      onPressed: isValidSet()
+                      onPressed: isSetReady
                           ? () {
                               addSet();
                             }
@@ -458,7 +477,7 @@ class _HomeBodyState extends State<HomeBody> {
                   ),
                   padding: const EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
                 ),
-                onPressed: isReady() ? () {
+                onPressed: isSimulationReady ? () {
                   simulate();
                 } : null,
                 child: const Text(simulateBtn),

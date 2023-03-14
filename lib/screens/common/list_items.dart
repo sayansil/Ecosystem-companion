@@ -1,4 +1,5 @@
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 
 Container speciesSetItem(kingdom, species, age, count) {
@@ -13,7 +14,7 @@ Container speciesSetItem(kingdom, species, age, count) {
         right: 15,
         child: Text(
           species,
-          style: const TextStyle(fontSize: 30),
+          style: homeCardKindTextStyle,
         ),
       ),
       Positioned(
@@ -22,9 +23,7 @@ Container speciesSetItem(kingdom, species, age, count) {
         right: 15,
         child: Text(
           kingdom,
-          style: const TextStyle(
-              fontSize: 15,
-              fontStyle: FontStyle.italic),
+          style: homeCardKingdomTextStyle,
         ),
       ),
       Positioned(
@@ -33,10 +32,7 @@ Container speciesSetItem(kingdom, species, age, count) {
         right: 15,
         child: Text(
           "$age year${ age > 1 ? 's' : ''}",
-          style: const TextStyle(
-              color: colorTertiary,
-              fontStyle: FontStyle.italic,
-              fontSize: 15),
+          style: homeCardAgeTextStyle,
         ),
       ),
       Positioned(
@@ -44,7 +40,7 @@ Container speciesSetItem(kingdom, species, age, count) {
         right: 15,
         child: Text(
           count.toString(),
-          style: const TextStyle(fontSize: 30),
+          style: homeCardCountTextStyle,
         ),
       ),
     ]),

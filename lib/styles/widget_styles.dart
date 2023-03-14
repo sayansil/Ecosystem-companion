@@ -27,3 +27,8 @@ const snackBarTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');
 const dropdownOptionStyle = TextStyle(fontSize: 18, fontFamily: 'Poppins', color: colorSecondary);
 
 const chartTooltipTextStyle = TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Poppins', fontWeight: FontWeight.bold);
+
+const homeCardKindTextStyle = TextStyle(fontSize: 30);
+const homeCardKingdomTextStyle = TextStyle(fontSize: 15, fontStyle: FontStyle.italic, fontFamily: 'Poppins');
+const homeCardAgeTextStyle = TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: colorTertiary, fontFamily: 'Poppins');
+const homeCardCountTextStyle = TextStyle(fontSize: 30, fontFamily: 'Poppins');

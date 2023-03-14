@@ -23,6 +23,8 @@ class _SpeciesBodyState extends State<SpeciesBody> {
   final textBaseJsonPathController = TextEditingController();
   final textModifyJsonPathController = TextEditingController();
 
+  bool validSpecies = false;
+
   @override
   void dispose() {
     textKindController.dispose();
@@ -110,9 +112,18 @@ class _SpeciesBodyState extends State<SpeciesBody> {
     ));
   }
 
-  bool isValid() {
+
+  void configChanged() {
     final kindName = textKindController.text;
-    return kingdomName.isNotEmpty && kindName.isNotEmpty;
+
+    setState(() {
+      if (kingdomName.isNotEmpty && kindName.isNotEmpty) {
+        validSpecies = true;
+      }
+      else {
+        validSpecies = false;
+      }
+    });
   }
 
   @override
@@ -163,6 +174,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                     onChanged: (KingdomName? item) {
                       if (item != null) {
                         kingdomName = item.name;
+                        configChanged();
                       }
                     },
                     items: KingdomName.values.map((KingdomName item) {
@@ -197,6 +209,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                       focusedBorder: InputBorder.none,
                     ),
                     controller: textKindController,
+                    onChanged: (text) {configChanged();},
                   ),
 
 
@@ -284,7 +297,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                 ),
                 padding: const EdgeInsets.symmetric(vertical: defaultPadding / 1.5),
               ),
-              onPressed: isValid() ? () {
+              onPressed: validSpecies ? () {
                 createSpecies(context);
               } : null,
               child: const Text(addSpeciesBtn),
