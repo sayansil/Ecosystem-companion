@@ -1,0 +1,8 @@
+# Flutter-related
+**/Flutter/ephemeral/
+**/Pods/
+libecosystem_wrapper.dylib
+
+# Xcode-related
+**/dgph
+**/xcuserdata/

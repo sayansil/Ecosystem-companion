@@ -4,9 +4,17 @@ import 'package:ffi/ffi.dart';
 
 
 // Getting a library that holds needed symbols
-DynamicLibrary _lib = Platform.isAndroid
-    ? DynamicLibrary.open('libecosystem_wrapper.so')
-    : DynamicLibrary.process();
+DynamicLibrary getLibrary() {
+  if (Platform.isAndroid) {
+    return DynamicLibrary.open('libecosystem_wrapper.so');
+  } else if (Platform.isMacOS) {
+    return DynamicLibrary.open('libecosystem_wrapper.dylib');
+  } else {
+    return DynamicLibrary.process();
+  }
+}
+
+DynamicLibrary _lib = getLibrary();
 
 // Template the dart functions
 

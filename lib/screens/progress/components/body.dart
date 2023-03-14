@@ -72,7 +72,6 @@ class _ProgressBodyState extends State<ProgressBody> {
       }
     }
 
-    print("Year: ${world.year} - Buffer Size: $bufferSize - Population: $population");
     await cap120fps();
 
     return currentPopulation;
