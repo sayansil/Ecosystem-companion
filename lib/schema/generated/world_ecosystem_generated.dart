@@ -249,6 +249,43 @@ class ChromosomeStrand {
   String toString() {
     return 'ChromosomeStrand{code: ${code}, start: ${start}, length: ${length}}';
   }
+
+  ChromosomeStrandT unpack() => ChromosomeStrandT(
+      code: code,
+      start: start,
+      length: length);
+
+  static int pack(fb.Builder fbBuilder, ChromosomeStrandT? object) {
+    if (object == null) return 0;
+    return object.pack(fbBuilder);
+  }
+}
+
+class ChromosomeStrandT implements fb.Packable {
+  String? code;
+  int start;
+  int length;
+
+  ChromosomeStrandT({
+      this.code,
+      this.start = 0,
+      this.length = 0});
+
+  @override
+  int pack(fb.Builder fbBuilder) {
+    final int? codeOffset = code == null ? null
+        : fbBuilder.writeString(code!);
+    fbBuilder.startTable(3);
+    fbBuilder.addOffset(0, codeOffset);
+    fbBuilder.addUint16(1, start);
+    fbBuilder.addUint16(2, length);
+    return fbBuilder.endTable();
+  }
+
+  @override
+  String toString() {
+    return 'ChromosomeStrandT{code: ${code}, start: ${start}, length: ${length}}';
+  }
 }
 
 class _ChromosomeStrandReader extends fb.TableReader<ChromosomeStrand> {
@@ -415,6 +452,341 @@ class Organism {
   @override
   String toString() {
     return 'Organism{kind: ${kind}, kingdom: ${kingdom}, chromosomeNumber: ${chromosomeNumber}, chromosomeStructure: ${chromosomeStructure}, foodChainRank: ${foodChainRank}, sexuality: ${sexuality}, ageFitnessOnDeathRatio: ${ageFitnessOnDeathRatio}, conceivingProbability: ${conceivingProbability}, matingProbability: ${matingProbability}, matingAgeStart: ${matingAgeStart}, matingAgeEnd: ${matingAgeEnd}, maxAge: ${maxAge}, mutationProbability: ${mutationProbability}, offspringsFactor: ${offspringsFactor}, heightOnSpeed: ${heightOnSpeed}, heightOnStamina: ${heightOnStamina}, heightOnVitality: ${heightOnVitality}, weightOnSpeed: ${weightOnSpeed}, weightOnStamina: ${weightOnStamina}, weightOnVitality: ${weightOnVitality}, vitalityOnAppetite: ${vitalityOnAppetite}, vitalityOnSpeed: ${vitalityOnSpeed}, staminaOnAppetite: ${staminaOnAppetite}, staminaOnSpeed: ${staminaOnSpeed}, theoreticalMaximumBaseAppetite: ${theoreticalMaximumBaseAppetite}, theoreticalMaximumBaseHeight: ${theoreticalMaximumBaseHeight}, theoreticalMaximumBaseSpeed: ${theoreticalMaximumBaseSpeed}, theoreticalMaximumBaseStamina: ${theoreticalMaximumBaseStamina}, theoreticalMaximumBaseVitality: ${theoreticalMaximumBaseVitality}, theoreticalMaximumBaseWeight: ${theoreticalMaximumBaseWeight}, theoreticalMaximumHeight: ${theoreticalMaximumHeight}, theoreticalMaximumSpeed: ${theoreticalMaximumSpeed}, theoreticalMaximumWeight: ${theoreticalMaximumWeight}, theoreticalMaximumHeightMultiplier: ${theoreticalMaximumHeightMultiplier}, theoreticalMaximumSpeedMultiplier: ${theoreticalMaximumSpeedMultiplier}, theoreticalMaximumStaminaMultiplier: ${theoreticalMaximumStaminaMultiplier}, theoreticalMaximumVitalityMultiplier: ${theoreticalMaximumVitalityMultiplier}, theoreticalMaximumWeightMultiplier: ${theoreticalMaximumWeightMultiplier}, name: ${name}, chromosome: ${chromosome}, gender: ${gender}, generation: ${generation}, immunity: ${immunity}, baseAppetite: ${baseAppetite}, baseHeight: ${baseHeight}, baseSpeed: ${baseSpeed}, baseStamina: ${baseStamina}, baseVitality: ${baseVitality}, baseWeight: ${baseWeight}, heightMultiplier: ${heightMultiplier}, speedMultiplier: ${speedMultiplier}, staminaMultiplier: ${staminaMultiplier}, vitalityMultiplier: ${vitalityMultiplier}, weightMultiplier: ${weightMultiplier}, maxHeight: ${maxHeight}, maxWeight: ${maxWeight}, age: ${age}, height: ${height}, weight: ${weight}, staticFitness: ${staticFitness}, maxAppetiteAtAge: ${maxAppetiteAtAge}, maxSpeedAtAge: ${maxSpeedAtAge}, maxStaminaAtAge: ${maxStaminaAtAge}, maxVitalityAtAge: ${maxVitalityAtAge}, appetite: ${appetite}, speed: ${speed}, stamina: ${stamina}, vitality: ${vitality}, x: ${x}, y: ${y}, dynamicFitness: ${dynamicFitness}, visionRadius: ${visionRadius}, sleepRestoreFactor: ${sleepRestoreFactor}, asleep: ${asleep}, monitor: ${monitor}}';
+  }
+
+  OrganismT unpack() => OrganismT(
+      kind: kind,
+      kingdom: kingdom,
+      chromosomeNumber: chromosomeNumber,
+      chromosomeStructure: chromosomeStructure?.map((e) => e.unpack()).toList(),
+      foodChainRank: foodChainRank,
+      sexuality: sexuality,
+      ageFitnessOnDeathRatio: ageFitnessOnDeathRatio,
+      conceivingProbability: conceivingProbability,
+      matingProbability: matingProbability,
+      matingAgeStart: matingAgeStart,
+      matingAgeEnd: matingAgeEnd,
+      maxAge: maxAge,
+      mutationProbability: mutationProbability,
+      offspringsFactor: offspringsFactor,
+      heightOnSpeed: heightOnSpeed,
+      heightOnStamina: heightOnStamina,
+      heightOnVitality: heightOnVitality,
+      weightOnSpeed: weightOnSpeed,
+      weightOnStamina: weightOnStamina,
+      weightOnVitality: weightOnVitality,
+      vitalityOnAppetite: vitalityOnAppetite,
+      vitalityOnSpeed: vitalityOnSpeed,
+      staminaOnAppetite: staminaOnAppetite,
+      staminaOnSpeed: staminaOnSpeed,
+      theoreticalMaximumBaseAppetite: theoreticalMaximumBaseAppetite,
+      theoreticalMaximumBaseHeight: theoreticalMaximumBaseHeight,
+      theoreticalMaximumBaseSpeed: theoreticalMaximumBaseSpeed,
+      theoreticalMaximumBaseStamina: theoreticalMaximumBaseStamina,
+      theoreticalMaximumBaseVitality: theoreticalMaximumBaseVitality,
+      theoreticalMaximumBaseWeight: theoreticalMaximumBaseWeight,
+      theoreticalMaximumHeight: theoreticalMaximumHeight,
+      theoreticalMaximumSpeed: theoreticalMaximumSpeed,
+      theoreticalMaximumWeight: theoreticalMaximumWeight,
+      theoreticalMaximumHeightMultiplier: theoreticalMaximumHeightMultiplier,
+      theoreticalMaximumSpeedMultiplier: theoreticalMaximumSpeedMultiplier,
+      theoreticalMaximumStaminaMultiplier: theoreticalMaximumStaminaMultiplier,
+      theoreticalMaximumVitalityMultiplier: theoreticalMaximumVitalityMultiplier,
+      theoreticalMaximumWeightMultiplier: theoreticalMaximumWeightMultiplier,
+      name: name,
+      chromosome: const fb.Uint8ListReader(lazy: false).vTableGetNullable(_bc, _bcOffset, 82),
+      gender: gender,
+      generation: generation,
+      immunity: immunity,
+      baseAppetite: baseAppetite,
+      baseHeight: baseHeight,
+      baseSpeed: baseSpeed,
+      baseStamina: baseStamina,
+      baseVitality: baseVitality,
+      baseWeight: baseWeight,
+      heightMultiplier: heightMultiplier,
+      speedMultiplier: speedMultiplier,
+      staminaMultiplier: staminaMultiplier,
+      vitalityMultiplier: vitalityMultiplier,
+      weightMultiplier: weightMultiplier,
+      maxHeight: maxHeight,
+      maxWeight: maxWeight,
+      age: age,
+      height: height,
+      weight: weight,
+      staticFitness: staticFitness,
+      maxAppetiteAtAge: maxAppetiteAtAge,
+      maxSpeedAtAge: maxSpeedAtAge,
+      maxStaminaAtAge: maxStaminaAtAge,
+      maxVitalityAtAge: maxVitalityAtAge,
+      appetite: appetite,
+      speed: speed,
+      stamina: stamina,
+      vitality: vitality,
+      x: x,
+      y: y,
+      dynamicFitness: dynamicFitness,
+      visionRadius: visionRadius,
+      sleepRestoreFactor: sleepRestoreFactor,
+      asleep: asleep,
+      monitor: monitor);
+
+  static int pack(fb.Builder fbBuilder, OrganismT? object) {
+    if (object == null) return 0;
+    return object.pack(fbBuilder);
+  }
+}
+
+class OrganismT implements fb.Packable {
+  ///  Fixed for a species
+  String? kind;
+  KingdomE kingdom;
+  int chromosomeNumber;
+  List<ChromosomeStrandT>? chromosomeStructure;
+  int foodChainRank;
+  Reproduction sexuality;
+  double ageFitnessOnDeathRatio;
+  double conceivingProbability;
+  double matingProbability;
+  int matingAgeStart;
+  int matingAgeEnd;
+  int maxAge;
+  double mutationProbability;
+  double offspringsFactor;
+  double heightOnSpeed;
+  double heightOnStamina;
+  double heightOnVitality;
+  double weightOnSpeed;
+  double weightOnStamina;
+  double weightOnVitality;
+  double vitalityOnAppetite;
+  double vitalityOnSpeed;
+  double staminaOnAppetite;
+  double staminaOnSpeed;
+  double theoreticalMaximumBaseAppetite;
+  double theoreticalMaximumBaseHeight;
+  double theoreticalMaximumBaseSpeed;
+  double theoreticalMaximumBaseStamina;
+  double theoreticalMaximumBaseVitality;
+  double theoreticalMaximumBaseWeight;
+  double theoreticalMaximumHeight;
+  double theoreticalMaximumSpeed;
+  double theoreticalMaximumWeight;
+  double theoreticalMaximumHeightMultiplier;
+  double theoreticalMaximumSpeedMultiplier;
+  double theoreticalMaximumStaminaMultiplier;
+  double theoreticalMaximumVitalityMultiplier;
+  double theoreticalMaximumWeightMultiplier;
+  ///   Fixed for an organism
+  String? name;
+  List<int>? chromosome;
+  Gender gender;
+  int generation;
+  double immunity;
+  double baseAppetite;
+  double baseHeight;
+  double baseSpeed;
+  double baseStamina;
+  double baseVitality;
+  double baseWeight;
+  double heightMultiplier;
+  double speedMultiplier;
+  double staminaMultiplier;
+  double vitalityMultiplier;
+  double weightMultiplier;
+  double maxHeight;
+  double maxWeight;
+  ///  Stats affected by age
+  int age;
+  double height;
+  double weight;
+  double staticFitness;
+  double maxAppetiteAtAge;
+  double maxSpeedAtAge;
+  double maxStaminaAtAge;
+  double maxVitalityAtAge;
+  double appetite;
+  double speed;
+  double stamina;
+  double vitality;
+  int x;
+  int y;
+  double dynamicFitness;
+  ///  Miscellaneous attributes
+  double visionRadius;
+  double sleepRestoreFactor;
+  Sleep asleep;
+  Monitor monitor;
+
+  OrganismT({
+      this.kind,
+      this.kingdom = KingdomE.Animal,
+      this.chromosomeNumber = 0,
+      this.chromosomeStructure,
+      this.foodChainRank = 0,
+      this.sexuality = Reproduction.Sexual,
+      this.ageFitnessOnDeathRatio = 0.0,
+      this.conceivingProbability = 0.0,
+      this.matingProbability = 0.0,
+      this.matingAgeStart = 0,
+      this.matingAgeEnd = 0,
+      this.maxAge = 0,
+      this.mutationProbability = 0.0,
+      this.offspringsFactor = 0.0,
+      this.heightOnSpeed = 0.0,
+      this.heightOnStamina = 0.0,
+      this.heightOnVitality = 0.0,
+      this.weightOnSpeed = 0.0,
+      this.weightOnStamina = 0.0,
+      this.weightOnVitality = 0.0,
+      this.vitalityOnAppetite = 0.0,
+      this.vitalityOnSpeed = 0.0,
+      this.staminaOnAppetite = 0.0,
+      this.staminaOnSpeed = 0.0,
+      this.theoreticalMaximumBaseAppetite = 0.0,
+      this.theoreticalMaximumBaseHeight = 0.0,
+      this.theoreticalMaximumBaseSpeed = 0.0,
+      this.theoreticalMaximumBaseStamina = 0.0,
+      this.theoreticalMaximumBaseVitality = 0.0,
+      this.theoreticalMaximumBaseWeight = 0.0,
+      this.theoreticalMaximumHeight = 0.0,
+      this.theoreticalMaximumSpeed = 0.0,
+      this.theoreticalMaximumWeight = 0.0,
+      this.theoreticalMaximumHeightMultiplier = 0.0,
+      this.theoreticalMaximumSpeedMultiplier = 0.0,
+      this.theoreticalMaximumStaminaMultiplier = 0.0,
+      this.theoreticalMaximumVitalityMultiplier = 0.0,
+      this.theoreticalMaximumWeightMultiplier = 0.0,
+      this.name,
+      this.chromosome,
+      this.gender = Gender.Male,
+      this.generation = 0,
+      this.immunity = 0.0,
+      this.baseAppetite = 0.0,
+      this.baseHeight = 0.0,
+      this.baseSpeed = 0.0,
+      this.baseStamina = 0.0,
+      this.baseVitality = 0.0,
+      this.baseWeight = 0.0,
+      this.heightMultiplier = 0.0,
+      this.speedMultiplier = 0.0,
+      this.staminaMultiplier = 0.0,
+      this.vitalityMultiplier = 0.0,
+      this.weightMultiplier = 0.0,
+      this.maxHeight = 0.0,
+      this.maxWeight = 0.0,
+      this.age = 0,
+      this.height = 0.0,
+      this.weight = 0.0,
+      this.staticFitness = 0.0,
+      this.maxAppetiteAtAge = 0.0,
+      this.maxSpeedAtAge = 0.0,
+      this.maxStaminaAtAge = 0.0,
+      this.maxVitalityAtAge = 0.0,
+      this.appetite = 0.0,
+      this.speed = 0.0,
+      this.stamina = 0.0,
+      this.vitality = 0.0,
+      this.x = 0,
+      this.y = 0,
+      this.dynamicFitness = 1.0,
+      this.visionRadius = 0.0,
+      this.sleepRestoreFactor = 0.0,
+      this.asleep = Sleep.Awake,
+      this.monitor = Monitor.None});
+
+  @override
+  int pack(fb.Builder fbBuilder) {
+    final int? kindOffset = kind == null ? null
+        : fbBuilder.writeString(kind!);
+    final int? chromosomeStructureOffset = chromosomeStructure == null ? null
+        : fbBuilder.writeList(chromosomeStructure!.map((b) => b.pack(fbBuilder)).toList());
+    final int? nameOffset = name == null ? null
+        : fbBuilder.writeString(name!);
+    final int? chromosomeOffset = chromosome == null ? null
+        : fbBuilder.writeListUint8(chromosome!);
+    fbBuilder.startTable(75);
+    fbBuilder.addOffset(0, kindOffset);
+    fbBuilder.addUint8(1, kingdom.value);
+    fbBuilder.addUint16(2, chromosomeNumber);
+    fbBuilder.addOffset(3, chromosomeStructureOffset);
+    fbBuilder.addUint8(4, foodChainRank);
+    fbBuilder.addUint8(5, sexuality.value);
+    fbBuilder.addFloat32(6, ageFitnessOnDeathRatio);
+    fbBuilder.addFloat32(7, conceivingProbability);
+    fbBuilder.addFloat32(8, matingProbability);
+    fbBuilder.addUint32(9, matingAgeStart);
+    fbBuilder.addUint32(10, matingAgeEnd);
+    fbBuilder.addUint32(11, maxAge);
+    fbBuilder.addFloat32(12, mutationProbability);
+    fbBuilder.addFloat32(13, offspringsFactor);
+    fbBuilder.addFloat32(14, heightOnSpeed);
+    fbBuilder.addFloat32(15, heightOnStamina);
+    fbBuilder.addFloat32(16, heightOnVitality);
+    fbBuilder.addFloat32(17, weightOnSpeed);
+    fbBuilder.addFloat32(18, weightOnStamina);
+    fbBuilder.addFloat32(19, weightOnVitality);
+    fbBuilder.addFloat32(20, vitalityOnAppetite);
+    fbBuilder.addFloat32(21, vitalityOnSpeed);
+    fbBuilder.addFloat32(22, staminaOnAppetite);
+    fbBuilder.addFloat32(23, staminaOnSpeed);
+    fbBuilder.addFloat32(24, theoreticalMaximumBaseAppetite);
+    fbBuilder.addFloat32(25, theoreticalMaximumBaseHeight);
+    fbBuilder.addFloat32(26, theoreticalMaximumBaseSpeed);
+    fbBuilder.addFloat32(27, theoreticalMaximumBaseStamina);
+    fbBuilder.addFloat32(28, theoreticalMaximumBaseVitality);
+    fbBuilder.addFloat32(29, theoreticalMaximumBaseWeight);
+    fbBuilder.addFloat32(30, theoreticalMaximumHeight);
+    fbBuilder.addFloat32(31, theoreticalMaximumSpeed);
+    fbBuilder.addFloat32(32, theoreticalMaximumWeight);
+    fbBuilder.addFloat32(33, theoreticalMaximumHeightMultiplier);
+    fbBuilder.addFloat32(34, theoreticalMaximumSpeedMultiplier);
+    fbBuilder.addFloat32(35, theoreticalMaximumStaminaMultiplier);
+    fbBuilder.addFloat32(36, theoreticalMaximumVitalityMultiplier);
+    fbBuilder.addFloat32(37, theoreticalMaximumWeightMultiplier);
+    fbBuilder.addOffset(38, nameOffset);
+    fbBuilder.addOffset(39, chromosomeOffset);
+    fbBuilder.addUint8(40, gender.value);
+    fbBuilder.addUint32(41, generation);
+    fbBuilder.addFloat32(42, immunity);
+    fbBuilder.addFloat32(43, baseAppetite);
+    fbBuilder.addFloat32(44, baseHeight);
+    fbBuilder.addFloat32(45, baseSpeed);
+    fbBuilder.addFloat32(46, baseStamina);
+    fbBuilder.addFloat32(47, baseVitality);
+    fbBuilder.addFloat32(48, baseWeight);
+    fbBuilder.addFloat32(49, heightMultiplier);
+    fbBuilder.addFloat32(50, speedMultiplier);
+    fbBuilder.addFloat32(51, staminaMultiplier);
+    fbBuilder.addFloat32(52, vitalityMultiplier);
+    fbBuilder.addFloat32(53, weightMultiplier);
+    fbBuilder.addFloat32(54, maxHeight);
+    fbBuilder.addFloat32(55, maxWeight);
+    fbBuilder.addUint32(56, age);
+    fbBuilder.addFloat32(57, height);
+    fbBuilder.addFloat32(58, weight);
+    fbBuilder.addFloat32(59, staticFitness);
+    fbBuilder.addFloat32(60, maxAppetiteAtAge);
+    fbBuilder.addFloat32(61, maxSpeedAtAge);
+    fbBuilder.addFloat32(62, maxStaminaAtAge);
+    fbBuilder.addFloat32(63, maxVitalityAtAge);
+    fbBuilder.addFloat32(64, appetite);
+    fbBuilder.addFloat32(65, speed);
+    fbBuilder.addFloat32(66, stamina);
+    fbBuilder.addFloat32(67, vitality);
+    fbBuilder.addUint64(68, x);
+    fbBuilder.addUint64(69, y);
+    fbBuilder.addFloat32(70, dynamicFitness);
+    fbBuilder.addFloat32(71, visionRadius);
+    fbBuilder.addFloat32(72, sleepRestoreFactor);
+    fbBuilder.addUint8(73, asleep.value);
+    fbBuilder.addUint8(74, monitor.value);
+    return fbBuilder.endTable();
+  }
+
+  @override
+  String toString() {
+    return 'OrganismT{kind: ${kind}, kingdom: ${kingdom}, chromosomeNumber: ${chromosomeNumber}, chromosomeStructure: ${chromosomeStructure}, foodChainRank: ${foodChainRank}, sexuality: ${sexuality}, ageFitnessOnDeathRatio: ${ageFitnessOnDeathRatio}, conceivingProbability: ${conceivingProbability}, matingProbability: ${matingProbability}, matingAgeStart: ${matingAgeStart}, matingAgeEnd: ${matingAgeEnd}, maxAge: ${maxAge}, mutationProbability: ${mutationProbability}, offspringsFactor: ${offspringsFactor}, heightOnSpeed: ${heightOnSpeed}, heightOnStamina: ${heightOnStamina}, heightOnVitality: ${heightOnVitality}, weightOnSpeed: ${weightOnSpeed}, weightOnStamina: ${weightOnStamina}, weightOnVitality: ${weightOnVitality}, vitalityOnAppetite: ${vitalityOnAppetite}, vitalityOnSpeed: ${vitalityOnSpeed}, staminaOnAppetite: ${staminaOnAppetite}, staminaOnSpeed: ${staminaOnSpeed}, theoreticalMaximumBaseAppetite: ${theoreticalMaximumBaseAppetite}, theoreticalMaximumBaseHeight: ${theoreticalMaximumBaseHeight}, theoreticalMaximumBaseSpeed: ${theoreticalMaximumBaseSpeed}, theoreticalMaximumBaseStamina: ${theoreticalMaximumBaseStamina}, theoreticalMaximumBaseVitality: ${theoreticalMaximumBaseVitality}, theoreticalMaximumBaseWeight: ${theoreticalMaximumBaseWeight}, theoreticalMaximumHeight: ${theoreticalMaximumHeight}, theoreticalMaximumSpeed: ${theoreticalMaximumSpeed}, theoreticalMaximumWeight: ${theoreticalMaximumWeight}, theoreticalMaximumHeightMultiplier: ${theoreticalMaximumHeightMultiplier}, theoreticalMaximumSpeedMultiplier: ${theoreticalMaximumSpeedMultiplier}, theoreticalMaximumStaminaMultiplier: ${theoreticalMaximumStaminaMultiplier}, theoreticalMaximumVitalityMultiplier: ${theoreticalMaximumVitalityMultiplier}, theoreticalMaximumWeightMultiplier: ${theoreticalMaximumWeightMultiplier}, name: ${name}, chromosome: ${chromosome}, gender: ${gender}, generation: ${generation}, immunity: ${immunity}, baseAppetite: ${baseAppetite}, baseHeight: ${baseHeight}, baseSpeed: ${baseSpeed}, baseStamina: ${baseStamina}, baseVitality: ${baseVitality}, baseWeight: ${baseWeight}, heightMultiplier: ${heightMultiplier}, speedMultiplier: ${speedMultiplier}, staminaMultiplier: ${staminaMultiplier}, vitalityMultiplier: ${vitalityMultiplier}, weightMultiplier: ${weightMultiplier}, maxHeight: ${maxHeight}, maxWeight: ${maxWeight}, age: ${age}, height: ${height}, weight: ${weight}, staticFitness: ${staticFitness}, maxAppetiteAtAge: ${maxAppetiteAtAge}, maxSpeedAtAge: ${maxSpeedAtAge}, maxStaminaAtAge: ${maxStaminaAtAge}, maxVitalityAtAge: ${maxVitalityAtAge}, appetite: ${appetite}, speed: ${speed}, stamina: ${stamina}, vitality: ${vitality}, x: ${x}, y: ${y}, dynamicFitness: ${dynamicFitness}, visionRadius: ${visionRadius}, sleepRestoreFactor: ${sleepRestoreFactor}, asleep: ${asleep}, monitor: ${monitor}}';
   }
 }
 
@@ -1089,6 +1461,45 @@ class Species {
   String toString() {
     return 'Species{kind: ${kind}, kingdom: ${kingdom}, organism: ${organism}}';
   }
+
+  SpeciesT unpack() => SpeciesT(
+      kind: kind,
+      kingdom: kingdom,
+      organism: organism?.map((e) => e.unpack()).toList());
+
+  static int pack(fb.Builder fbBuilder, SpeciesT? object) {
+    if (object == null) return 0;
+    return object.pack(fbBuilder);
+  }
+}
+
+class SpeciesT implements fb.Packable {
+  String? kind;
+  KingdomE kingdom;
+  List<OrganismT>? organism;
+
+  SpeciesT({
+      this.kind,
+      this.kingdom = KingdomE.Animal,
+      this.organism});
+
+  @override
+  int pack(fb.Builder fbBuilder) {
+    final int? kindOffset = kind == null ? null
+        : fbBuilder.writeString(kind!);
+    final int? organismOffset = organism == null ? null
+        : fbBuilder.writeList(organism!.map((b) => b.pack(fbBuilder)).toList());
+    fbBuilder.startTable(3);
+    fbBuilder.addOffset(0, kindOffset);
+    fbBuilder.addUint8(1, kingdom.value);
+    fbBuilder.addOffset(2, organismOffset);
+    return fbBuilder.endTable();
+  }
+
+  @override
+  String toString() {
+    return 'SpeciesT{kind: ${kind}, kingdom: ${kingdom}, organism: ${organism}}';
+  }
 }
 
 class _SpeciesReader extends fb.TableReader<Species> {
@@ -1180,6 +1591,39 @@ class World {
   @override
   String toString() {
     return 'World{year: ${year}, species: ${species}}';
+  }
+
+  WorldT unpack() => WorldT(
+      year: year,
+      species: species?.map((e) => e.unpack()).toList());
+
+  static int pack(fb.Builder fbBuilder, WorldT? object) {
+    if (object == null) return 0;
+    return object.pack(fbBuilder);
+  }
+}
+
+class WorldT implements fb.Packable {
+  int year;
+  List<SpeciesT>? species;
+
+  WorldT({
+      this.year = 0,
+      this.species});
+
+  @override
+  int pack(fb.Builder fbBuilder) {
+    final int? speciesOffset = species == null ? null
+        : fbBuilder.writeList(species!.map((b) => b.pack(fbBuilder)).toList());
+    fbBuilder.startTable(2);
+    fbBuilder.addUint32(0, year);
+    fbBuilder.addOffset(1, speciesOffset);
+    return fbBuilder.endTable();
+  }
+
+  @override
+  String toString() {
+    return 'WorldT{year: ${year}, species: ${species}}';
   }
 }
 

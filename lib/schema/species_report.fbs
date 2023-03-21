@@ -1,23 +1,14 @@
-namespace Visualisation;
+include "world.fbs";
+include "population.fbs";
 
-table SinglePlot {
-    title:string;
-    x:[float];
-    y:[float];
-}
-
-table MultiPlot {
-    title:string (key);
-    xlabel:string;
-    ylabel:string;
-    plots:[SinglePlot];
-}
+namespace Ecosystem;
 
 table SpeciesReport {
-    title:string (key, required);
-    species:string (required);
-    timestamp:string;
-    plots:[MultiPlot];
+    kind:string (key);
+    kingdom:string;
+    years:uint;
+    avg_worlds:[Organism];
+    populations:[SpeciesPopulation];
 }
 
 root_type SpeciesReport;

@@ -22,6 +22,36 @@ class RawPopulation {
   String toString() {
     return 'RawPopulation{malePopulation: ${malePopulation}, femalePopulation: ${femalePopulation}}';
   }
+
+  RawPopulationT unpack() => RawPopulationT(
+      malePopulation: malePopulation,
+      femalePopulation: femalePopulation);
+
+  static int pack(fb.Builder fbBuilder, RawPopulationT? object) {
+    if (object == null) return 0;
+    return object.pack(fbBuilder);
+  }
+}
+
+class RawPopulationT implements fb.Packable {
+  int malePopulation;
+  int femalePopulation;
+
+  RawPopulationT({
+      required this.malePopulation,
+      required this.femalePopulation});
+
+  @override
+  int pack(fb.Builder fbBuilder) {
+    fbBuilder.putUint32(femalePopulation);
+    fbBuilder.putUint32(malePopulation);
+    return fbBuilder.offset;
+  }
+
+  @override
+  String toString() {
+    return 'RawPopulationT{malePopulation: ${malePopulation}, femalePopulation: ${femalePopulation}}';
+  }
 }
 
 class _RawPopulationReader extends fb.StructReader<RawPopulation> {
@@ -94,6 +124,47 @@ class SpeciesPopulation {
   @override
   String toString() {
     return 'SpeciesPopulation{kind: ${kind}, matablePopulation: ${matablePopulation}, nonMatablePopulation: ${nonMatablePopulation}}';
+  }
+
+  SpeciesPopulationT unpack() => SpeciesPopulationT(
+      kind: kind,
+      matablePopulation: matablePopulation?.unpack(),
+      nonMatablePopulation: nonMatablePopulation?.unpack());
+
+  static int pack(fb.Builder fbBuilder, SpeciesPopulationT? object) {
+    if (object == null) return 0;
+    return object.pack(fbBuilder);
+  }
+}
+
+class SpeciesPopulationT implements fb.Packable {
+  String? kind;
+  RawPopulationT? matablePopulation;
+  RawPopulationT? nonMatablePopulation;
+
+  SpeciesPopulationT({
+      this.kind,
+      this.matablePopulation,
+      this.nonMatablePopulation});
+
+  @override
+  int pack(fb.Builder fbBuilder) {
+    final int? kindOffset = kind == null ? null
+        : fbBuilder.writeString(kind!);
+    fbBuilder.startTable(3);
+    fbBuilder.addOffset(0, kindOffset);
+    if (matablePopulation != null) {
+      fbBuilder.addStruct(1, matablePopulation!.pack(fbBuilder));
+    }
+    if (nonMatablePopulation != null) {
+      fbBuilder.addStruct(2, nonMatablePopulation!.pack(fbBuilder));
+    }
+    return fbBuilder.endTable();
+  }
+
+  @override
+  String toString() {
+    return 'SpeciesPopulationT{kind: ${kind}, matablePopulation: ${matablePopulation}, nonMatablePopulation: ${nonMatablePopulation}}';
   }
 }
 
@@ -188,6 +259,39 @@ class WorldPopulation {
   @override
   String toString() {
     return 'WorldPopulation{year: ${year}, speciesPopulation: ${speciesPopulation}}';
+  }
+
+  WorldPopulationT unpack() => WorldPopulationT(
+      year: year,
+      speciesPopulation: speciesPopulation?.map((e) => e.unpack()).toList());
+
+  static int pack(fb.Builder fbBuilder, WorldPopulationT? object) {
+    if (object == null) return 0;
+    return object.pack(fbBuilder);
+  }
+}
+
+class WorldPopulationT implements fb.Packable {
+  int year;
+  List<SpeciesPopulationT>? speciesPopulation;
+
+  WorldPopulationT({
+      this.year = 0,
+      this.speciesPopulation});
+
+  @override
+  int pack(fb.Builder fbBuilder) {
+    final int? speciesPopulationOffset = speciesPopulation == null ? null
+        : fbBuilder.writeList(speciesPopulation!.map((b) => b.pack(fbBuilder)).toList());
+    fbBuilder.startTable(2);
+    fbBuilder.addUint32(0, year);
+    fbBuilder.addOffset(1, speciesPopulationOffset);
+    return fbBuilder.endTable();
+  }
+
+  @override
+  String toString() {
+    return 'WorldPopulationT{year: ${year}, speciesPopulation: ${speciesPopulation}}';
   }
 }
 
