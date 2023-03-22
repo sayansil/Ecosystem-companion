@@ -22,6 +22,7 @@ const defaultSmallPadding = 20.0;
 const dataDir = "data";
 final templateDir = join("data", "json");
 const ecosystemDir = "Ecosystem";
+const metaDataFileName = ".metadata";
 
 final assetSpeciesTemplatePath = join("assets", "json", "simulationTemplates");
 
@@ -36,7 +37,7 @@ const addSpeciesBtn = "ADD";
 const saveConfigBtn = "SAVE";
 
 const stopSimulationTitle = "Exit Simulation? 🕊️";
-const stopSimulationMessage = "All data from the current simulation will be lost...";
+const stopSimulationMessage = "All unsaved data from the current simulation will be lost...";
 const stopSimulationAccept = "Yes";
 const stopSimulationReject = "No";
 
@@ -47,6 +48,7 @@ const addConfigsReject = "No";
 
 const simulateStartBtn = "Start";
 const simulateStopBtn = "Stop";
+const simulateViewBtn = "View";
 
 const configLocalDbPathText = "Local database directory path";
 const configLocalReportDirText = "Simulation report directory path";

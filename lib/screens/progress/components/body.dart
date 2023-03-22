@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
 import 'package:ecosystem/screens/common/live_plot.dart';
 import 'package:ecosystem/screens/common/transition.dart';
+import 'package:ecosystem/screens/report/report_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:native_simulator/native_simulator.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -62,7 +63,6 @@ class _ProgressBodyState extends State<ProgressBody> {
 
   Future<int> iterateSimulation() async {
     final fbList = simulator.simulateOneYear();
-    final bufferSize = fbList.length;
     int currentPopulation = 0;
 
     var world = World(fbList);
@@ -113,6 +113,10 @@ class _ProgressBodyState extends State<ProgressBody> {
     setState(() {
       simulationState = SimulationStatus.stopped;
     });
+  }
+
+  Future<void> viewSimulation() async {
+    Navigator.push(context, buildPageRoute(const ReportScreen(null)));
   }
 
   @override
@@ -207,7 +211,7 @@ class _ProgressBodyState extends State<ProgressBody> {
             top: progressDims,
 
             child: Visibility(
-                visible: simulationState != SimulationStatus.ready,
+                visible: simulationState == SimulationStatus.running,
                 child: Container(
                   padding: EdgeInsets.only(
                     left: parentSize.width * 0.3,
@@ -223,10 +227,39 @@ class _ProgressBodyState extends State<ProgressBody> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: defaultPadding / 2),
                     ),
-                    onPressed: simulationState == SimulationStatus.running ? () {
-                      stopSimulation();
-                    } : null,
+                    onPressed: () { stopSimulation(); },
                     child: const Text(simulateStopBtn),
+                  ),
+                )
+            )
+        ),
+
+        // View button
+        Positioned(
+            left: 0,
+            right: 0,
+            top: progressDims,
+
+            child: Visibility(
+                visible: simulationState == SimulationStatus.stopped ||
+                  simulationState == SimulationStatus.completed,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: parentSize.width * 0.3,
+                    right: parentSize.width * 0.3,
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colorPrimary,
+                      textStyle: bigButtonStyle,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20), // <-- Radius
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: defaultPadding / 2),
+                    ),
+                    onPressed: () { viewSimulation(); },
+                    child: const Text(simulateViewBtn),
                   ),
                 )
             )

@@ -187,11 +187,7 @@ class _HomeBodyState extends State<HomeBody> {
 
     if (textReportLocation.isNotEmpty) {
       // Config values set properly
-      Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => ProgressScreen(years, allSets)
-          )
-      );
+      Navigator.push(context, buildPageRoute(ProgressScreen(years, allSets)));
     } else {
       // Configs not yet set
       showYesNoDialog(

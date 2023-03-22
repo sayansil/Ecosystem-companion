@@ -115,3 +115,12 @@ int getKingdomIndex(String kingdomName) {
 
   return -1;
 }
+
+class PlotObject {
+  String title;
+  String key;
+  String label;
+  List<double> values;
+
+  PlotObject(this.title, this.key, this.label, this.values);
+}
