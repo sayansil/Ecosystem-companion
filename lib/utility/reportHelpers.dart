@@ -65,6 +65,372 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
           "Percentage %",
           avgOrganism.matingProbability
       );
+      updateDataForSpecies(
+          "Mating Age Start",
+          "matingAgeStart",
+          "Years",
+          avgOrganism.matingAgeStart
+      );
+      updateDataForSpecies(
+          "Mating Age End",
+          "matingAgeEnd",
+          "Years",
+          avgOrganism.matingAgeEnd
+      );
+      updateDataForSpecies(
+          "Max Age",
+          "maxAge",
+          "Years",
+          avgOrganism.maxAge
+      );
+      updateDataForSpecies(
+          "Mutation Probability",
+          "mutationProbability",
+          "Percentage %",
+          avgOrganism.mutationProbability
+      );
+      updateDataForSpecies(
+          "Offsprings Factor",
+          "offspringsFactor",
+          "Value",
+          avgOrganism.offspringsFactor
+      );
+      updateDataForSpecies(
+          "Height on Speed",
+          "heightOnSpeed",
+          "Value",
+          avgOrganism.heightOnSpeed
+      );
+      updateDataForSpecies(
+          "Height on Stamina",
+          "heightOnStamina",
+          "Value",
+          avgOrganism.heightOnStamina
+      );
+      updateDataForSpecies(
+          "Height on Vitality",
+          "heightOnVitality",
+          "Value",
+          avgOrganism.heightOnVitality
+      );
+      updateDataForSpecies(
+          "Weight on Speed",
+          "weightOnSpeed",
+          "Value",
+          avgOrganism.weightOnSpeed
+      );
+      updateDataForSpecies(
+          "Weight on Stamina",
+          "weightOnStamina",
+          "Value",
+          avgOrganism.weightOnStamina
+      );
+      updateDataForSpecies(
+          "Weight on Vitality",
+          "weightOnVitality",
+          "Value",
+          avgOrganism.weightOnVitality
+      );
+      updateDataForSpecies(
+          "Vitality on Appetite",
+          "vitalityOnAppetite",
+          "Value",
+          avgOrganism.vitalityOnAppetite
+      );
+      updateDataForSpecies(
+          "Vitality on Speed",
+          "vitalityOnSpeed",
+          "Value",
+          avgOrganism.vitalityOnSpeed
+      );
+      updateDataForSpecies(
+          "Stamina on Appetite",
+          "staminaOnAppetite",
+          "Value",
+          avgOrganism.staminaOnAppetite
+      );
+      updateDataForSpecies(
+          "Stamina on Speed",
+          "staminaOnSpeed",
+          "Value",
+          avgOrganism.staminaOnSpeed
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Base Appetite",
+          "theoreticalMaximumBaseAppetite",
+          "kCal",
+          avgOrganism.theoreticalMaximumBaseAppetite
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Base Height",
+          "theoreticalMaximumBaseHeight",
+          "m",
+          avgOrganism.theoreticalMaximumBaseHeight
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Base Speed",
+          "theoreticalMaximumBaseSpeed",
+          "m/s",
+          avgOrganism.theoreticalMaximumBaseSpeed
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Base Stamina",
+          "theoreticalMaximumBaseStamina",
+          "Value",
+          avgOrganism.theoreticalMaximumBaseStamina
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Base Vitality",
+          "theoreticalMaximumBaseVitality",
+          "Value",
+          avgOrganism.theoreticalMaximumBaseVitality
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Base Weight",
+          "theoreticalMaximumBaseWeight",
+          "kg",
+          avgOrganism.theoreticalMaximumBaseWeight
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Height",
+          "theoreticalMaximumHeight",
+          "m",
+          avgOrganism.theoreticalMaximumHeight
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Speed",
+          "theoreticalMaximumSpeed",
+          "m/s",
+          avgOrganism.theoreticalMaximumSpeed
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Weight",
+          "theoreticalMaximumWeight",
+          "kg",
+          avgOrganism.theoreticalMaximumWeight
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Height multiplier",
+          "theoreticalMaximumHeightMultiplier",
+          "Value",
+          avgOrganism.theoreticalMaximumHeightMultiplier
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Speed multiplier",
+          "theoreticalMaximumSpeedMultiplier",
+          "Value",
+          avgOrganism.theoreticalMaximumSpeedMultiplier
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Stamina multiplier",
+          "theoreticalMaximumStaminaMultiplier",
+          "Value",
+          avgOrganism.theoreticalMaximumStaminaMultiplier
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Vitality multiplier",
+          "theoreticalMaximumVitalityMultiplier",
+          "Value",
+          avgOrganism.theoreticalMaximumVitalityMultiplier
+      );
+      updateDataForSpecies(
+          "Theoretical maximum Weight multiplier",
+          "theoreticalMaximumWeightyMultiplier",
+          "Value",
+          avgOrganism.theoreticalMaximumWeightMultiplier
+      );
+      updateDataForSpecies(
+          "Generation",
+          "generation",
+          "",
+          avgOrganism.generation
+      );
+      updateDataForSpecies(
+          "Immunity",
+          "immunity",
+          "Value",
+          avgOrganism.immunity
+      );
+      updateDataForSpecies(
+          "Base Appetite",
+          "baseAppetite",
+          "kCal",
+          avgOrganism.baseAppetite
+      );
+      updateDataForSpecies(
+          "Base Height",
+          "baseHeight",
+          "m",
+          avgOrganism.baseHeight
+      );
+      updateDataForSpecies(
+          "Base Speed",
+          "baseSpeed",
+          "m/s",
+          avgOrganism.baseSpeed
+      );
+      updateDataForSpecies(
+          "Base Stamina",
+          "baseStamina",
+          "Value",
+          avgOrganism.baseStamina
+      );
+      updateDataForSpecies(
+          "Base Vitality",
+          "baseVitality",
+          "Value",
+          avgOrganism.baseVitality
+      );
+      updateDataForSpecies(
+          "Base Weight",
+          "baseWeight",
+          "kg",
+          avgOrganism.baseWeight
+      );
+      updateDataForSpecies(
+          "Height multiplier",
+          "heightMultiplier",
+          "Value",
+          avgOrganism.heightMultiplier
+      );
+      updateDataForSpecies(
+          "Speed multiplier",
+          "speedMultiplier",
+          "Value",
+          avgOrganism.speedMultiplier
+      );
+      updateDataForSpecies(
+          "Stamina multiplier",
+          "staminaMultiplier",
+          "Value",
+          avgOrganism.staminaMultiplier
+      );
+      updateDataForSpecies(
+          "Vitality multiplier",
+          "vitalityMultiplier",
+          "Value",
+          avgOrganism.vitalityMultiplier
+      );
+      updateDataForSpecies(
+          "Weight multiplier",
+          "weightMultiplier",
+          "Value",
+          avgOrganism.weightMultiplier
+      );
+      updateDataForSpecies(
+          "Max Height",
+          "maxHeight",
+          "m",
+          avgOrganism.maxHeight
+      );
+      updateDataForSpecies(
+          "Max Weight",
+          "maxWeight",
+          "kg",
+          avgOrganism.maxWeight
+      );
+      updateDataForSpecies(
+          "Age",
+          "age",
+          "Years",
+          avgOrganism.age
+      );
+      updateDataForSpecies(
+          "Height",
+          "height",
+          "m",
+          avgOrganism.height
+      );
+      updateDataForSpecies(
+          "Weight",
+          "weight",
+          "kg",
+          avgOrganism.weight
+      );
+      updateDataForSpecies(
+          "Static Fitness",
+          "staticFitness",
+          "Value",
+          avgOrganism.staticFitness
+      );
+      updateDataForSpecies(
+          "Max Appetite at its age",
+          "maxAppetiteAtAge",
+          "kCal",
+          avgOrganism.maxAppetiteAtAge
+      );
+      updateDataForSpecies(
+          "Max Speed at its age",
+          "maxSpeedAtAge",
+          "m/s",
+          avgOrganism.maxSpeedAtAge
+      );
+      updateDataForSpecies(
+          "Max Stamina at its age",
+          "maxStaminaAtAge",
+          "Value",
+          avgOrganism.maxStaminaAtAge
+      );
+      updateDataForSpecies(
+          "Max Vitality at its age",
+          "maxVitalityAtAge",
+          "Value",
+          avgOrganism.maxVitalityAtAge
+      );
+      updateDataForSpecies(
+          "Appetite",
+          "appetite",
+          "kCal",
+          avgOrganism.appetite
+      );
+      updateDataForSpecies(
+          "Speed",
+          "speed",
+          "m/s",
+          avgOrganism.speed
+      );
+      updateDataForSpecies(
+          "Stamina",
+          "stamina",
+          "Value",
+          avgOrganism.stamina
+      );
+      updateDataForSpecies(
+          "Vitality",
+          "vitality",
+          "Value",
+          avgOrganism.vitality
+      );
+      updateDataForSpecies(
+          "X Co-ordinate",
+          "x",
+          "Position",
+          avgOrganism.x
+      );
+      updateDataForSpecies(
+          "Y Co-ordinate",
+          "y",
+          "Position",
+          avgOrganism.y
+      );
+      updateDataForSpecies(
+          "Dynamic Fitness",
+          "dynamicFitness",
+          "Value",
+          avgOrganism.dynamicFitness
+      );
+      updateDataForSpecies(
+          "Vision Radius",
+          "visionRadius",
+          "m",
+          avgOrganism.visionRadius
+      );
+      updateDataForSpecies(
+          "Sleep Restore Factor",
+          "sleepRestoreFactor",
+          "Value",
+          avgOrganism.sleepRestoreFactor
+      );
     }
 
     for (final species in populationWorld.speciesPopulation!) {
