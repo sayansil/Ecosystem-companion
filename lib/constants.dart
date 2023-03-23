@@ -22,6 +22,7 @@ const defaultSmallPadding = 20.0;
 const dataDir = "data";
 final templateDir = join("data", "json");
 const ecosystemDir = "Ecosystem";
+const reportDir = "Reports";
 const metaDataFileName = ".metadata";
 
 final assetSpeciesTemplatePath = join("assets", "json", "simulationTemplates");
@@ -65,5 +66,6 @@ const permissionStorageNotGranted = "Could not access device storage :(";
 const permissionStorageGrantRequest = "Please grant storage permission to proceed";
 
 const noSpeciesFound = "No species found in that Kingdom. Please create one.";
+const invalidReportPath = "Report not found";
 const simulationKingdomInputText = "Select a Kingdom";
 const simulationKindInputText = "Select a Species";

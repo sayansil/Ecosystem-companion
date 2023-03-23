@@ -6,10 +6,10 @@ import 'package:ecosystem/database/database_manager.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/generated/plot_visualisation_generated.dart';
 import 'package:ecosystem/utility/reportHelpers.dart';
+import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ReportBody extends StatefulWidget {
   final String? plotDataPath;
@@ -24,17 +24,25 @@ class _ReportBodyState extends State<ReportBody> {
   bool loading = true;
   late Uint8List plotBundleData;
   late PlotBundle plotBundle;
-  late String reportLocation;
 
   Future<void> loadData() async {
+    final ecosystemRoot = await getEcosystemRoot();
+
     if (widget.plotDataPath != null) {
       // Load from file in widget.plotDataPath
-      File plotFile = File(join(reportLocation, widget.plotDataPath));
-      plotBundleData = plotFile.readAsBytesSync();
+      File plotFile = File(join(ecosystemRoot, reportDir, widget.plotDataPath));
 
-      setState(() {
-        plotBundle = PlotBundle(plotBundleData);
-      });
+      if (plotFile.existsSync()) {
+        plotBundleData = plotFile.readAsBytesSync();
+
+        setState(() {
+          plotBundle = PlotBundle(plotBundleData);
+        });
+      } else {
+        ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(
+          content: Text(invalidReportPath),
+        ));
+      }
     } else {
       // Load from database
       List<WorldInstance> rows = await MasterDatabase.instance.readAllRows();
@@ -48,24 +56,38 @@ class _ReportBodyState extends State<ReportBody> {
 
   Future<void> saveData() async {
     final currentTs = DateTime.now();
+    final ecosystemRoot = await getEcosystemRoot();
+
     // Save plotBundle to file
     final fileName = "${DateFormat("report-dd.MM.yyyy-hh.mm.ss").format(currentTs)}.ftx";
-    File binFile = File(join(reportLocation, fileName));
-
+    File binFile = File(join(ecosystemRoot, reportDir, fileName));
+    binFile.createSync(recursive: true);
     binFile.writeAsBytes(plotBundleData);
 
     // Update metadata
 
     Uint8List newMetaData;
 
-    final metaPath = join(reportLocation, metaDataFileName);
+    final metaPath = join(ecosystemRoot, reportDir, metaDataFileName);
     File metaFile = File(metaPath);
 
     if (metaFile.existsSync()) {
-      newMetaData = getMetaData(metaFile.readAsBytesSync(), fileName, currentTs.millisecondsSinceEpoch, plotBundle);
+      // Attach old meta to new
+      newMetaData = getMetaData(
+          metaFile.readAsBytesSync(),
+          fileName,
+          currentTs.millisecondsSinceEpoch,
+          plotBundle
+      );
     } else {
+      // Create new meta
       metaFile.createSync(recursive: true);
-      newMetaData = getMetaData(null, fileName, currentTs.millisecondsSinceEpoch, plotBundle);
+      newMetaData = getMetaData(
+          null,
+          fileName,
+          currentTs.millisecondsSinceEpoch,
+          plotBundle
+      );
     }
 
     metaFile.writeAsBytesSync(newMetaData);
@@ -79,16 +101,10 @@ class _ReportBodyState extends State<ReportBody> {
       loading = true;
     });
 
-    SharedPreferences.getInstance().then((prefs) {
+    loadData().then((value) => {
       setState(() {
-        reportLocation = prefs.getString('textReportLocation') ?? "";
-      });
-
-      loadData().then((value) => {
-        setState(() {
-          loading = false;
-        })
-      });
+        loading = false;
+      })
     });
   }
 

@@ -3,9 +3,8 @@ import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/screens/species/species_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/home/home_screen.dart';
-import 'package:ecosystem/screens/config/config_screen.dart';
 import 'package:ecosystem/screens/about/about_screen.dart';
-import 'package:ecosystem/screens/settings/history_screen.dart';
+import 'package:ecosystem/screens/history/history_screen.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -27,13 +26,6 @@ class NavDrawer extends StatelessWidget {
                 onClicked: () => (currentItem == DrawerItem.home)
                     ? {Navigator.of(context).pop()}
                     : selectedItem(context, DrawerItem.home)),
-            const SizedBox(height: 10),
-            buildMenuItem(
-                text: "Config",
-                icon: Icons.code_rounded,
-                onClicked: () => (currentItem == DrawerItem.config)
-                    ? {Navigator.of(context).pop()}
-                    : selectedItem(context, DrawerItem.config)),
             const SizedBox(height: 10),
             buildMenuItem(
                 text: "New species",
@@ -90,9 +82,6 @@ class NavDrawer extends StatelessWidget {
     switch (item) {
       case DrawerItem.home:
         Navigator.push(context, buildPageRoute(HomeScreen()));
-        break;
-      case DrawerItem.config:
-        Navigator.push(context, buildPageRoute(ConfigScreen()));
         break;
       case DrawerItem.organism:
         Navigator.push(context, buildPageRoute(SpeciesScreen()));

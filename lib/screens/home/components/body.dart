@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
-import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/progress/progress_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/list_items.dart';
 import '../../common/transition.dart';
-import '../../config/config_screen.dart';
 import 'header.dart';
 
 class HomeBody extends StatefulWidget {
@@ -76,7 +74,7 @@ class _HomeBodyState extends State<HomeBody> {
     final List<String> dirNames = dirs.map((e) => path.basename(e.path)).toList();
 
     if (dirNames.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(noSpeciesFound),
       ));
     }
@@ -92,19 +90,20 @@ class _HomeBodyState extends State<HomeBody> {
     prefs = await SharedPreferences.getInstance();
 
     final fetchedYears = prefs.getInt('simulationYears') ?? 0;
-    final fetchedSets = prefs.getString('simulationSet') ?? "[]";
+    final fetchedSets = prefs.getString('simulationSet');
 
-    final unpackedSets = SimulationSet.fromString(fetchedSets);
-    final unpackValid = await SimulationSet.isValidSets(unpackedSets);
+    if (fetchedYears > 0 && fetchedSets != null) {
+      final unpackedSets = SimulationSet.fromString(fetchedSets);
 
-    if (fetchedYears > 0 && unpackValid) {
-      setState(() {
-        years = fetchedYears;
-        allSets = unpackedSets;
-        setTextValue(textYearsController, years.toString());
-      });
+      if (await SimulationSet.isValidSets(unpackedSets)) {
+        setState(() {
+          years = fetchedYears;
+          allSets = unpackedSets;
+          setTextValue(textYearsController, years.toString());
+        });
 
-      simulationConfigChanged();
+        simulationConfigChanged();
+      }
     }
 
     fetchKingdomList();
@@ -183,22 +182,7 @@ class _HomeBodyState extends State<HomeBody> {
   void simulate() {
     saveAllValues();
 
-    final textReportLocation = prefs.getString('textReportLocation') ?? "";
-
-    if (textReportLocation.isNotEmpty) {
-      // Config values set properly
-      Navigator.push(context, buildPageRoute(ProgressScreen(years, allSets)));
-    } else {
-      // Configs not yet set
-      showYesNoDialog(
-          context,
-          addConfigsTitle,
-          addConfigsMessage,
-          addConfigsAccept,
-          addConfigsReject).then((result) => {
-            if (result) { Navigator.push(context, buildPageRoute(ConfigScreen())) }
-          });
-    }
+    Navigator.push(context, buildPageRoute(ProgressScreen(years, allSets)));
   }
 
   @override
