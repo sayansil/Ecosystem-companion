@@ -4,8 +4,12 @@ import 'dart:typed_data';
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/schema/generated/report_meta_visualisation_generated.dart' as meta;
 import 'package:ecosystem/screens/common/dialog.dart';
+import 'package:ecosystem/screens/common/history_items.dart';
 import 'package:ecosystem/screens/common/transition.dart';
+import 'package:ecosystem/screens/report/report_screen.dart';
+import 'package:ecosystem/utility/reportHelpers.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,9 +36,12 @@ class _HistoryBodyState extends State<HistoryBody> {
       Uint8List rawMetaData = metaFile.readAsBytesSync();
 
       final metaData = meta.MetaData(rawMetaData);
+      List<meta.Meta> sortedMetaList = metaData.data!
+          .toList(growable: false)
+        ..sort((a, b) => b.createdTs.compareTo(a.createdTs));
 
       setState(() {
-        reportList = metaData.data!;
+        reportList = sortedMetaList;
       });
     }
   }
@@ -54,6 +61,48 @@ class _HistoryBodyState extends State<HistoryBody> {
     });
   }
 
+  void viewReport(String fileName) {
+    Navigator.push(this.context, buildPageRoute(ReportScreen(fileName)));
+  }
+
+  Future<void> deleteReportAsync(String fileName) async {
+    final ecosystemRoot = await getEcosystemRoot();
+    File binFile = File(join(ecosystemRoot, reportDir, fileName));
+    if (binFile.existsSync()) {
+      binFile.deleteSync();
+    }
+
+    File metaFile = File(join(ecosystemRoot, reportDir, metaDataFileName));
+    final rawMetaData = metaFile.readAsBytesSync();
+    final newMetaData = removeMetaData(rawMetaData, fileName);
+    metaFile.writeAsBytesSync(newMetaData);
+  }
+
+  void deleteReport(String fileName) {
+    showYesNoDialog(
+        this.context,
+        confirmDeleteTitle,
+        confirmDeleteMessage,
+        confirmDeleteAccept,
+        confirmDeleteReject,
+        defaultYes: true
+    ).then((response) {
+      if (response) {
+        setState(() {
+          loading = true;
+        });
+
+        deleteReportAsync(fileName)
+            .then((value) =>
+            loadSimulationList().then((value) {
+              setState(() {
+                loading = false;
+              });
+            }));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -65,19 +114,68 @@ class _HistoryBodyState extends State<HistoryBody> {
           // * Header bar
           BodyHeader(parentSize: size),
 
-          // * Form 1
+          // * Report list
           Container(
-            constraints: const BoxConstraints(maxWidth: 600),
+            width: size.width,
             height: size.height,
             margin: EdgeInsets.only(
-              top: size.height * 0.15 - 60,
+              top: size.height * 0.15 - 40,
             ),
-            padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+            padding: const EdgeInsets.only(
+              top: defaultPadding * 1.25,
+              left: defaultPadding * 0.75,
+              right: defaultPadding * 0.25,
+            ),
             decoration: const BoxDecoration(
               color: colorBackground,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(36),
                   topRight: Radius.circular(36)),
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+
+                // Loading screen
+                Visibility(
+                    visible: loading,
+                    child: Lottie.asset(assetLoading),
+                ),
+
+                // Empty screen
+                Visibility(
+                  visible: !loading && reportList.isEmpty,
+                  child: Lottie.asset(assetEmpty),
+                ),
+
+                // Report List
+                Visibility(
+                  visible: !loading && reportList.isNotEmpty,
+                  child: ShaderMask(
+                    shaderCallback: (Rect bounds) {
+                      return LinearGradient(
+                        end: Alignment.topCenter,
+                        begin: Alignment.bottomCenter,
+                        colors: [Colors.white, Colors.white.withOpacity(0.05)],
+                        stops: const [0.95, 1],
+                        tileMode: TileMode.mirror,
+                      ).createShader(bounds);
+                    },
+                    child: SizedBox(
+                      height: size.height,
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: reportList.length,
+                        itemBuilder: (context, index) {
+                          final item = reportList[index];
+                          return historyReportItem(item, viewReport, deleteReport);
+                        },
+                        physics: const BouncingScrollPhysics(),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

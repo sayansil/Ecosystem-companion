@@ -32,3 +32,6 @@ const homeCardKindTextStyle = TextStyle(fontSize: 30);
 const homeCardKingdomTextStyle = TextStyle(fontSize: 15, fontStyle: FontStyle.italic, fontFamily: 'Poppins');
 const homeCardAgeTextStyle = TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: colorTertiary, fontFamily: 'Poppins');
 const homeCardCountTextStyle = TextStyle(fontSize: 30, fontFamily: 'Poppins');
+
+const historyItemTitleTextStyle = TextStyle(fontSize: 18, fontFamily: 'Poppins', fontWeight: FontWeight.bold);
+const historyItemSubtitleTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');

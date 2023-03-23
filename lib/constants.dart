@@ -29,6 +29,11 @@ final assetSpeciesTemplatePath = join("assets", "json", "simulationTemplates");
 
 enum DrawerItem { home, config, history, about, contribute, organism }
 
+// * Asset Paths
+
+const assetLoading = "assets/json/animation/loading.json";
+const assetEmpty = "assets/json/animation/empty.json";
+
 // * String constants
 
 const githubUrl = "https://github.com/sayansil/Ecosystem-companion";
@@ -42,10 +47,10 @@ const stopSimulationMessage = "All unsaved data from the current simulation will
 const stopSimulationAccept = "Yes";
 const stopSimulationReject = "No";
 
-const addConfigsTitle = "Configs not set 😔";
-const addConfigsMessage = "Would you like to set them now?";
-const addConfigsAccept = "Yes";
-const addConfigsReject = "No";
+const confirmDeleteTitle = "Deleting simulation report 😔";
+const confirmDeleteMessage = "Are you sure you want to delete this report?";
+const confirmDeleteAccept = "Yes";
+const confirmDeleteReject = "No";
 
 const simulateStartBtn = "Start";
 const simulateStopBtn = "Stop";

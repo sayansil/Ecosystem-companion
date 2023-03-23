@@ -508,7 +508,7 @@ MetaObjectBuilder metaObjectBuilder(String title, int createdTs, PlotBundle plot
   );
 }
 
-Uint8List getMetaData(
+Uint8List addMetaData(
     Uint8List? oldMetaDataBytes,
     String title,
     int createdTs,
@@ -532,6 +532,32 @@ Uint8List getMetaData(
   final metaData = MetaDataObjectBuilder(
     title: "metadata",
     data: data
+  ).finish(builder);
+
+  builder.finish(metaData);
+  return builder.buffer;
+}
+
+Uint8List removeMetaData(Uint8List? oldMetaDataBytes, String title) {
+  var builder = fb.Builder(initialSize: 1024);
+  List<MetaObjectBuilder> data = [];
+
+  if (oldMetaDataBytes != null) {
+    final oldMetaData = MetaData(oldMetaDataBytes);
+    for (var meta in oldMetaData.data!) {
+      if (meta.title != title) {
+        data.add(MetaObjectBuilder(
+          title: meta.title,
+          subtiles: meta.subtiles,
+          createdTs: meta.createdTs,
+        ));
+      }
+    }
+  }
+
+  final metaData = MetaDataObjectBuilder(
+      title: "metadata",
+      data: data
   ).finish(builder);
 
   builder.finish(metaData);

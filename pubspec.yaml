@@ -26,6 +26,7 @@ dependencies:
   flutter_lints: ^2.0.1
   fl_chart: ^0.61.0
   intl: ^0.18.0
+  lottie: ^2.3.0
   native_simulator:
     path: native_simulator
 
@@ -43,6 +44,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/json/animation/
     - assets/json/simulationTemplates/animal/
     - assets/json/simulationTemplates/plant/
   fonts:

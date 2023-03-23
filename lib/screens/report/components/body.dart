@@ -73,7 +73,7 @@ class _ReportBodyState extends State<ReportBody> {
 
     if (metaFile.existsSync()) {
       // Attach old meta to new
-      newMetaData = getMetaData(
+      newMetaData = addMetaData(
           metaFile.readAsBytesSync(),
           fileName,
           currentTs.millisecondsSinceEpoch,
@@ -82,7 +82,7 @@ class _ReportBodyState extends State<ReportBody> {
     } else {
       // Create new meta
       metaFile.createSync(recursive: true);
-      newMetaData = getMetaData(
+      newMetaData = addMetaData(
           null,
           fileName,
           currentTs.millisecondsSinceEpoch,
