@@ -4,11 +4,14 @@ import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-String getSubtitle(List<String> subtitles, int createdTs){
-  final species = subtitles.join(" | ");
+String getTitle(int createdTs) {
   final dateTime = DateTime.fromMillisecondsSinceEpoch(createdTs);
+  return DateFormat("d MMM y, h:mm a").format(dateTime);
+}
 
-  return "$species | ${DateFormat("d MMM y, h:mm a").format(dateTime)}";
+String getSubtitle(List<String> subtitles){
+  final species = subtitles.join(" | ");
+  return species;
 }
 
 ListTile historyReportItem(Meta item, viewReport, deleteReport) {
@@ -16,16 +19,16 @@ ListTile historyReportItem(Meta item, viewReport, deleteReport) {
     contentPadding: const EdgeInsets.only(
       top: defaultPadding / 3,
       bottom: defaultPadding / 3,
-      left: defaultPadding / 5,
+      left: 0,
       right: defaultPadding / 5,
     ),
     title: Text(
-      item.title!,
+      getTitle(item.createdTs),
       overflow: TextOverflow.ellipsis,
       style: historyItemTitleTextStyle,
     ),
     subtitle: Text(
-      getSubtitle(item.subtiles!, item.createdTs),
+      getSubtitle(item.subtiles!),
       overflow: TextOverflow.ellipsis,
       style: historyItemSubtitleTextStyle,
     ),

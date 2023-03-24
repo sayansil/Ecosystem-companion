@@ -10,10 +10,13 @@ const headerPadding = EdgeInsets.only(
   top: defaultSmallPadding,
 );
 
+const hugeHeaderStyle = TextStyle(fontSize: 35, fontFamily: 'Poppins', fontWeight: FontWeight.w500, color: colorPrimary, height: 1.75);
+
 const editTextStyle = TextStyle(color: colorTextDark, fontSize: 18, fontFamily: 'Poppins');
 const editTextDarkStyle = TextStyle(color: colorTextLight, fontSize: 18, fontFamily: 'Poppins');
 
 const buttonStyle = TextStyle(fontSize: 16, height: 1.1, fontFamily: 'Poppins');
+const smallButtonStyle = TextStyle(fontSize: 10, height: 0.9, fontFamily: 'Poppins');
 const bigButtonStyle = TextStyle(fontSize: 20, height: 1.1, fontFamily: 'Poppins');
 
 const progressTextStyle = TextStyle(fontSize: 28, fontFamily: 'Poppins', color: colorSecondary);
@@ -35,3 +38,12 @@ const homeCardCountTextStyle = TextStyle(fontSize: 30, fontFamily: 'Poppins');
 
 const historyItemTitleTextStyle = TextStyle(fontSize: 18, fontFamily: 'Poppins', fontWeight: FontWeight.bold);
 const historyItemSubtitleTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');
+
+final menuButtonStyle = ElevatedButton.styleFrom(
+  backgroundColor: colorPrimary,
+  foregroundColor: Colors.white,
+  textStyle: smallButtonStyle,
+  shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10))
+  ),
+);

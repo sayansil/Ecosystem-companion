@@ -66,6 +66,7 @@ const configKingdomInputText = "Select a Kingdom";
 const configKindInputText = "Species name";
 
 const snackBarAddedSpeciesText = "Species added successfully";
+const snackBarSavedReportText = "Report saved";
 
 const permissionStorageNotGranted = "Could not access device storage :(";
 const permissionStorageGrantRequest = "Please grant storage permission to proceed";

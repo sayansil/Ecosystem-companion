@@ -42,9 +42,10 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
     for (final species in avgWorld.species!) {
       final avgOrganism = species.organism![0];
       final speciesName = avgOrganism.kind!;
+      final kingdomName = avgOrganism.kingdom.value.toString();
 
       void updateDataForSpecies(title, key, label, value) => updateData(
-          plotSeriesData, speciesName, title, key, label, value
+          plotSeriesData, "${kingdomName}_$speciesName", title, key, label, value
       );
 
       updateDataForSpecies(
@@ -435,9 +436,10 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
 
     for (final species in populationWorld.speciesPopulation!) {
       final speciesName = species.kind!;
+      final kingdomName = species.kingdom;
 
       void updateDataForSpecies(title, key, label, value) => updateData(
-          plotSeriesData, speciesName, title, key, label, value
+          plotSeriesData, "${kingdomName}_$speciesName", title, key, label, value
       );
 
       updateDataForSpecies(
@@ -481,8 +483,12 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
       ));
     });
 
+    final kingdom = species.substring(0, species.indexOf("_"));
+    final kind = species.substring(species.indexOf("_") + 1);
+
     plotGroups.add(PlotGroupObjectBuilder(
-        title: species,
+        name: kind,
+        type: kingdom,
         plots: plots
     ));
   });
@@ -498,7 +504,7 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
 MetaObjectBuilder metaObjectBuilder(String title, int createdTs, PlotBundle plotBundle) {
   List<String> subtitles = [];
   plotBundle.plotGroups?.forEach((plotGroup) {
-    subtitles.add(plotGroup.title!);
+    subtitles.add(plotGroup.name!);
   });
 
   return MetaObjectBuilder(

@@ -45,9 +45,9 @@ class MetaT implements fb.Packable {
   int createdTs;
 
   MetaT({
-      this.title,
-      this.subtiles,
-      this.createdTs = 0});
+    this.title,
+    this.subtiles,
+    this.createdTs = 0});
 
   @override
   int pack(fb.Builder fbBuilder) {
@@ -72,8 +72,8 @@ class _MetaReader extends fb.TableReader<Meta> {
   const _MetaReader();
 
   @override
-  Meta createObject(fb.BufferContext bc, int offset) => 
-    Meta._(bc, offset);
+  Meta createObject(fb.BufferContext bc, int offset) =>
+      Meta._(bc, offset);
 }
 
 class MetaBuilder {
@@ -174,8 +174,8 @@ class MetaDataT implements fb.Packable {
   List<MetaT>? data;
 
   MetaDataT({
-      this.title,
-      this.data});
+    this.title,
+    this.data});
 
   @override
   int pack(fb.Builder fbBuilder) {
@@ -199,8 +199,8 @@ class _MetaDataReader extends fb.TableReader<MetaData> {
   const _MetaDataReader();
 
   @override
-  MetaData createObject(fb.BufferContext bc, int offset) => 
-    MetaData._(bc, offset);
+  MetaData createObject(fb.BufferContext bc, int offset) =>
+      MetaData._(bc, offset);
 }
 
 class MetaDataBuilder {

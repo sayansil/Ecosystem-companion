@@ -14,12 +14,12 @@ class Gender {
   factory Gender.fromValue(int value) {
     final result = values[value];
     if (result == null) {
-        throw StateError('Invalid value $value for bit flag enum Gender');
+      throw StateError('Invalid value $value for bit flag enum Gender');
     }
     return result;
   }
 
-  static Gender? _createOrNull(int? value) => 
+  static Gender? _createOrNull(int? value) =>
       value == null ? null : Gender.fromValue(value);
 
   static const int minValue = 0;
@@ -58,12 +58,12 @@ class Reproduction {
   factory Reproduction.fromValue(int value) {
     final result = values[value];
     if (result == null) {
-        throw StateError('Invalid value $value for bit flag enum Reproduction');
+      throw StateError('Invalid value $value for bit flag enum Reproduction');
     }
     return result;
   }
 
-  static Reproduction? _createOrNull(int? value) => 
+  static Reproduction? _createOrNull(int? value) =>
       value == null ? null : Reproduction.fromValue(value);
 
   static const int minValue = 0;
@@ -102,12 +102,12 @@ class Monitor {
   factory Monitor.fromValue(int value) {
     final result = values[value];
     if (result == null) {
-        throw StateError('Invalid value $value for bit flag enum Monitor');
+      throw StateError('Invalid value $value for bit flag enum Monitor');
     }
     return result;
   }
 
-  static Monitor? _createOrNull(int? value) => 
+  static Monitor? _createOrNull(int? value) =>
       value == null ? null : Monitor.fromValue(value);
 
   static const int minValue = 0;
@@ -146,12 +146,12 @@ class Sleep {
   factory Sleep.fromValue(int value) {
     final result = values[value];
     if (result == null) {
-        throw StateError('Invalid value $value for bit flag enum Sleep');
+      throw StateError('Invalid value $value for bit flag enum Sleep');
     }
     return result;
   }
 
-  static Sleep? _createOrNull(int? value) => 
+  static Sleep? _createOrNull(int? value) =>
       value == null ? null : Sleep.fromValue(value);
 
   static const int minValue = 0;
@@ -192,12 +192,12 @@ class KingdomE {
   factory KingdomE.fromValue(int value) {
     final result = values[value];
     if (result == null) {
-        throw StateError('Invalid value $value for bit flag enum KingdomE');
+      throw StateError('Invalid value $value for bit flag enum KingdomE');
     }
     return result;
   }
 
-  static KingdomE? _createOrNull(int? value) => 
+  static KingdomE? _createOrNull(int? value) =>
       value == null ? null : KingdomE.fromValue(value);
 
   static const int minValue = 0;
@@ -267,9 +267,9 @@ class ChromosomeStrandT implements fb.Packable {
   int length;
 
   ChromosomeStrandT({
-      this.code,
-      this.start = 0,
-      this.length = 0});
+    this.code,
+    this.start = 0,
+    this.length = 0});
 
   @override
   int pack(fb.Builder fbBuilder) {
@@ -292,8 +292,8 @@ class _ChromosomeStrandReader extends fb.TableReader<ChromosomeStrand> {
   const _ChromosomeStrandReader();
 
   @override
-  ChromosomeStrand createObject(fb.BufferContext bc, int offset) => 
-    ChromosomeStrand._(bc, offset);
+  ChromosomeStrand createObject(fb.BufferContext bc, int offset) =>
+      ChromosomeStrand._(bc, offset);
 }
 
 class ChromosomeStrandBuilder {
@@ -619,81 +619,81 @@ class OrganismT implements fb.Packable {
   Monitor monitor;
 
   OrganismT({
-      this.kind,
-      this.kingdom = KingdomE.Animal,
-      this.chromosomeNumber = 0,
-      this.chromosomeStructure,
-      this.foodChainRank = 0,
-      this.sexuality = Reproduction.Sexual,
-      this.ageFitnessOnDeathRatio = 0.0,
-      this.conceivingProbability = 0.0,
-      this.matingProbability = 0.0,
-      this.matingAgeStart = 0,
-      this.matingAgeEnd = 0,
-      this.maxAge = 0,
-      this.mutationProbability = 0.0,
-      this.offspringsFactor = 0.0,
-      this.heightOnSpeed = 0.0,
-      this.heightOnStamina = 0.0,
-      this.heightOnVitality = 0.0,
-      this.weightOnSpeed = 0.0,
-      this.weightOnStamina = 0.0,
-      this.weightOnVitality = 0.0,
-      this.vitalityOnAppetite = 0.0,
-      this.vitalityOnSpeed = 0.0,
-      this.staminaOnAppetite = 0.0,
-      this.staminaOnSpeed = 0.0,
-      this.theoreticalMaximumBaseAppetite = 0.0,
-      this.theoreticalMaximumBaseHeight = 0.0,
-      this.theoreticalMaximumBaseSpeed = 0.0,
-      this.theoreticalMaximumBaseStamina = 0.0,
-      this.theoreticalMaximumBaseVitality = 0.0,
-      this.theoreticalMaximumBaseWeight = 0.0,
-      this.theoreticalMaximumHeight = 0.0,
-      this.theoreticalMaximumSpeed = 0.0,
-      this.theoreticalMaximumWeight = 0.0,
-      this.theoreticalMaximumHeightMultiplier = 0.0,
-      this.theoreticalMaximumSpeedMultiplier = 0.0,
-      this.theoreticalMaximumStaminaMultiplier = 0.0,
-      this.theoreticalMaximumVitalityMultiplier = 0.0,
-      this.theoreticalMaximumWeightMultiplier = 0.0,
-      this.name,
-      this.chromosome,
-      this.gender = Gender.Male,
-      this.generation = 0,
-      this.immunity = 0.0,
-      this.baseAppetite = 0.0,
-      this.baseHeight = 0.0,
-      this.baseSpeed = 0.0,
-      this.baseStamina = 0.0,
-      this.baseVitality = 0.0,
-      this.baseWeight = 0.0,
-      this.heightMultiplier = 0.0,
-      this.speedMultiplier = 0.0,
-      this.staminaMultiplier = 0.0,
-      this.vitalityMultiplier = 0.0,
-      this.weightMultiplier = 0.0,
-      this.maxHeight = 0.0,
-      this.maxWeight = 0.0,
-      this.age = 0,
-      this.height = 0.0,
-      this.weight = 0.0,
-      this.staticFitness = 0.0,
-      this.maxAppetiteAtAge = 0.0,
-      this.maxSpeedAtAge = 0.0,
-      this.maxStaminaAtAge = 0.0,
-      this.maxVitalityAtAge = 0.0,
-      this.appetite = 0.0,
-      this.speed = 0.0,
-      this.stamina = 0.0,
-      this.vitality = 0.0,
-      this.x = 0,
-      this.y = 0,
-      this.dynamicFitness = 1.0,
-      this.visionRadius = 0.0,
-      this.sleepRestoreFactor = 0.0,
-      this.asleep = Sleep.Awake,
-      this.monitor = Monitor.None});
+    this.kind,
+    this.kingdom = KingdomE.Animal,
+    this.chromosomeNumber = 0,
+    this.chromosomeStructure,
+    this.foodChainRank = 0,
+    this.sexuality = Reproduction.Sexual,
+    this.ageFitnessOnDeathRatio = 0.0,
+    this.conceivingProbability = 0.0,
+    this.matingProbability = 0.0,
+    this.matingAgeStart = 0,
+    this.matingAgeEnd = 0,
+    this.maxAge = 0,
+    this.mutationProbability = 0.0,
+    this.offspringsFactor = 0.0,
+    this.heightOnSpeed = 0.0,
+    this.heightOnStamina = 0.0,
+    this.heightOnVitality = 0.0,
+    this.weightOnSpeed = 0.0,
+    this.weightOnStamina = 0.0,
+    this.weightOnVitality = 0.0,
+    this.vitalityOnAppetite = 0.0,
+    this.vitalityOnSpeed = 0.0,
+    this.staminaOnAppetite = 0.0,
+    this.staminaOnSpeed = 0.0,
+    this.theoreticalMaximumBaseAppetite = 0.0,
+    this.theoreticalMaximumBaseHeight = 0.0,
+    this.theoreticalMaximumBaseSpeed = 0.0,
+    this.theoreticalMaximumBaseStamina = 0.0,
+    this.theoreticalMaximumBaseVitality = 0.0,
+    this.theoreticalMaximumBaseWeight = 0.0,
+    this.theoreticalMaximumHeight = 0.0,
+    this.theoreticalMaximumSpeed = 0.0,
+    this.theoreticalMaximumWeight = 0.0,
+    this.theoreticalMaximumHeightMultiplier = 0.0,
+    this.theoreticalMaximumSpeedMultiplier = 0.0,
+    this.theoreticalMaximumStaminaMultiplier = 0.0,
+    this.theoreticalMaximumVitalityMultiplier = 0.0,
+    this.theoreticalMaximumWeightMultiplier = 0.0,
+    this.name,
+    this.chromosome,
+    this.gender = Gender.Male,
+    this.generation = 0,
+    this.immunity = 0.0,
+    this.baseAppetite = 0.0,
+    this.baseHeight = 0.0,
+    this.baseSpeed = 0.0,
+    this.baseStamina = 0.0,
+    this.baseVitality = 0.0,
+    this.baseWeight = 0.0,
+    this.heightMultiplier = 0.0,
+    this.speedMultiplier = 0.0,
+    this.staminaMultiplier = 0.0,
+    this.vitalityMultiplier = 0.0,
+    this.weightMultiplier = 0.0,
+    this.maxHeight = 0.0,
+    this.maxWeight = 0.0,
+    this.age = 0,
+    this.height = 0.0,
+    this.weight = 0.0,
+    this.staticFitness = 0.0,
+    this.maxAppetiteAtAge = 0.0,
+    this.maxSpeedAtAge = 0.0,
+    this.maxStaminaAtAge = 0.0,
+    this.maxVitalityAtAge = 0.0,
+    this.appetite = 0.0,
+    this.speed = 0.0,
+    this.stamina = 0.0,
+    this.vitality = 0.0,
+    this.x = 0,
+    this.y = 0,
+    this.dynamicFitness = 1.0,
+    this.visionRadius = 0.0,
+    this.sleepRestoreFactor = 0.0,
+    this.asleep = Sleep.Awake,
+    this.monitor = Monitor.None});
 
   @override
   int pack(fb.Builder fbBuilder) {
@@ -794,8 +794,8 @@ class _OrganismReader extends fb.TableReader<Organism> {
   const _OrganismReader();
 
   @override
-  Organism createObject(fb.BufferContext bc, int offset) => 
-    Organism._(bc, offset);
+  Organism createObject(fb.BufferContext bc, int offset) =>
+      Organism._(bc, offset);
 }
 
 class OrganismBuilder {
@@ -1479,9 +1479,9 @@ class SpeciesT implements fb.Packable {
   List<OrganismT>? organism;
 
   SpeciesT({
-      this.kind,
-      this.kingdom = KingdomE.Animal,
-      this.organism});
+    this.kind,
+    this.kingdom = KingdomE.Animal,
+    this.organism});
 
   @override
   int pack(fb.Builder fbBuilder) {
@@ -1506,8 +1506,8 @@ class _SpeciesReader extends fb.TableReader<Species> {
   const _SpeciesReader();
 
   @override
-  Species createObject(fb.BufferContext bc, int offset) => 
-    Species._(bc, offset);
+  Species createObject(fb.BufferContext bc, int offset) =>
+      Species._(bc, offset);
 }
 
 class SpeciesBuilder {
@@ -1608,8 +1608,8 @@ class WorldT implements fb.Packable {
   List<SpeciesT>? species;
 
   WorldT({
-      this.year = 0,
-      this.species});
+    this.year = 0,
+    this.species});
 
   @override
   int pack(fb.Builder fbBuilder) {
@@ -1631,8 +1631,8 @@ class _WorldReader extends fb.TableReader<World> {
   const _WorldReader();
 
   @override
-  World createObject(fb.BufferContext bc, int offset) => 
-    World._(bc, offset);
+  World createObject(fb.BufferContext bc, int offset) =>
+      World._(bc, offset);
 }
 
 class WorldBuilder {

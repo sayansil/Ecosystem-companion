@@ -5,10 +5,13 @@ import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/database/database_manager.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/generated/plot_visualisation_generated.dart';
+import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
+import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:ecosystem/utility/reportHelpers.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 
 class ReportBody extends StatefulWidget {
@@ -22,8 +25,12 @@ class ReportBody extends StatefulWidget {
 
 class _ReportBodyState extends State<ReportBody> {
   bool loading = true;
-  late Uint8List plotBundleData;
-  late PlotBundle plotBundle;
+  Uint8List? plotBundleData;
+  PlotBundle? plotBundle;
+
+  String? activeSpecies;
+  String? activeKingdom;
+  List<Plot> activePlots = [];
 
   Future<void> loadData() async {
     final ecosystemRoot = await getEcosystemRoot();
@@ -36,7 +43,11 @@ class _ReportBodyState extends State<ReportBody> {
         plotBundleData = plotFile.readAsBytesSync();
 
         setState(() {
-          plotBundle = PlotBundle(plotBundleData);
+          plotBundle = PlotBundle(plotBundleData!);
+
+          activeSpecies = plotBundle!.plotGroups![0].name;
+          activeKingdom = plotBundle!.plotGroups![0].type;
+          activePlots = plotBundle!.plotGroups![0].plots!;
         });
       } else {
         ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(
@@ -49,7 +60,11 @@ class _ReportBodyState extends State<ReportBody> {
       plotBundleData = getPlotData(rows);
 
       setState(() {
-        plotBundle = PlotBundle(plotBundleData);
+        plotBundle = PlotBundle(plotBundleData!);
+
+        activeSpecies = plotBundle!.plotGroups![0].name;
+        activeKingdom = plotBundle!.plotGroups![0].type;
+        activePlots = plotBundle!.plotGroups![0].plots!;
       });
     }
   }
@@ -62,7 +77,7 @@ class _ReportBodyState extends State<ReportBody> {
     final fileName = "${DateFormat("report-dd.MM.yyyy-hh.mm.ss").format(currentTs)}.ftx";
     File binFile = File(join(ecosystemRoot, reportDir, fileName));
     binFile.createSync(recursive: true);
-    binFile.writeAsBytes(plotBundleData);
+    binFile.writeAsBytes(plotBundleData!);
 
     // Update metadata
 
@@ -77,7 +92,7 @@ class _ReportBodyState extends State<ReportBody> {
           metaFile.readAsBytesSync(),
           fileName,
           currentTs.millisecondsSinceEpoch,
-          plotBundle
+          plotBundle!
       );
     } else {
       // Create new meta
@@ -86,11 +101,23 @@ class _ReportBodyState extends State<ReportBody> {
           null,
           fileName,
           currentTs.millisecondsSinceEpoch,
-          plotBundle
+          plotBundle!
       );
     }
 
     metaFile.writeAsBytesSync(newMetaData);
+  }
+
+  void setActiveSpecies(String? species) {
+    for (final plotGroup in plotBundle!.plotGroups!) {
+      if (plotGroup.name == species) {
+        setState(() {
+          activeSpecies = plotGroup.name;
+          activeKingdom = plotGroup.type;
+          activePlots = plotGroup.plots!;
+        });
+      }
+    }
   }
 
   @override
@@ -110,7 +137,98 @@ class _ReportBodyState extends State<ReportBody> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return const Text("TODO");
+    Size size = MediaQuery.of(context).size;
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Visibility(
+          visible: loading,
+            child: Lottie.asset(assetLoading)
+        ),
+
+        Visibility(
+          visible: !loading,
+          child: Stack(
+            children: [
+
+              // Title
+              const Positioned(
+                left: defaultPadding,
+                child: Text(
+                  "Simulation\nReport",
+                  style: hugeHeaderStyle,
+                )
+              ),
+
+              // Actions Bar
+              Positioned(
+                  right: defaultPadding,
+                  top: 10,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Row(
+                        children: [
+
+                          // Export button
+                          ElevatedButton(
+                            onPressed: null,
+                            style: menuButtonStyle,
+                            child: const Text("Export"),
+                          ),
+
+
+                          const SizedBox(
+                            width: 15,
+                          ),
+
+                          // Save button
+                          ElevatedButton(
+                            onPressed: () {
+                              saveData().then((value) => ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(
+                                content: Text(snackBarSavedReportText),
+                              )));
+                            },
+                            style: menuButtonStyle,
+                            child: const Text("Save"),
+                          ),
+                        ],
+                      ),
+
+                      // Species dropdown
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            child: DropdownButtonFormField<String>(
+                              icon: const Icon(Icons.arrow_downward_rounded),
+                              elevation: 10,
+                              style: dropdownOptionStyle,
+                              onChanged: (String? item) =>
+                                  setActiveSpecies(item),
+                              value: activeSpecies,
+                              items: plotBundle?.plotGroups!.map((item) => DropdownMenuItem<String>(
+                                value: item.name!,
+                                child: Text(item.name!),
+                              )).toList(),
+                              decoration: const InputDecoration(
+                                labelText: "Species",
+                                labelStyle: editTextStyle,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              )
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )
+              ),
+            ]
+          )
+        )
+      ],
+    );
   }
 }
