@@ -12,6 +12,7 @@
 .history
 .svn/
 .metadata
+lib/schema/generated
 
 # IntelliJ related
 *.iml
