@@ -8,6 +8,92 @@ import 'package:ecosystem/schema/world_ecosystem_generated.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 
+const populationGenderKey = "populationGender";
+const populationMatingKey = "populationMating";
+const affectsStaminaKey = "affectsStamina";
+const affectsVitalityKey = "affectsVitality";
+const affectsSpeedKey = "affectsSpeed";
+const affectsAppetiteKey = "affectsAppetite";
+
+const plotCombinations = {
+  "malePopulation": populationGenderKey,
+  "femalePopulation": populationGenderKey,
+  "matablePopulation": populationMatingKey,
+  "nonMatablePopulation": populationMatingKey,
+  "weightOnStamina": affectsStaminaKey,
+  "heightOnStamina": affectsStaminaKey,
+  "weightOnVitality": affectsVitalityKey,
+  "heightOnVitality": affectsVitalityKey,
+  "weightOnSpeed": affectsSpeedKey,
+  "heightOnSpeed": affectsSpeedKey,
+  "staminaOnSpeed": affectsSpeedKey,
+  "vitalityOnSpeed": affectsSpeedKey,
+  "staminaOnAppetite": affectsAppetiteKey,
+  "vitalityOnAppetite": affectsAppetiteKey,
+};
+
+const plotCombinationConfigs = {
+  populationGenderKey: {
+    "title": "Population by Gender",
+    "label": "Population",
+  },
+  populationMatingKey: {
+    "title": "Population by Fertility",
+    "label": "Population",
+  },
+  affectsStaminaKey: {
+    "title": "Factors affecting Stamina",
+    "label": "",
+  },
+  affectsVitalityKey: {
+    "title": "Factors affecting Vitality",
+    "label": "",
+  },
+  affectsSpeedKey: {
+    "title": "Factors affecting Speed",
+    "label": "",
+  },
+  affectsAppetiteKey: {
+    "title": "Factors affecting Appetite",
+    "label": "",
+  },
+};
+
+const skipPlots = {
+  KingdomName.animal: [],
+  KingdomName.plant: [
+    "malePopulation",
+    "femalePopulation",
+    "heightOnStamina",
+    "weightOnStamina",
+    "heightOnSpeed",
+    "weightOnSpeed",
+    "staminaOnSpeed",
+    "vitalityOnSpeed",
+    "vitalityOnAppetite",
+    "staminaOnAppetite",
+    "visionRadius",
+    "maxSpeedAtAge",
+    "maxAppetiteAtAge",
+    "maxStaminaAtAge",
+    "theoreticalMaximumBaseSpeed",
+    "theoreticalMaximumBaseAppetite",
+    "theoreticalMaximumBaseStamina",
+    "theoreticalMaximumSpeed",
+    "theoreticalMaximumSpeedMultiplier",
+    "theoreticalMaximumStaminaMultiplier",
+  ]
+};
+
+class RenderObject {
+  String title;
+  String key;
+  String label;
+  Map<String, List<double>> lines;
+
+  RenderObject(this.title, this.key, this.label, this.lines);
+}
+
 void updateData(
     Map<String, Map<String, PlotObject>> plotSeriesData,
     String speciesName,
@@ -39,6 +125,53 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
     final avgWorld = World(row.avgWorld);
     final populationWorld = WorldPopulation(row.populationWorld);
 
+    for (final species in populationWorld.speciesPopulation!) {
+      final speciesName = species.kind!;
+      final kingdomName = species.kingdom;
+
+      void updateDataForSpecies(title, key, label, value) => updateData(
+          plotSeriesData, "${kingdomName}_$speciesName", title, key, label, value
+      );
+
+      updateDataForSpecies(
+          "Population",
+          "population",
+          "Population",
+          species.matablePopulation!.femalePopulation.toDouble() +
+              species.nonMatablePopulation!.femalePopulation.toDouble() +
+              species.nonMatablePopulation!.malePopulation.toDouble() +
+              species.matablePopulation!.malePopulation.toDouble()
+      );
+      updateDataForSpecies(
+          "Non-matable",
+          "nonMatablePopulation",
+          "Population",
+          species.nonMatablePopulation!.malePopulation.toDouble() +
+              species.nonMatablePopulation!.femalePopulation.toDouble()
+      );
+      updateDataForSpecies(
+          "Matable",
+          "matablePopulation",
+          "Population",
+          species.matablePopulation!.malePopulation.toDouble() +
+              species.matablePopulation!.femalePopulation.toDouble()
+      );
+      updateDataForSpecies(
+          "Male",
+          "malePopulation",
+          "Population",
+          species.nonMatablePopulation!.malePopulation.toDouble() +
+              species.matablePopulation!.malePopulation.toDouble()
+      );
+      updateDataForSpecies(
+          "Female",
+          "femalePopulation",
+          "Population",
+          species.matablePopulation!.femalePopulation.toDouble() +
+              species.nonMatablePopulation!.femalePopulation.toDouble()
+      );
+    }
+
     for (final species in avgWorld.species!) {
       final avgOrganism = species.organism![0];
       final speciesName = avgOrganism.kind!;
@@ -49,7 +182,7 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
       );
 
       updateDataForSpecies(
-          "Age/Fitness On Death Ratio",
+          "Age/Fitness affecting Death",
           "ageFitnessOnDeathRatio",
           "Value",
           avgOrganism.ageFitnessOnDeathRatio.toDouble()
@@ -97,61 +230,61 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
           avgOrganism.offspringsFactor.toDouble()
       );
       updateDataForSpecies(
-          "Height on Speed",
+          "Height",
           "heightOnSpeed",
           "Value",
           avgOrganism.heightOnSpeed.toDouble()
       );
       updateDataForSpecies(
-          "Height on Stamina",
+          "Height",
           "heightOnStamina",
           "Value",
           avgOrganism.heightOnStamina.toDouble()
       );
       updateDataForSpecies(
-          "Height on Vitality",
+          "Height",
           "heightOnVitality",
           "Value",
           avgOrganism.heightOnVitality.toDouble()
       );
       updateDataForSpecies(
-          "Weight on Speed",
+          "Weight",
           "weightOnSpeed",
           "Value",
           avgOrganism.weightOnSpeed.toDouble()
       );
       updateDataForSpecies(
-          "Weight on Stamina",
+          "Weight",
           "weightOnStamina",
           "Value",
           avgOrganism.weightOnStamina.toDouble()
       );
       updateDataForSpecies(
-          "Weight on Vitality",
+          "Weight",
           "weightOnVitality",
           "Value",
           avgOrganism.weightOnVitality.toDouble()
       );
       updateDataForSpecies(
-          "Vitality on Appetite",
+          "Vitality",
           "vitalityOnAppetite",
           "Value",
           avgOrganism.vitalityOnAppetite.toDouble()
       );
       updateDataForSpecies(
-          "Vitality on Speed",
+          "Vitality",
           "vitalityOnSpeed",
           "Value",
           avgOrganism.vitalityOnSpeed.toDouble()
       );
       updateDataForSpecies(
-          "Stamina on Appetite",
+          "Stamina",
           "staminaOnAppetite",
           "Value",
           avgOrganism.staminaOnAppetite.toDouble()
       );
       updateDataForSpecies(
-          "Stamina on Speed",
+          "Stamina",
           "staminaOnSpeed",
           "Value",
           avgOrganism.staminaOnSpeed.toDouble()
@@ -433,40 +566,6 @@ Uint8List getPlotData(List<WorldInstance> dbRows) {
           avgOrganism.sleepRestoreFactor.toDouble()
       );
     }
-
-    for (final species in populationWorld.speciesPopulation!) {
-      final speciesName = species.kind!;
-      final kingdomName = species.kingdom;
-
-      void updateDataForSpecies(title, key, label, value) => updateData(
-          plotSeriesData, "${kingdomName}_$speciesName", title, key, label, value
-      );
-
-      updateDataForSpecies(
-          "Matable Male Population",
-          "matableMalePopulation",
-          "Population",
-          species.matablePopulation!.malePopulation.toDouble()
-      );
-      updateDataForSpecies(
-          "Matable Female Population",
-          "matableFemalePopulation",
-          "Population",
-          species.matablePopulation!.femalePopulation.toDouble()
-      );
-      updateDataForSpecies(
-          "Non-matable Male Population",
-          "nonMatableMalePopulation",
-          "Population",
-          species.nonMatablePopulation!.malePopulation.toDouble()
-      );
-      updateDataForSpecies(
-          "Non-matable Female Population",
-          "nonMatableFemalePopulation",
-          "Population",
-          species.nonMatablePopulation!.femalePopulation.toDouble()
-      );
-    }
   }
 
   List<PlotGroupObjectBuilder> plotGroups = [];
@@ -570,3 +669,39 @@ Uint8List removeMetaData(Uint8List? oldMetaDataBytes, String title) {
   return builder.buffer;
 }
 
+List<RenderObject> getRenderObjects(List<Plot> plots, String kingdom, String kind) {
+  Map<String, RenderObject> renderObjects = {};
+
+  for (final plot in plots) {
+    final key = plot.key!;
+    
+    if (skipPlots[KingdomName.getByValue(kingdom)]!.contains(key)) {
+      // Invalid plot type for current kingdom
+      continue;
+    }
+
+    if (plotCombinations.containsKey(key)) {
+      final combinationKey = plotCombinations[key]!;
+
+      if (renderObjects.containsKey(combinationKey)) {
+        renderObjects[combinationKey]!.lines[plot.title!] = plot.y!;
+      } else {
+        renderObjects[combinationKey] = RenderObject(
+            plotCombinationConfigs[combinationKey]!["title"]!,
+            combinationKey,
+            plotCombinationConfigs[combinationKey]!["label"]!,
+            {plot.title!: plot.y!}
+        );
+      }
+    } else {
+      renderObjects[key] = RenderObject(
+          plot.title!,
+          key,
+          plot.ylabel!,
+          {plot.title!: plot.y!}
+      );
+    }
+  }
+
+  return renderObjects.values.toList();
+}

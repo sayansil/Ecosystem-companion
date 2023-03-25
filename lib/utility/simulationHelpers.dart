@@ -105,6 +105,11 @@ enum KingdomName {
 
   const KingdomName(this.value);
   final String value;
+
+  static KingdomName getByValue(index){
+    final i = int.parse(index.toString());
+    return KingdomName.values.firstWhere((x) => x.index == i);
+  }
 }
 
 int getKingdomIndex(String kingdomName) {

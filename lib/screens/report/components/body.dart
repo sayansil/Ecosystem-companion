@@ -5,9 +5,8 @@ import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/database/database_manager.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/plot_visualisation_generated.dart';
-import 'package:ecosystem/schema/world_ecosystem_generated.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
-import 'package:ecosystem/utility/reportHelpers.dart';
+import 'package:ecosystem/utility/reportHelpers.dart' as report;
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -27,6 +26,7 @@ class _ReportBodyState extends State<ReportBody> {
   bool loading = true;
   Uint8List? plotBundleData;
   PlotBundle? plotBundle;
+  List<report.RenderObject>? renderObjects;
 
   String? activeSpecies;
   String? activeKingdom;
@@ -41,32 +41,33 @@ class _ReportBodyState extends State<ReportBody> {
 
       if (plotFile.existsSync()) {
         plotBundleData = plotFile.readAsBytesSync();
-
-        setState(() {
-          plotBundle = PlotBundle(plotBundleData!);
-
-          activeSpecies = plotBundle!.plotGroups![0].name;
-          activeKingdom = plotBundle!.plotGroups![0].type;
-          activePlots = plotBundle!.plotGroups![0].plots!;
-        });
       } else {
         ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(
           content: Text(invalidReportPath),
         ));
+        return;
       }
     } else {
       // Load from database
       List<WorldInstance> rows = await MasterDatabase.instance.readAllRows();
-      plotBundleData = getPlotData(rows);
-
-      setState(() {
-        plotBundle = PlotBundle(plotBundleData!);
-
-        activeSpecies = plotBundle!.plotGroups![0].name;
-        activeKingdom = plotBundle!.plotGroups![0].type;
-        activePlots = plotBundle!.plotGroups![0].plots!;
-      });
+      plotBundleData = report.getPlotData(rows);
     }
+
+    final currentPlotBundle = PlotBundle(plotBundleData!);
+    final currentRenderObjects = report.getRenderObjects(
+      currentPlotBundle.plotGroups![0].plots!,
+      currentPlotBundle.plotGroups![0].type!,
+      currentPlotBundle.plotGroups![0].name!,
+    );
+
+    setState(() {
+      plotBundle = currentPlotBundle;
+      renderObjects = currentRenderObjects;
+
+      activeSpecies = plotBundle!.plotGroups![0].name;
+      activeKingdom = plotBundle!.plotGroups![0].type;
+      activePlots = plotBundle!.plotGroups![0].plots!;
+    });
   }
 
   Future<void> saveData() async {
@@ -88,7 +89,7 @@ class _ReportBodyState extends State<ReportBody> {
 
     if (metaFile.existsSync()) {
       // Attach old meta to new
-      newMetaData = addMetaData(
+      newMetaData = report.addMetaData(
           metaFile.readAsBytesSync(),
           fileName,
           currentTs.millisecondsSinceEpoch,
@@ -97,7 +98,7 @@ class _ReportBodyState extends State<ReportBody> {
     } else {
       // Create new meta
       metaFile.createSync(recursive: true);
-      newMetaData = addMetaData(
+      newMetaData = report.addMetaData(
           null,
           fileName,
           currentTs.millisecondsSinceEpoch,
@@ -111,7 +112,15 @@ class _ReportBodyState extends State<ReportBody> {
   void setActiveSpecies(String? species) {
     for (final plotGroup in plotBundle!.plotGroups!) {
       if (plotGroup.name == species) {
+        final currentRenderObjects = report.getRenderObjects(
+          plotGroup.plots!,
+          plotGroup.type!,
+          plotGroup.name!,
+        );
+
         setState(() {
+          renderObjects = currentRenderObjects;
+
           activeSpecies = plotGroup.name;
           activeKingdom = plotGroup.type;
           activePlots = plotGroup.plots!;
