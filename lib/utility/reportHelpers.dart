@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
-import 'package:ecosystem/schema/generated/plot_visualisation_generated.dart';
-import 'package:ecosystem/schema/generated/population_ecosystem_generated.dart';
-import 'package:ecosystem/schema/generated/report_meta_visualisation_generated.dart';
-import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
+import 'package:ecosystem/schema/plot_visualisation_generated.dart';
+import 'package:ecosystem/schema/population_ecosystem_generated.dart';
+import 'package:ecosystem/schema/report_meta_visualisation_generated.dart';
+import 'package:ecosystem/schema/world_ecosystem_generated.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 

@@ -1,5 +1,5 @@
 import 'package:ecosystem/constants.dart';
-import 'package:ecosystem/schema/generated/report_meta_visualisation_generated.dart';
+import 'package:ecosystem/schema/report_meta_visualisation_generated.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

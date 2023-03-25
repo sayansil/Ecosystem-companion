@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:ecosystem/constants.dart';
-import 'package:ecosystem/schema/generated/report_meta_visualisation_generated.dart' as meta;
+import 'package:ecosystem/schema/report_meta_visualisation_generated.dart' as meta;
 import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/common/history_items.dart';
 import 'package:ecosystem/screens/common/transition.dart';
@@ -11,7 +11,6 @@ import 'package:ecosystem/utility/reportHelpers.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'header.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +61,10 @@ class _HistoryBodyState extends State<HistoryBody> {
   }
 
   void viewReport(String fileName) {
-    Navigator.push(this.context, buildPageRoute(ReportScreen(fileName)));
+    Navigator.push(
+        this.context,
+        buildPageRoute(ReportScreen(fileName))
+    ).then((value) => loadSimulationList());
   }
 
   Future<void> deleteReportAsync(String fileName) async {

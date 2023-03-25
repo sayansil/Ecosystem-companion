@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
+import 'package:ecosystem/schema/world_ecosystem_generated.dart';
 import 'package:ecosystem/screens/common/live_plot.dart';
 import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/screens/report/report_screen.dart';
