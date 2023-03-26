@@ -5,6 +5,7 @@ import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/database/database_manager.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/plot_visualisation_generated.dart';
+import 'package:ecosystem/screens/common/plot_item.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:ecosystem/utility/reportHelpers.dart' as report;
 import 'package:ecosystem/utility/simulationHelpers.dart';
@@ -129,6 +130,21 @@ class _ReportBodyState extends State<ReportBody> {
     }
   }
 
+  Widget getPlotList(Size size) {
+    return Expanded(
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: renderObjects?.length,
+        itemBuilder: (context, index) {
+          final item = renderObjects![index];
+          return getReportPlot(item);
+        },
+      ),
+    );
+
+    // return getReportPlot(renderObjects![1]);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -234,6 +250,16 @@ class _ReportBodyState extends State<ReportBody> {
                     ],
                   )
               ),
+
+
+              if (renderObjects != null)
+                Flex(
+                  direction: Axis.vertical,
+                  children: [
+                    const SizedBox(height: 150),
+                    getPlotList(size),
+                  ],
+                )
             ]
           )
         )

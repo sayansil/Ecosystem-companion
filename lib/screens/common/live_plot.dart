@@ -10,43 +10,6 @@ List<Color> gradientColors = [
   colorPrimary,
 ];
 
-Widget bottomTitleWidgets(double value, TitleMeta meta) {
-  const style = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 16,
-  );
-
-  int roundValue = value.toInt();
-  Widget text = Text("$roundValue", style: style);
-
-  return SideTitleWidget(
-    axisSide: meta.axisSide,
-    child: text,
-  );
-}
-
-Widget leftTitleWidgets(double value, TitleMeta meta) {
-  const style = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 15,
-  );
-
-  int roundValue = value.toInt();
-
-  String text;
-
-  if (roundValue >= 1000000) {
-    text = "${(roundValue / 1000000).round()}M";
-  } else if (roundValue >= 1000) {
-    text = "${(roundValue / 1000).round()}K";
-  } else {
-    text = "$roundValue";
-  }
-
-  return Text(text, style: style, textAlign: TextAlign.left);
-}
-
-
 List<FlSpot> getLineData(List<int> x, List<int> y, [int? maxX, int? maxY]) {
   List<FlSpot> lineData = [];
 

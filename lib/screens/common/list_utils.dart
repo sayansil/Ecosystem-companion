@@ -1,11 +1,11 @@
-List<int> minMaxList(List<int> l) {
-  List<int> results = [];
+List minMaxList(List l) {
+  List results = [];
 
   if (l.isNotEmpty) {
-    int minL = l[0];
-    int maxL = l[0];
+    var minL = l[0];
+    var maxL = l[0];
 
-    for (int element in l) {
+    for (var element in l) {
       if (element < minL) {
         minL = element;
       }

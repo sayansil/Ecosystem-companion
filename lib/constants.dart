@@ -9,8 +9,19 @@ const colorSecondary = Color(0xFF696969);
 const colorTertiary = Color(0xFFA2A2A2);
 const colorSecondaryLight = Color(0x80B9B9B9);
 const colorBackground = Color(0xFFF0F0F0);
+const colorBackgroundSeeThrough = Color(0xA6F0F0F0);
 const colorTextDark = Color(0x80181818);
 const colorTextLight = Color(0x80FFFFFF);
+
+const plotLineColors = [
+  Colors.deepPurple,
+  Colors.pink,
+  Colors.blue,
+  Colors.green,
+  Colors.red,
+  Colors.amber,
+  Colors.cyan,
+];
 
 // * Global spacing
 
