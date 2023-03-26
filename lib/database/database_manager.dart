@@ -1,6 +1,6 @@
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
-import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

@@ -3,7 +3,7 @@ import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import 'list_utils.dart';
+import '../../utility/list_utils.dart';
 
 List<Color> gradientColors = [
   colorSecondary,

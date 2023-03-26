@@ -6,7 +6,7 @@ import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
-import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/simulation_item.dart';
 import '../../common/transition.dart';

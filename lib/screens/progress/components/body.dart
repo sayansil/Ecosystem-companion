@@ -7,7 +7,7 @@ import 'package:ecosystem/screens/report/report_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:native_simulator/native_simulator.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:fl_chart/fl_chart.dart';

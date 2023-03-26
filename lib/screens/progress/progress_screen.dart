@@ -2,7 +2,7 @@ import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/screens/common/defaultappbar.dart';
 import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/progress/components/body.dart';
-import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/material.dart';
 
 class ProgressScreen extends StatelessWidget {

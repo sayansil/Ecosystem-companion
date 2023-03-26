@@ -5,7 +5,7 @@ import 'package:ecosystem/schema/plot_visualisation_generated.dart';
 import 'package:ecosystem/schema/population_ecosystem_generated.dart';
 import 'package:ecosystem/schema/report_meta_visualisation_generated.dart';
 import 'package:ecosystem/schema/world_ecosystem_generated.dart';
-import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 
 const populationGenderKey = "populationGender";

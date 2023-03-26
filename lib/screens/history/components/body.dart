@@ -7,8 +7,8 @@ import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/common/history_items.dart';
 import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/screens/report/report_screen.dart';
-import 'package:ecosystem/utility/reportHelpers.dart';
-import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/utility/report_helpers.dart';
+import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 

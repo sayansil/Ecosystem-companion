@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
-import 'package:ecosystem/utility/reportHelpers.dart' as report_helper;
+import 'package:ecosystem/utility/num_utils.dart';
+import 'package:ecosystem/utility/report_helpers.dart' as report_helper;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -47,13 +48,10 @@ Widget leftTitleWidgets(
   }
 
   // Ignore value if too close to ends
-  if (value != minY && value < minY + interval) {
+  if ((value != minY && value != maxY) &&
+      (value < minY + interval || value > maxY - interval)) {
     textValue = "";
   }
-  if (value != maxY && value > maxY - interval) {
-    textValue = "";
-  }
-
   final text = Text(textValue, style: plotTickStyle, textAlign: TextAlign.right);
 
   return SideTitleWidget(
@@ -73,7 +71,7 @@ List<LineTooltipItem> getTooltips(List<LineBarSpot> spots) {
 
     toolTips.add(
         LineTooltipItem(
-            "${spot.y}",
+            roundNumber(spot.y, 5),
             TextStyle(
                 color: spotColor,
                 fontSize: 14, fontFamily: 'Poppins',
@@ -176,8 +174,8 @@ Widget getReportPlot(report_helper.RenderObject object) {
     );
   }
 
-  final leftInterval = max(1, (maxY - minY) / 4).toDouble();
-  final rightInterval = max(1, (maxX - minX) / 5).toDouble();
+  final leftInterval = max(0.0001, (maxY - minY) / 3.0).toDouble();
+  final bottomInterval = max(0.0001, (maxX - minX) / 5.0).toDouble();
 
   return Container(
     padding: const EdgeInsets.only(
@@ -189,9 +187,9 @@ Widget getReportPlot(report_helper.RenderObject object) {
     child: LineChart(
         LineChartData(
           gridData: FlGridData(
-            show: false,
-            drawVerticalLine: false,
-            drawHorizontalLine: false,
+            show: true,
+            drawVerticalLine: true,
+            drawHorizontalLine: true,
           ),
 
           titlesData: FlTitlesData(
@@ -222,7 +220,7 @@ Widget getReportPlot(report_helper.RenderObject object) {
               sideTitles: SideTitles(
                 reservedSize: 30,
                 showTitles: true,
-                interval: rightInterval,
+                interval: bottomInterval,
                 getTitlesWidget: bottomTitleWidgets,
               ),
             ),
@@ -246,8 +244,6 @@ Widget getReportPlot(report_helper.RenderObject object) {
 
           lineBarsData: plotLines,
         ),
-        swapAnimationDuration: const Duration(milliseconds: 8), // Optional
-        swapAnimationCurve: Curves.linear,
     )
   );
 }

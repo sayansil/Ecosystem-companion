@@ -7,8 +7,8 @@ import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/plot_visualisation_generated.dart';
 import 'package:ecosystem/screens/common/plot_item.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
-import 'package:ecosystem/utility/reportHelpers.dart' as report;
-import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/utility/report_helpers.dart' as report;
+import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -192,8 +192,6 @@ class _ReportBodyState extends State<ReportBody> {
         },
       ),
     );
-
-    // return getReportPlot(renderObjects![1]);
   }
 
   @override
@@ -304,8 +302,7 @@ class _ReportBodyState extends State<ReportBody> {
 
 
               if (renderObjects != null)
-                Flex(
-                  direction: Axis.vertical,
+                Column(
                   children: [
                     const SizedBox(height: 150),
                     getPlotList(size),

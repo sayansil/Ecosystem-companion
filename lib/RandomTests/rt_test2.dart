@@ -5,7 +5,7 @@ import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/database/database_manager.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/generated/world_ecosystem_generated.dart';
-import 'package:ecosystem/utility/simulationHelpers.dart';
+import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:native_simulator/native_simulator.dart';
 
 
