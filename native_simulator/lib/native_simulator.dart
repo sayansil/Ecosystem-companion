@@ -9,7 +9,16 @@ class NativeSimulator {
   }
 
   List<String> getAllAttributes() {
-    return ["population"];
+    return [
+      "ageFitnessOnDeathRatio",
+      "conceivingProbability",
+      "matingProbability",
+      "matingAgeStart",
+      "matingAgeEnd",
+      "maxAge",
+      "mutationProbability",
+      "offspringsFactor",
+    ];
   }
 
   void createInitialOrganisms(int kingdom, String kind, int age, int count) {

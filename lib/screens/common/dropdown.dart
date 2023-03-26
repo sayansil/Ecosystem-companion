@@ -15,13 +15,17 @@ class DropdownObject {
 
 Widget getDropDown(onChanged, List<DropdownObject> itemList, label, defaultValue) {
   return DropdownButtonFormField<String>(
+    isExpanded: true,
     icon: const Icon(Icons.arrow_downward_rounded),
     elevation: 20,
     style: dropdownOptionStyle,
     onChanged: onChanged,
     items: itemList.map((e) => DropdownMenuItem<String>(
       value: e.value,
-      child: Text(e.text),
+      child: Text(
+        e.text,
+        overflow: TextOverflow.ellipsis,
+      ),
     )).toList(),
     value: defaultValue,
     decoration: InputDecoration(

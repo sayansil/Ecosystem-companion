@@ -4,6 +4,8 @@ import 'package:ecosystem/screens/common/live_plot.dart';
 import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/screens/report/report_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
+import 'package:ecosystem/utility/num_utils.dart';
+import 'package:ecosystem/utility/report_helpers.dart';
 import 'package:native_simulator/native_simulator.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +34,8 @@ class _ProgressBodyState extends State<ProgressBody> {
 
   String? activeSpecies;
   String? activeAttribute;
+
+  Map<String, KingdomName> currentSpeciesKingdomMap = {};
 
   List<DropdownObject> allSpecies = [];
   List<DropdownObject> allAttributes = [];
@@ -62,11 +66,12 @@ class _ProgressBodyState extends State<ProgressBody> {
           element.count
       );
       allSpeciesSet.add(element.species);
+      currentSpeciesKingdomMap[element.species] = KingdomName.getByValue(element.kingdom);
     }
 
     simulator.prepareWorld();
 
-    List<String> allAttributeValues = simulator.getAllAttributes();
+    List<String> allAttributeValues = simulator.getAllAttributes() + customPlots;
     final allSpeciesValues = allSpeciesSet.toList();
 
     setState(() {
@@ -81,7 +86,7 @@ class _ProgressBodyState extends State<ProgressBody> {
     // Initialize History Map
     for (var species in allSpeciesValues + [allSpeciesIdentifier]) {
       simulationHistory[species] = {};
-      for (var attribute in allAttributeValues) {
+      for (var attribute in allAttributeValues + customPlots) {
         simulationHistory[species]![attribute] = [];
       }
     }
@@ -99,8 +104,6 @@ class _ProgressBodyState extends State<ProgressBody> {
   }
 
   void saveHistory(World world) {
-    Map<String, double> allMap = {};
-
     if (
         simulationState == SimulationStatus.completed ||
         simulationState == SimulationStatus.stopped
@@ -109,45 +112,67 @@ class _ProgressBodyState extends State<ProgressBody> {
       return;
     }
 
-    for (var species in world.species!) {
-      final speciesName = species.kind!;
-      final population = species.organism!.length;
+    int speciesCount = 1;
+    Map<String, double> allMap = {};
 
-      if (!simulationHistory.containsKey(speciesName)) {
+    for (var speciesName in simulationHistory.keys) {
+      // Find index of the current species
+      final speciesIndex = world.species!.indexWhere(
+          (element) => element.kind == speciesName);
+
+      if (speciesIndex == -1) {
+        // Species not found in current simulation
+        // set all default values for this year.
+        // Calculate values for all species later below.
+
+        if (speciesName != allSpeciesIdentifier) {
+          for (var attribute in simulationHistory[speciesName]!.keys) {
+            simulationHistory[speciesName]![attribute]!.add(0);
+          }
+        }
+
         continue;
       }
 
-      for (var attribute in allAttributes.map((e) => e.value)) {
-        // Find if attribute exists or use a default/precalculated value
-        // If exists then find average of it among all organisms
-        // of this species (species.organism)
-        // Save this value in `value`
-        double value = population.toDouble();
+      // Species exists this year
 
-        if (!simulationHistory[speciesName]!.containsKey(attribute)) {
-          // Redundant field
-          continue;
+      final species = world.species![speciesIndex];
+      final specialValues = getSpecialValues(species);
+
+      double value = 0;
+
+      for (var attribute in simulationHistory[speciesName]!.keys) {
+        if (customPlots.contains(attribute)) {
+          // Needs to be calculated specially
+          value = specialValues[attribute]!;
+        } else {
+          // Needs to calculated as avg of all organisms
+          value = getAttributeAverage(species, attribute);
         }
 
         simulationHistory[speciesName]![attribute]!.add(value);
 
+        // Calculate the values for all species (saved later below)
         if (!allMap.containsKey(attribute)) {
           allMap[attribute] = value;
         } else {
-          // Check if the value is additive or not
-          allMap[attribute] = allMap[attribute]! + value;
+          if (customPlots.contains(attribute)) {
+            // Additive value
+            allMap[attribute] = allMap[attribute]! + value;
+          } else {
+            // Average value
+            allMap[attribute] = runningAverage(allMap[attribute]!, value, speciesCount);
+          }
         }
       }
+
+      speciesCount++;
     }
 
+    // Save the values for all species
     for (var attribute in allMap.keys) {
       simulationHistory[allSpeciesIdentifier]![attribute]!.add(allMap[attribute]!);
     }
-  }
-
-  List<double> getYValues(World world) {
-    saveHistory(world);
-    return simulationHistory[activeSpecies]![activeAttribute]!;
   }
 
   Future<void> startSimulation() async {
@@ -158,14 +183,14 @@ class _ProgressBodyState extends State<ProgressBody> {
     while(mounted && currentYear < widget.years && simulationState == SimulationStatus.running) {
       // Iterate simulation
       World currentWorld = await iterateSimulation();
-      final currentY = getYValues(currentWorld);
+      saveHistory(currentWorld);
 
       if (mounted) { // Update states
         setState(() {
           currentYear = currentYear + 1;
 
           x.add(currentYear.toDouble());
-          y = currentY;
+          y = simulationHistory[activeSpecies]![activeAttribute]!;
         });
       }
     }
@@ -192,8 +217,26 @@ class _ProgressBodyState extends State<ProgressBody> {
     Navigator.push(context, buildPageRoute(const ReportScreen(null)));
   }
 
-  void selectSpecies(String value) {
-    activeSpecies = value;
+  void selectSpecies(String? value) {
+    setState(() {
+      activeSpecies = value;
+
+      if (simulationState == SimulationStatus.stopped ||
+          simulationState == SimulationStatus.completed) {
+        y = simulationHistory[activeSpecies]![activeAttribute]!;
+      }
+    });
+  }
+
+  void selectAttribute(String? value) {
+    setState(() {
+      activeAttribute = value;
+
+      if (simulationState == SimulationStatus.stopped ||
+          simulationState == SimulationStatus.completed) {
+        y = simulationHistory[activeSpecies]![activeAttribute]!;
+      }
+    });
   }
 
   @override
@@ -281,11 +324,7 @@ class _ProgressBodyState extends State<ProgressBody> {
                   child: Container(
                     padding: const EdgeInsets.only(right: defaultPadding / 2),
                     child: getDropDown(
-                      (element) {
-                        setState(() {
-                          activeSpecies = element;
-                        });
-                      },
+                      selectSpecies,
                       allSpecies,
                       "Species",
                       activeSpecies,
@@ -299,11 +338,7 @@ class _ProgressBodyState extends State<ProgressBody> {
                   child: Container(
                     padding: const EdgeInsets.only(left: defaultPadding / 2),
                     child: getDropDown(
-                      (element) {
-                        setState(() {
-                          activeAttribute = element;
-                        });
-                      },
+                      selectAttribute,
                       allAttributes,
                       "Attribute",
                       activeAttribute,
@@ -325,7 +360,7 @@ class _ProgressBodyState extends State<ProgressBody> {
                   aspectRatio: 1,
                   child: LineChart(
                     liveData(x, y, widget.years.toDouble()),
-                    swapAnimationDuration: const Duration(milliseconds: 8), // Optional
+                    swapAnimationDuration: const Duration(milliseconds: 15), // Optional
                     swapAnimationCurve: Curves.linear, // Optional
                   ),
                 )

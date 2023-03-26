@@ -29,3 +29,7 @@ String shrinkNumber(num n, [decimal=0]) {
 
   return numText;
 }
+
+double runningAverage(double currentAverage, double value, num count) {
+  return currentAverage + (value - currentAverage) / count;
+}
