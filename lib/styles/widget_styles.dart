@@ -51,3 +51,7 @@ final menuButtonStyle = ElevatedButton.styleFrom(
       borderRadius: BorderRadius.all(Radius.circular(10))
   ),
 );
+
+const footerTitleTextStyle = TextStyle(fontSize: 45, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);
+const footerSubtitleTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondaryLight);
+const footerSubtitleLinkStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);

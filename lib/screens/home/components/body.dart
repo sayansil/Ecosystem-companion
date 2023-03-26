@@ -8,7 +8,7 @@ import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:ecosystem/utility/simulationHelpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../common/list_items.dart';
+import '../../common/simulation_item.dart';
 import '../../common/transition.dart';
 import 'header.dart';
 

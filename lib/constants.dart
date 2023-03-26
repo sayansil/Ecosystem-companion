@@ -8,6 +8,7 @@ const colorPrimaryLight = Color(0xFF282828);
 const colorSecondary = Color(0xFF696969);
 const colorTertiary = Color(0xFFA2A2A2);
 const colorSecondaryLight = Color(0x80B9B9B9);
+const colorTertiaryLight = Color(0xD7A2A2A2);
 const colorBackground = Color(0xFFF0F0F0);
 const colorBackgroundSeeThrough = Color(0xA6F0F0F0);
 const colorTextDark = Color(0x80181818);
@@ -48,6 +49,8 @@ const assetEmpty = "assets/json/animation/empty.json";
 // * String constants
 
 const githubUrl = "https://github.com/sayansil/Ecosystem-companion";
+const darkStar1997Url = "https://github.com/DarkStar1997";
+const sincereSantaUrl = "https://github.com/sayansil";
 
 const simulateBtn = "SIMULATE 🐗";
 const addSpeciesBtn = "ADD";
@@ -86,3 +89,5 @@ const noSpeciesFound = "No species found in that Kingdom. Please create one.";
 const invalidReportPath = "Report not found";
 const simulationKingdomInputText = "Select a Kingdom";
 const simulationKindInputText = "Select a Species";
+
+const footerTitleText = "Made with ❤️";
