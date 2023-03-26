@@ -1,16 +1,15 @@
-import 'dart:math';
-
 import 'package:ecosystem/schema/world_ecosystem_generated.dart';
+import 'package:ecosystem/screens/common/dropdown.dart';
 import 'package:ecosystem/screens/common/live_plot.dart';
 import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/screens/report/report_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:native_simulator/native_simulator.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:recase/recase.dart';
 
 class ProgressBody extends StatefulWidget {
   final int years;
@@ -24,12 +23,20 @@ class ProgressBody extends StatefulWidget {
 
 class _ProgressBodyState extends State<ProgressBody> {
   int currentYear = 0;
-  int population = 0;
 
-  List<int> x = [];
-  List<int> y = [];
+  List<double> x = [];
+  List<double> y = [];
 
-  SimulationStatus simulationState = SimulationStatus.ready;
+  // Map of Species -> (Map of Attribute -> List of attribute values)
+  Map<String, Map<String, List<double>>> simulationHistory = {};
+
+  String? activeSpecies;
+  String? activeAttribute;
+
+  List<DropdownObject> allSpecies = [];
+  List<DropdownObject> allAttributes = [];
+
+  SimulationStatus simulationState = SimulationStatus.init;
   NativeSimulator simulator = NativeSimulator();
 
   @override
@@ -45,6 +52,8 @@ class _ProgressBodyState extends State<ProgressBody> {
     final ecosystemRoot = await getEcosystemRoot();
     simulator.initSimulation(ecosystemRoot);
 
+    Set<String> allSpeciesSet = {};
+
     for (var element in widget.initOrganisms) {
       simulator.createInitialOrganisms(
           getKingdomIndex(element.kingdom),
@@ -52,29 +61,93 @@ class _ProgressBodyState extends State<ProgressBody> {
           element.age,
           element.count
       );
+      allSpeciesSet.add(element.species);
     }
 
     simulator.prepareWorld();
-  }
 
-  String getProgressText() {
-    return "$currentYear / ${widget.years}";
-  }
+    List<String> allAttributeValues = simulator.getAllAttributes();
+    final allSpeciesValues = allSpeciesSet.toList();
 
-  Future<int> iterateSimulation() async {
-    final fbList = simulator.simulateOneYear();
-    int currentPopulation = 0;
+    setState(() {
+      allSpecies = allSpeciesValues.map((e) => DropdownObject.common(e)).toList();
+      allSpecies.add(DropdownObject.common(allSpeciesIdentifier));
+      allAttributes = allAttributeValues.map(
+              (e) => DropdownObject(e, e.titleCase)).toList();
+      activeSpecies = allSpeciesIdentifier;
+      activeAttribute = defaultAttributeIdentifier;
+    });
 
-    var world = World(fbList);
-    if (world.species != null) {
-      for (var species in world.species!) {
-        currentPopulation += species.organism!.length;
+    // Initialize History Map
+    for (var species in allSpeciesValues + [allSpeciesIdentifier]) {
+      simulationHistory[species] = {};
+      for (var attribute in allAttributeValues) {
+        simulationHistory[species]![attribute] = [];
       }
     }
 
+    simulationState = SimulationStatus.ready;
+  }
+
+  Future<World> iterateSimulation() async {
+    final fbList = simulator.simulateOneYear();
+    var world = World(fbList);
+
     await cap120fps();
 
-    return currentPopulation;
+    return world;
+  }
+
+  void saveHistory(World world) {
+    Map<String, double> allMap = {};
+
+    if (
+        simulationState == SimulationStatus.completed ||
+        simulationState == SimulationStatus.stopped
+    ) {
+      // Don't save history after stop
+      return;
+    }
+
+    for (var species in world.species!) {
+      final speciesName = species.kind!;
+      final population = species.organism!.length;
+
+      if (!simulationHistory.containsKey(speciesName)) {
+        continue;
+      }
+
+      for (var attribute in allAttributes.map((e) => e.value)) {
+        // Find if attribute exists or use a default/precalculated value
+        // If exists then find average of it among all organisms
+        // of this species (species.organism)
+        // Save this value in `value`
+        double value = population.toDouble();
+
+        if (!simulationHistory[speciesName]!.containsKey(attribute)) {
+          // Redundant field
+          continue;
+        }
+
+        simulationHistory[speciesName]![attribute]!.add(value);
+
+        if (!allMap.containsKey(attribute)) {
+          allMap[attribute] = value;
+        } else {
+          // Check if the value is additive or not
+          allMap[attribute] = allMap[attribute]! + value;
+        }
+      }
+    }
+
+    for (var attribute in allMap.keys) {
+      simulationHistory[allSpeciesIdentifier]![attribute]!.add(allMap[attribute]!);
+    }
+  }
+
+  List<double> getYValues(World world) {
+    saveHistory(world);
+    return simulationHistory[activeSpecies]![activeAttribute]!;
   }
 
   Future<void> startSimulation() async {
@@ -84,15 +157,15 @@ class _ProgressBodyState extends State<ProgressBody> {
 
     while(mounted && currentYear < widget.years && simulationState == SimulationStatus.running) {
       // Iterate simulation
-      int currentPopulation = await iterateSimulation();
+      World currentWorld = await iterateSimulation();
+      final currentY = getYValues(currentWorld);
 
       if (mounted) { // Update states
         setState(() {
-          population = currentPopulation;
           currentYear = currentYear + 1;
 
-          x.add(currentYear);
-          y.add(population);
+          x.add(currentYear.toDouble());
+          y = currentY;
         });
       }
     }
@@ -108,15 +181,19 @@ class _ProgressBodyState extends State<ProgressBody> {
   }
 
   Future<void> stopSimulation() async {
-    simulator.cleanup();
-
     setState(() {
       simulationState = SimulationStatus.stopped;
     });
+
+    simulator.cleanup();
   }
 
   Future<void> viewSimulation() async {
     Navigator.push(context, buildPageRoute(const ReportScreen(null)));
+  }
+
+  void selectSpecies(String value) {
+    activeSpecies = value;
   }
 
   @override
@@ -127,142 +204,113 @@ class _ProgressBodyState extends State<ProgressBody> {
 
   @override
   Widget build(BuildContext context) {
-    Size parentSize = MediaQuery.of(context).size;
-
-    double progressDims = min(parentSize.width * 0.75, 500);
-    double markerWidth = progressDims * 0.1;
 
     return Stack(
       children: <Widget>[
 
-        // Progress bar
-        Container(
-          alignment: Alignment.topCenter,
-          child: SizedBox(
-              height: progressDims,
-              width: progressDims,
-              child: SfRadialGauge(axes: <RadialAxis>[
-                RadialAxis(
-                    minimum: 0,
-                    maximum: 100,
-                    showLabels: false,
-                    showTicks: false,
-                    axisLineStyle: AxisLineStyle(
-                      thickness: markerWidth,
-                      cornerStyle: CornerStyle.bothCurve,
-                      color: colorSecondaryLight,
-                    ),
-                    pointers: <GaugePointer>[
-                      RangePointer(
-                        value: max(100 * currentYear.toDouble() / widget.years, 10),
-                        cornerStyle: CornerStyle.bothCurve,
-                        width: markerWidth,
-                        color: colorPrimaryLight,
-                      ),
-                    ],
-                    annotations: <GaugeAnnotation>[
-                      GaugeAnnotation(
-                          positionFactor: 0.1,
-                          angle: 90,
-                          widget: Text(
-                            getProgressText(),
-                            style: progressTextStyle,
-                          ))
-                    ])
-              ])
+        // Title text
+        const Positioned(
+          left: defaultPadding,
+          top: 0,
+          child: Text(
+            "Simulation",
+            style: hugeHeaderStyle,
           ),
-
         ),
 
-        // Start button
+        // Subtitle Text
         Positioned(
-          left: 0,
-          right: 0,
-          top: progressDims,
-
-          child: Visibility(
-            visible: simulationState == SimulationStatus.ready,
-            child: Container(
-              padding: EdgeInsets.only(
-                left: parentSize.width * 0.3,
-                right: parentSize.width * 0.3,
+          left: defaultPadding,
+          top: 75,
+          child: RichText(text: TextSpan(
+            children: [
+              const TextSpan(
+                text: "year  ",
+                style: subHeaderStyle,
               ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: colorPrimary,
-                  textStyle: bigButtonStyle,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20), // <-- Radius
+              TextSpan(
+                text: "$currentYear / ${widget.years}",
+                style: highlightedSubHeaderStyle,
+              )
+            ]
+          )),
+        ),
+
+        // Start/Stop/View button
+        Positioned(
+          right: defaultPadding,
+          top: 12.5,
+
+          child: ElevatedButton(
+            style: highlightMenuButtonStyle,
+            onPressed: () async {
+              if (simulationState == SimulationStatus.init) {
+                return;
+              } else if (simulationState == SimulationStatus.ready) {
+                startSimulation();
+              } else if (simulationState == SimulationStatus.running) {
+                stopSimulation();
+              } else if (simulationState == SimulationStatus.stopped ||
+                  simulationState == SimulationStatus.completed) {
+                viewSimulation();
+              }
+            },
+            child: Text(
+                simulationState == SimulationStatus.ready ?
+                simulateStartBtn :
+                simulationState == SimulationStatus.running ?
+                simulateStopBtn :
+                simulationState == SimulationStatus.stopped ||
+                    simulationState == SimulationStatus.completed ?
+                simulateViewBtn : ""
+            ),
+          ),
+        ),
+
+        Positioned(
+          left: defaultPadding,
+          right: defaultPadding,
+          top: 125,
+          child:
+          Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+
+                // Species input
+                Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.only(right: defaultPadding / 2),
+                    child: getDropDown(
+                      (element) {
+                        setState(() {
+                          activeSpecies = element;
+                        });
+                      },
+                      allSpecies,
+                      "Species",
+                      activeSpecies,
+                    ),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: defaultPadding / 2),
                 ),
-                onPressed: () async => startSimulation(),
-                child: const Text(simulateStartBtn),
-              ),
-            )
-          )
-        ),
 
-        // Stop button
-        Positioned(
-            left: 0,
-            right: 0,
-            top: progressDims,
 
-            child: Visibility(
-                visible: simulationState == SimulationStatus.running,
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: parentSize.width * 0.3,
-                    right: parentSize.width * 0.3,
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorPrimary,
-                      textStyle: bigButtonStyle,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20), // <-- Radius
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: defaultPadding / 2),
+                // Attribute input
+                Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: defaultPadding / 2),
+                    child: getDropDown(
+                      (element) {
+                        setState(() {
+                          activeAttribute = element;
+                        });
+                      },
+                      allAttributes,
+                      "Attribute",
+                      activeAttribute,
                     ),
-                    onPressed: () { stopSimulation(); },
-                    child: const Text(simulateStopBtn),
                   ),
                 )
-            )
-        ),
-
-        // View button
-        Positioned(
-            left: 0,
-            right: 0,
-            top: progressDims,
-
-            child: Visibility(
-                visible: simulationState == SimulationStatus.stopped ||
-                  simulationState == SimulationStatus.completed,
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: parentSize.width * 0.3,
-                    right: parentSize.width * 0.3,
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: colorPrimary,
-                      textStyle: bigButtonStyle,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20), // <-- Radius
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: defaultPadding / 2),
-                    ),
-                    onPressed: () { viewSimulation(); },
-                    child: const Text(simulateViewBtn),
-                  ),
-                )
-            )
+              ]),
         ),
 
         // Bottom Live Plot

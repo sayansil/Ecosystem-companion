@@ -11,12 +11,15 @@ const headerPadding = EdgeInsets.only(
 );
 
 const hugeHeaderStyle = TextStyle(fontSize: 35, fontFamily: 'Poppins', fontWeight: FontWeight.w500, color: colorPrimary, height: 1.75);
+const subHeaderStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondary, height: 1);
+const highlightedSubHeaderStyle = TextStyle(fontSize: 20, fontFamily: 'Poppins', color: colorSecondary, height: 1);
 
 const editTextStyle = TextStyle(color: colorTextDark, fontSize: 18, fontFamily: 'Poppins');
 const editTextDarkStyle = TextStyle(color: colorTextLight, fontSize: 18, fontFamily: 'Poppins');
 
 const buttonStyle = TextStyle(fontSize: 16, height: 1.1, fontFamily: 'Poppins');
 const smallButtonStyle = TextStyle(fontSize: 10, height: 0.9, fontFamily: 'Poppins');
+const mediumButtonStyle = TextStyle(fontSize: 15, height: 1, fontFamily: 'Poppins');
 const bigButtonStyle = TextStyle(fontSize: 20, height: 1.1, fontFamily: 'Poppins');
 
 const progressTextStyle = TextStyle(fontSize: 28, fontFamily: 'Poppins', color: colorSecondary);
@@ -43,6 +46,10 @@ const homeCardCountTextStyle = TextStyle(fontSize: 30, fontFamily: 'Poppins');
 const historyItemTitleTextStyle = TextStyle(fontSize: 18, fontFamily: 'Poppins', fontWeight: FontWeight.bold);
 const historyItemSubtitleTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');
 
+const footerTitleTextStyle = TextStyle(fontSize: 45, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);
+const footerSubtitleTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondaryLight);
+const footerSubtitleLinkStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);
+
 final menuButtonStyle = ElevatedButton.styleFrom(
   backgroundColor: colorPrimary,
   foregroundColor: Colors.white,
@@ -51,7 +58,11 @@ final menuButtonStyle = ElevatedButton.styleFrom(
       borderRadius: BorderRadius.all(Radius.circular(10))
   ),
 );
-
-const footerTitleTextStyle = TextStyle(fontSize: 45, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);
-const footerSubtitleTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondaryLight);
-const footerSubtitleLinkStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);
+final highlightMenuButtonStyle = ElevatedButton.styleFrom(
+  backgroundColor: colorPrimary,
+  foregroundColor: Colors.white,
+  textStyle: mediumButtonStyle,
+  shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10))
+  ),
+);

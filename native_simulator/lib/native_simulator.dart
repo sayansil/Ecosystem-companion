@@ -8,6 +8,10 @@ class NativeSimulator {
     cleanSlate();
   }
 
+  List<String> getAllAttributes() {
+    return ["population"];
+  }
+
   void createInitialOrganisms(int kingdom, String kind, int age, int count) {
     setInitialOrganisms(kingdom, kind.toNativeUtf8(), age, count);
   }

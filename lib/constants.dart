@@ -39,6 +39,9 @@ const metaDataFileName = ".metadata";
 
 final assetSpeciesTemplatePath = join("assets", "json", "simulationTemplates");
 
+const allSpeciesIdentifier = "all";
+const defaultAttributeIdentifier = "population";
+
 enum DrawerItem { home, config, history, about, contribute, organism }
 
 // * Asset Paths

@@ -62,6 +62,7 @@ class SimulationSet {
 }
 
 enum SimulationStatus {
+  init,
   ready,
   running,
   completed,
