@@ -1,5 +1,6 @@
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
+import 'package:ecosystem/utility/num_utils.dart';
 import 'package:flutter/material.dart';
 
 Container speciesSetItem(kingdom, species, age, count) {
@@ -31,15 +32,15 @@ Container speciesSetItem(kingdom, species, age, count) {
         left: 15,
         right: 15,
         child: Text(
-          "$age year${ age > 1 ? 's' : ''}",
+          "age $age",
           style: homeCardAgeTextStyle,
         ),
       ),
       Positioned(
-        bottom: 10,
+        bottom: 5,
         right: 15,
         child: Text(
-          count.toString(),
+          shrinkNumber(count),
           style: homeCardCountTextStyle,
         ),
       ),

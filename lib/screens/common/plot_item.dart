@@ -37,15 +37,7 @@ Widget leftTitleWidgets(
     double interval) {
   final needsPrecision = maxY - minY < 5;
 
-  String textValue;
-
-  if (value >= 1000000) {
-    textValue = "${(value / 1000000).toStringAsFixed(needsPrecision? 2 : 1)}M";
-  } else if (value >= 1000) {
-    textValue = "${(value / 1000).toStringAsFixed(needsPrecision? 2 : 1)}K";
-  } else {
-    textValue = value.toStringAsFixed(needsPrecision? 2 : 0);
-  }
+  String textValue = shrinkNumber(value, needsPrecision? 2 : 0);
 
   // Ignore value if too close to ends
   if ((value != minY && value != maxY) &&
@@ -163,7 +155,7 @@ Widget getReportPlot(report_helper.RenderObject object) {
 
     plotLines.add(
       LineChartBarData(
-        isCurved: true,
+        isCurved: false,
         barWidth: 3,
         color: lineColor,
         spots: getReportLineData(xRange, lineValues),

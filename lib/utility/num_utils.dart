@@ -14,3 +14,18 @@ String roundNumber(num n, int decimal) {
 
   return numText;
 }
+
+String shrinkNumber(num n, [decimal=0]) {
+  double number = n.toDouble();
+  String numText;
+
+  if (number >= 1000000) {
+    numText = "${roundNumber(number / 1000000, decimal)}M";
+  } else if (number >= 1000) {
+    numText = "${roundNumber(number / 1000, decimal)}K";
+  } else {
+    numText = roundNumber(number, decimal);
+  }
+
+  return numText;
+}
