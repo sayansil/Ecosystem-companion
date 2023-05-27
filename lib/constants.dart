@@ -94,3 +94,4 @@ const simulationKingdomInputText = "Select a Kingdom";
 const simulationKindInputText = "Select a Species";
 
 const footerTitleText = "Made with ❤️";
+const stayTunedText = "Keep an eye on this space...";
