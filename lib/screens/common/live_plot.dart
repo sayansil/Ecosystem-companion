@@ -10,12 +10,12 @@ List<Color> gradientColors = [
   colorPrimary,
 ];
 
-List<FlSpot> getLineData(List<int> x, List<int> y, [int? maxX, int? maxY]) {
+List<FlSpot> getLineData(List<double> x, List<double> y, [int? maxX, int? maxY]) {
   List<FlSpot> lineData = [];
 
-  for (int i = 0; i < x.length; i++) {
+  for (int i = 0; i < y.length; i++) {
     lineData.add(
-        FlSpot(x[i].toDouble(), y[i].toDouble())
+        FlSpot(x[i], y[i])
     );
   }
 
@@ -32,8 +32,8 @@ List<LineTooltipItem> getTooltips(List<LineBarSpot> spots) {
 }
 
 LineChartData liveData(
-    List<int> x,
-    List<int> y,
+    List<double> x,
+    List<double> y,
     [double? maxX, double? maxY]
     ) {
 
@@ -94,7 +94,7 @@ LineChartData liveData(
         gradient: LinearGradient(
           colors: gradientColors,
         ),
-        barWidth: 5,
+        barWidth: 3,
         isStrokeCapRound: true,
         dotData: FlDotData(
           show: false,

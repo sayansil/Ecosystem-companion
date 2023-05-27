@@ -59,6 +59,12 @@ const plotCombinationConfigs = {
   },
 };
 
+const customPlots = [
+  "population",
+  "matablePopulation",
+  "nonMatablePopulation",
+];
+
 const skipPlots = {
   KingdomName.animal: [],
   KingdomName.plant: [
@@ -114,6 +120,37 @@ void updateData(
     plotSeriesData[speciesName]![key]!
         .values.add(value);
   }
+}
+
+Map<String, double> getSpecialValues(Species species) {
+  Map<String, double> specialValues = {};
+
+  specialValues["population"] = 0;
+  specialValues["matablePopulation"] = 0;
+  specialValues["nonMatablePopulation"] = 0;
+
+  for (var organism in species.organism!) {
+    if (organism.age >= organism.matingAgeStart &&
+        organism.age <= organism.matingAgeEnd) {
+      specialValues["matablePopulation"] = specialValues["matablePopulation"]! + 1;
+    } else {
+      specialValues["nonMatablePopulation"] = specialValues["nonMatablePopulation"]! + 1;
+    }
+  }
+
+  specialValues["population"] = specialValues["matablePopulation"]! +
+      specialValues["nonMatablePopulation"]!;
+
+  return specialValues;
+}
+
+double getAttributeAverage(Species species, String attribute) {
+  // Calculate the average value for the given attribute
+  // for the given species
+
+  // TODO - check if attribute exists
+
+  return 0;
 }
 
 Uint8List getPlotData(List<WorldInstance> dbRows) {
@@ -675,7 +712,7 @@ List<RenderObject> getRenderObjects(List<Plot> plots, String kingdom, String kin
   for (final plot in plots) {
     final key = plot.key!;
     
-    if (skipPlots[KingdomName.getByValue(kingdom)]!.contains(key)) {
+    if (skipPlots[KingdomName.getByIndex(kingdom)]!.contains(key)) {
       // Invalid plot type for current kingdom
       continue;
     }

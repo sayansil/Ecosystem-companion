@@ -62,6 +62,7 @@ class SimulationSet {
 }
 
 enum SimulationStatus {
+  init,
   ready,
   running,
   completed,
@@ -106,9 +107,13 @@ enum KingdomName {
   const KingdomName(this.value);
   final String value;
 
-  static KingdomName getByValue(index){
+  static KingdomName getByIndex(index){
     final i = int.parse(index.toString());
     return KingdomName.values.firstWhere((x) => x.index == i);
+  }
+
+  static KingdomName getByValue(value){
+    return KingdomName.values.firstWhere((x) => x.value == value);
   }
 }
 

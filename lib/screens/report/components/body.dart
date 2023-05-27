@@ -181,7 +181,7 @@ class _ReportBodyState extends State<ReportBody> {
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: renderObjects!.length + 1,
-
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           if (index < renderObjects!.length) {
             final item = renderObjects![index];
