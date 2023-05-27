@@ -25,30 +25,38 @@ class BufferData extends Struct {
   external int length;
 }
 
-typedef CreateGod = Void Function(Uint8, Pointer<Utf8>);
-typedef SetInitialOrganisms = Void Function(Uint32, Pointer<Utf8>, Uint32, Uint32);
-typedef CleanSlate = Void Function();
-typedef CreateWorld = Void Function();
-typedef HappyNewYear = BufferData Function();
-typedef FreeGod = Void Function();
+typedef SessionInit = Pointer<Void> Function();
+typedef CreateGod = Void Function(Pointer<Void>, Uint8, Pointer<Utf8>);
+typedef SetInitialOrganisms = Void Function(Pointer<Void>, Uint32, Pointer<Utf8>, Uint32, Uint32);
+typedef CleanSlate = Void Function(Pointer<Void>);
+typedef CreateWorld = Void Function(Pointer<Void>);
+typedef HappyNewYear = BufferData Function(Pointer<Void>);
+typedef FreeGod = Void Function(Pointer<Void>);
+typedef SessionFree = Void Function(Pointer<Void>);
 
 // Link them to C functions
 
-final void Function(int godsEye, Pointer<Utf8> ecosystemRoot) createGod = _lib
+final Pointer<Void> Function() sessionInit = _lib
+    .lookup<NativeFunction<SessionInit>>('session_init')
+    .asFunction();
+final void Function(Pointer<Void> session, int godsEye, Pointer<Utf8> ecosystemRoot) createGod = _lib
     .lookup<NativeFunction<CreateGod>>('create_god')
     .asFunction();
-final void Function(int kingdom, Pointer<Utf8> kind, int age, int count) setInitialOrganisms = _lib
+final void Function(Pointer<Void> session, int kingdom, Pointer<Utf8> kind, int age, int count) setInitialOrganisms = _lib
     .lookup<NativeFunction<SetInitialOrganisms>>('set_initial_organisms')
     .asFunction();
-final void Function() cleanSlate = _lib
+final void Function(Pointer<Void> session) cleanSlate = _lib
     .lookup<NativeFunction<CleanSlate>>('clean_slate')
     .asFunction();
-final void Function() createWorld = _lib
+final void Function(Pointer<Void> session) createWorld = _lib
     .lookup<NativeFunction<CreateWorld>>('create_world')
     .asFunction();
-final BufferData Function() happyNewYear = _lib
+final BufferData Function(Pointer<Void> session) happyNewYear = _lib
     .lookup<NativeFunction<HappyNewYear>>('happy_new_year')
     .asFunction();
-final void Function() freeGod = _lib
+final void Function(Pointer<Void> session) freeGod = _lib
     .lookup<NativeFunction<FreeGod>>('free_god')
+    .asFunction();
+final void Function(Pointer<Void> session) freeSession = _lib
+    .lookup<NativeFunction<SessionFree>>('free_session')
     .asFunction();
