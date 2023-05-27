@@ -65,11 +65,13 @@ class _SpeciesBodyState extends State<SpeciesBody> {
     final isPlatformMobile = Platform.isAndroid || Platform.isIOS;
 
     if (baseJsonFilePath.isNotEmpty || modifyJsonFilePath.isNotEmpty) {
-      if (isPlatformMobile && await Permission.storage.isRestricted) {
+      if (Platform.isIOS && await Permission.storage.isRestricted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(permissionStorageNotGranted),
         ));
         return;
+      } else if (isPlatformMobile && await Permission.storage.request().isPermanentlyDenied) {
+        await openAppSettings();
       } else if (isPlatformMobile && !await Permission.storage.request().isGranted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(permissionStorageGrantRequest),
