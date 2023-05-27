@@ -3,7 +3,7 @@ description: Companion app for Ecosystem Simulator
 
 publish_to: 'none'
 
-version: 0.0.4+4
+version: 0.1.1+6
 
 environment:
   sdk: ">=2.17.0 <3.0.0"

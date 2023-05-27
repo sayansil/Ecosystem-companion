@@ -1,3 +1,6 @@
+import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/styles/widget_styles.dart';
+
 import 'header.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +20,19 @@ class _AboutBodyState extends State<AboutBody> {
       child: Stack(
         children: <Widget>[
           // * Header bar
-          BodyHeader(parentSize: size)
+          BodyHeader(parentSize: size),
+
+          Container(
+            margin: EdgeInsets.only(
+              left: defaultPadding,
+              right: defaultPadding,
+              top: size.height * 0.3 + 160,
+            ),
+            child:  const Text(
+              stayTunedText,
+              style: subHeaderStyle,
+            ),
+          )
         ],
       ),
     );
