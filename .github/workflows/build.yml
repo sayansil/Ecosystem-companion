@@ -25,7 +25,6 @@ jobs:
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: /
-          echo "$ANDROID_NDK_HOME"
           cd $ANDROID_NDK_HOME
           ls
 
