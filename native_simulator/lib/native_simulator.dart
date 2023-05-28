@@ -73,12 +73,20 @@ class NativeSimulator {
     return bufferArray;
   }
 
-  void cleanup() {
+  void closeSimulation() {
     if (!sessionRunning) {
       return;
     }
 
     freeGod(sessionPtr);
+  }
+
+  void cleanup() {
+    if (!sessionRunning) {
+      return;
+    }
+
+    closeSimulation();
     freeSession(sessionPtr);
     sessionRunning = false;
   }
