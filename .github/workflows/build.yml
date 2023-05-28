@@ -34,6 +34,7 @@ jobs:
         env:
           NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
+          sudo apt install ninja-build
           git clone https://github.com/sayansil/Ecosystem -b mobile-compatible
           cd Ecosystem/simulation
           cmake --preset and-arm64v8a
