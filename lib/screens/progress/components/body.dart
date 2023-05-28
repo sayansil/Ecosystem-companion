@@ -1,11 +1,8 @@
-import 'package:ecosystem/schema/world_ecosystem_generated.dart';
 import 'package:ecosystem/screens/common/dropdown.dart';
 import 'package:ecosystem/screens/common/live_plot.dart';
 import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/screens/report/report_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
-import 'package:ecosystem/utility/num_utils.dart';
-import 'package:ecosystem/utility/report_helpers.dart';
 import 'package:native_simulator/native_simulator.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/material.dart';
@@ -125,6 +122,7 @@ class _ProgressBodyState extends State<ProgressBody> {
   }
 
   Future<void> viewSimulation() async {
+    simulator.closeSimulation();
     Navigator.push(context, buildPageRoute(const ReportScreen(null)));
   }
 

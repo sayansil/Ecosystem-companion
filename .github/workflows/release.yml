@@ -1,0 +1,92 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        type: choice
+        description: Type of release
+        required: true
+        options:
+          - major
+          - minor
+          - patch
+
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r25c
+          add-to-path: true
+
+      - name: Use NDK binaries
+        env:
+          NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          mkdir -p native_simulator/android/src/main/jniLibs/arm64-v8a
+          mkdir -p native_simulator/android/src/main/jniLibs/armeabi-v7a
+          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so native_simulator/android/src/main/jniLibs/arm64-v8a/libc++_shared.so
+          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so native_simulator/android/src/main/jniLibs/armeabi-v7a/libc++_shared.so
+
+      - name: Build Ecosystem core
+        env:
+          NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          sudo apt install ninja-build
+          git clone https://github.com/sayansil/Ecosystem -b mobile-compatible
+          cd Ecosystem/simulation
+          cmake --preset and-arm64v8a
+          cmake --build --preset and-arm64v8a
+          cmake --preset and-armeabiv7a-neon 
+          cmake --build --preset and-armeabiv7a-neon
+
+      - name: Use Ecosystem binaries
+        run: |
+          cp Ecosystem/simulation/build/and-arm64v8a/src/libecosystem_wrapper.so native_simulator/android/src/main/jniLibs/arm64-v8a/
+          cp Ecosystem/simulation/build/and-armeabiv7a-neon/src/libecosystem_wrapper.so native_simulator/android/src/main/jniLibs/armeabi-v7a/
+
+      - name: Get flutter
+        uses: subosito/flutter-action@v2.10.0
+        with:
+          flutter-version: '3.7.5'
+          channel: 'stable'
+
+      - name: Generate KeyStore
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'keystore/android_keystore'
+          encodedString: ${{ secrets.KEYSTORE }}
+
+      - name: Generate key properties
+        run: |
+          touch android/key.properties
+          echo "storePassword=${{ secrets.SIGNING_STORE_PASSWORD }}" >> file
+          echo "keyPassword=${{ secrets.SIGNING_KEY_PASSWORD }}" >> file
+          echo "keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}" >> file
+          echo "storeFile=keystore/android_keystore" >> file
+
+      - name: Build debug apk
+        run: flutter build apk --release
+
+      - name: Clean KeyStore
+        run: |
+          rm -rf keystore
+          rm -rf android/key.properties
+
+      - name: Get apk
+        run: cp build/app/outputs/flutter-apk/app-debug.apk ecosystem-companion-release.apk
+
+      - name: Save apk
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: Ecosystem Companion - release build
+          path: ecosystem-companion-release.apk
