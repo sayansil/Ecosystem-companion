@@ -26,7 +26,8 @@ jobs:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           cd "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib"
-          ls
+          cp aarch64-linux-android/libc++_shared.so native_simulator/android/src/main/jniLibs/arm64-v8a/libc++_shared.so
+          cp arm-linux-androideabi/libc++_shared.so native_simulator/android/src/main/jniLibs/armeabi-v7a/libc++_shared.so
 
       - name: Get flutter
         uses: subosito/flutter-action@v2.10.0
