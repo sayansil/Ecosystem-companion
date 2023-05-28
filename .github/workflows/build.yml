@@ -1,0 +1,48 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r25c
+          add-to-path: true
+
+      - name: Use NDK binaries
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          cp $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so native_simulator/android/src/main/jniLibs/arm64-v8a/libc++_shared.so
+          cp $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so native_simulator/android/src/main/jniLibs/armeabi-v7a/libc++_shared.so
+
+      - name: Get flutter
+        uses: subosito/flutter-action@v2.10.0
+        with:
+          flutter-version: '3.7.5'
+          channel: 'stable'
+
+      - name: Build debug apk
+        run: flutter build apk --debug
+
+      - name: Get apk
+        run: cp build/app/outputs/flutter-apk/app-debug.apk ecosystem-companion-debug.apk
+
+      - name: Save apk
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: Ecosystem Companion - debug build
+          path: ecosystem-companion-debug.apk
+          retention-days: 2
