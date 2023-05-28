@@ -122,37 +122,6 @@ void updateData(
   }
 }
 
-Map<String, double> getSpecialValues(Species species) {
-  Map<String, double> specialValues = {};
-
-  specialValues["population"] = 0;
-  specialValues["matablePopulation"] = 0;
-  specialValues["nonMatablePopulation"] = 0;
-
-  for (var organism in species.organism!) {
-    if (organism.age >= organism.matingAgeStart &&
-        organism.age <= organism.matingAgeEnd) {
-      specialValues["matablePopulation"] = specialValues["matablePopulation"]! + 1;
-    } else {
-      specialValues["nonMatablePopulation"] = specialValues["nonMatablePopulation"]! + 1;
-    }
-  }
-
-  specialValues["population"] = specialValues["matablePopulation"]! +
-      specialValues["nonMatablePopulation"]!;
-
-  return specialValues;
-}
-
-double getAttributeAverage(Species species, String attribute) {
-  // Calculate the average value for the given attribute
-  // for the given species
-
-  // TODO - check if attribute exists
-
-  return 0;
-}
-
 Uint8List getPlotData(List<WorldInstance> dbRows) {
   var builder = fb.Builder(initialSize: 1024);
 

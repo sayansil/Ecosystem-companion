@@ -29,9 +29,6 @@ class _ProgressBodyState extends State<ProgressBody> {
   List<double> x = [];
   List<double> y = [];
 
-  // Map of Species -> (Map of Attribute -> List of attribute values)
-  Map<String, Map<String, List<double>>> simulationHistory = {};
-
   String? activeSpecies;
   String? activeAttribute;
 
@@ -71,108 +68,27 @@ class _ProgressBodyState extends State<ProgressBody> {
 
     simulator.prepareWorld();
 
-    List<String> allAttributeValues = simulator.getAllAttributes() + customPlots;
+    List<String> allAttributeValues = simulator.getAllAttributes();
     final allSpeciesValues = allSpeciesSet.toList();
 
     setState(() {
       allSpecies = allSpeciesValues.map((e) => DropdownObject.common(e)).toList();
-      allSpecies.add(DropdownObject.common(allSpeciesIdentifier));
+      // TODO - allSpecies.add(DropdownObject.common(allSpeciesIdentifier));
+
       allAttributes = allAttributeValues.map(
               (e) => DropdownObject(e, e.titleCase)).toList();
-      activeSpecies = allSpeciesIdentifier;
+      activeSpecies = allSpeciesValues[0];
       activeAttribute = defaultAttributeIdentifier;
     });
-
-    // Initialize History Map
-    for (var species in allSpeciesValues + [allSpeciesIdentifier]) {
-      simulationHistory[species] = {};
-      for (var attribute in allAttributeValues + customPlots) {
-        simulationHistory[species]![attribute] = [];
-      }
-    }
 
     simulationState = SimulationStatus.ready;
   }
 
-  Future<World> iterateSimulation() async {
-    final fbList = simulator.simulateOneYear();
-    var world = World(fbList);
+  Future<void> iterateSimulation() async {
+    simulator.simulateOneYear();
+    simulator.saveWorldInstance();
 
     await cap120fps();
-
-    return world;
-  }
-
-  void saveHistory(World world) {
-    if (
-        simulationState == SimulationStatus.completed ||
-        simulationState == SimulationStatus.stopped
-    ) {
-      // Don't save history after stop
-      return;
-    }
-
-    int speciesCount = 1;
-    Map<String, double> allMap = {};
-
-    for (var speciesName in simulationHistory.keys) {
-      // Find index of the current species
-      final speciesIndex = world.species!.indexWhere(
-          (element) => element.kind == speciesName);
-
-      if (speciesIndex == -1) {
-        // Species not found in current simulation
-        // set all default values for this year.
-        // Calculate values for all species later below.
-
-        if (speciesName != allSpeciesIdentifier) {
-          for (var attribute in simulationHistory[speciesName]!.keys) {
-            simulationHistory[speciesName]![attribute]!.add(0);
-          }
-        }
-
-        continue;
-      }
-
-      // Species exists this year
-
-      final species = world.species![speciesIndex];
-      final specialValues = getSpecialValues(species);
-
-      double value = 0;
-
-      for (var attribute in simulationHistory[speciesName]!.keys) {
-        if (customPlots.contains(attribute)) {
-          // Needs to be calculated specially
-          value = specialValues[attribute]!;
-        } else {
-          // Needs to calculated as avg of all organisms
-          value = getAttributeAverage(species, attribute);
-        }
-
-        simulationHistory[speciesName]![attribute]!.add(value);
-
-        // Calculate the values for all species (saved later below)
-        if (!allMap.containsKey(attribute)) {
-          allMap[attribute] = value;
-        } else {
-          if (customPlots.contains(attribute)) {
-            // Additive value
-            allMap[attribute] = allMap[attribute]! + value;
-          } else {
-            // Average value
-            allMap[attribute] = runningAverage(allMap[attribute]!, value, speciesCount);
-          }
-        }
-      }
-
-      speciesCount++;
-    }
-
-    // Save the values for all species
-    for (var attribute in allMap.keys) {
-      simulationHistory[allSpeciesIdentifier]![attribute]!.add(allMap[attribute]!);
-    }
   }
 
   Future<void> startSimulation() async {
@@ -182,23 +98,20 @@ class _ProgressBodyState extends State<ProgressBody> {
 
     while(mounted && currentYear < widget.years && simulationState == SimulationStatus.running) {
       // Iterate simulation
-      World currentWorld = await iterateSimulation();
-      saveHistory(currentWorld);
+      await iterateSimulation();
 
       if (mounted) { // Update states
         setState(() {
           currentYear = currentYear + 1;
 
           x.add(currentYear.toDouble());
-          y = simulationHistory[activeSpecies]![activeAttribute]!;
+          y = simulator.getPlotData(activeSpecies!, activeAttribute!);
         });
       }
     }
 
     // Mark the simulation complete if it ran till end
     if (mounted && simulationState == SimulationStatus.running) {
-      simulator.cleanup();
-
       setState(() {
         simulationState = SimulationStatus.completed;
       });
@@ -209,8 +122,6 @@ class _ProgressBodyState extends State<ProgressBody> {
     setState(() {
       simulationState = SimulationStatus.stopped;
     });
-
-    simulator.cleanup();
   }
 
   Future<void> viewSimulation() async {
@@ -223,7 +134,7 @@ class _ProgressBodyState extends State<ProgressBody> {
 
       if (simulationState == SimulationStatus.stopped ||
           simulationState == SimulationStatus.completed) {
-        y = simulationHistory[activeSpecies]![activeAttribute]!;
+        y = simulator.getPlotData(activeSpecies!, activeAttribute!);
       }
     });
   }
@@ -234,7 +145,7 @@ class _ProgressBodyState extends State<ProgressBody> {
 
       if (simulationState == SimulationStatus.stopped ||
           simulationState == SimulationStatus.completed) {
-        y = simulationHistory[activeSpecies]![activeAttribute]!;
+        y = simulator.getPlotData(activeSpecies!, activeAttribute!);
       }
     });
   }

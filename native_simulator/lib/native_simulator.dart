@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 import 'package:native_simulator/native_linker.dart';
@@ -18,16 +19,14 @@ class NativeSimulator {
   }
 
   List<String> getAllAttributes() {
-    return [
-      "ageFitnessOnDeathRatio",
-      "conceivingProbability",
-      "matingProbability",
-      "matingAgeStart",
-      "matingAgeEnd",
-      "maxAge",
-      "mutationProbability",
-      "offspringsFactor",
-    ];
+    if (!sessionRunning) {
+      return [];
+    }
+
+    final listPtr = getPlotAttributes(sessionPtr);
+    final listStr = listPtr.toDartString();
+
+    return listStr.split(",");
   }
 
   void createInitialOrganisms(int kingdom, String kind, int age, int count) {
@@ -52,6 +51,24 @@ class NativeSimulator {
     }
 
     final buffer = happyNewYear(sessionPtr);
+    final bufferArray = buffer.data.asTypedList(buffer.length);
+    return bufferArray;
+  }
+
+  void saveWorldInstance() {
+    if (!sessionRunning) {
+      return;
+    }
+
+    addCurrentWorldRecord(sessionPtr);
+  }
+
+  List<double> getPlotData(String species, String attribute) {
+    if (!sessionRunning) {
+      return [];
+    }
+
+    final buffer = getPlotValues(sessionPtr, species.toNativeUtf8(), attribute.toNativeUtf8());
     final bufferArray = buffer.data.asTypedList(buffer.length);
     return bufferArray;
   }
