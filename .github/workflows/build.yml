@@ -25,7 +25,7 @@ jobs:
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
-          cd $ANDROID_NDK_HOME
+          cd "$ANDROID_NDK_HOME/toolchains/llvm/prebuilt"
           ls
 
       - name: Get flutter
