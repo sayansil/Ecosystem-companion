@@ -30,6 +30,7 @@ typedef CreateGod = Void Function(Pointer<Void>, Uint8, Pointer<Utf8>);
 typedef SetInitialOrganisms = Void Function(Pointer<Void>, Uint32, Pointer<Utf8>, Uint32, Uint32);
 typedef CleanSlate = Void Function(Pointer<Void>);
 typedef CreateWorld = Void Function(Pointer<Void>);
+typedef GetPlotAttributes = Pointer<Utf8> Function(Pointer<Void>);
 typedef HappyNewYear = BufferData Function(Pointer<Void>);
 typedef FreeGod = Void Function(Pointer<Void>);
 typedef SessionFree = Void Function(Pointer<Void>);
@@ -50,6 +51,9 @@ final void Function(Pointer<Void> session) cleanSlate = _lib
     .asFunction();
 final void Function(Pointer<Void> session) createWorld = _lib
     .lookup<NativeFunction<CreateWorld>>('create_world')
+    .asFunction();
+final Pointer<Utf8> Function(Pointer<Void> session) getPlotAttributes = _lib
+    .lookup<NativeFunction<GetPlotAttributes>>('get_plot_attributes')
     .asFunction();
 final BufferData Function(Pointer<Void> session) happyNewYear = _lib
     .lookup<NativeFunction<HappyNewYear>>('happy_new_year')
