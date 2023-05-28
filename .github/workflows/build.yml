@@ -1,7 +1,7 @@
 name: build
 
 on:
-  push:
+  pull_request:
     branches:
       - master
   workflow_dispatch:
@@ -18,14 +18,16 @@ jobs:
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: r21e
-          add-to-path: false
+          ndk-version: r25c
+          add-to-path: true
 
       - name: Use NDK binaries
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: /
-          echo $ANDROID_NDK_HOME
+          echo "$ANDROID_NDK_HOME"
+          cd $ANDROID_NDK_HOME
+          ls
 
       - name: Get flutter
         uses: subosito/flutter-action@v2.10.0
