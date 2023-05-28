@@ -6,15 +6,15 @@ publish_to: 'none'
 # Version Name syntax: "<Major release>.<Minor release>.<Patch>"
 # Eg. - "12.0.1" => Major ver 12, no Minor update, Patch 1
 #
-# Version Code syntax: 17<MM><RR><PP> (8 digits)
+# Version Code syntax: 17<MMM><RR><PP> (9 digits)
 # Where,
 #   17 -> Dummy number (Unused)
-#   MM -> Major release
+#   MMM -> Major release
 #   RR -> Minor release
 #   PP -> Patch
-# Eg. - 17123211 => Major ver 12, Minor update 32, Patch 11
+# Eg. - 170123211 => Major ver 12, Minor update 32, Patch 11
 
-version: 0.1.1+17000101
+version: 0.1.1+170000101
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
