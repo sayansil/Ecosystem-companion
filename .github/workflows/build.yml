@@ -14,7 +14,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: subosito/flutter-action@v2.10.0
+      - name: Get NDK
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: r21e
+          add-to-path: false
+
+      - name: Use NDK binaries
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: /
+          echo $ANDROID_NDK_HOME
+
+      - name: Get flutter
+        uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: '3.7.5'
           channel: 'stable'
