@@ -7,4 +7,4 @@
 /build
 /captures
 .cxx
-/src/main/jniLibs
+/src/main/jniLibs/**/libc++_shared.so
