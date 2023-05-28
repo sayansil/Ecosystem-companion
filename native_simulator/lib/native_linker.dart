@@ -25,6 +25,13 @@ class BufferData extends Struct {
   external int length;
 }
 
+class FloatData extends Struct {
+  external Pointer<Float> data;
+
+  @Uint32()
+  external int length;
+}
+
 typedef SessionInit = Pointer<Void> Function();
 typedef CreateGod = Void Function(Pointer<Void>, Uint8, Pointer<Utf8>);
 typedef SetInitialOrganisms = Void Function(Pointer<Void>, Uint32, Pointer<Utf8>, Uint32, Uint32);
@@ -32,6 +39,8 @@ typedef CleanSlate = Void Function(Pointer<Void>);
 typedef CreateWorld = Void Function(Pointer<Void>);
 typedef GetPlotAttributes = Pointer<Utf8> Function(Pointer<Void>);
 typedef HappyNewYear = BufferData Function(Pointer<Void>);
+typedef AddCurrentWorldRecord = Void Function(Pointer<Void>);
+typedef GetPlotValues = FloatData Function(Pointer<Void>, Pointer<Utf8>, Pointer<Utf8>);
 typedef FreeGod = Void Function(Pointer<Void>);
 typedef SessionFree = Void Function(Pointer<Void>);
 
@@ -57,6 +66,12 @@ final Pointer<Utf8> Function(Pointer<Void> session) getPlotAttributes = _lib
     .asFunction();
 final BufferData Function(Pointer<Void> session) happyNewYear = _lib
     .lookup<NativeFunction<HappyNewYear>>('happy_new_year')
+    .asFunction();
+final void Function(Pointer<Void> session) addCurrentWorldRecord = _lib
+    .lookup<NativeFunction<AddCurrentWorldRecord>>('add_current_world_record')
+    .asFunction();
+final FloatData Function(Pointer<Void>, Pointer<Utf8>, Pointer<Utf8>) getPlotValues = _lib
+    .lookup<NativeFunction<GetPlotValues>>('get_plot_values')
     .asFunction();
 final void Function(Pointer<Void> session) freeGod = _lib
     .lookup<NativeFunction<FreeGod>>('free_god')

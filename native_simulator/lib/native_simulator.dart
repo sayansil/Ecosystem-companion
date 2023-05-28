@@ -17,19 +17,6 @@ class NativeSimulator {
     createGod(sessionPtr, 1, ecosystemRoot.toNativeUtf8());
     cleanSlate(sessionPtr);
   }
-  //
-  // List<String> getAllAttributes() {
-  //   return [
-  //     "ageFitnessOnDeathRatio",
-  //     "conceivingProbability",
-  //     "matingProbability",
-  //     "matingAgeStart",
-  //     "matingAgeEnd",
-  //     "maxAge",
-  //     "mutationProbability",
-  //     "offspringsFactor",
-  //   ];
-  // }
 
   List<String> getAllAttributes() {
     if (!sessionRunning) {
@@ -64,6 +51,24 @@ class NativeSimulator {
     }
 
     final buffer = happyNewYear(sessionPtr);
+    final bufferArray = buffer.data.asTypedList(buffer.length);
+    return bufferArray;
+  }
+
+  void saveWorldInstance() {
+    if (!sessionRunning) {
+      return;
+    }
+
+    addCurrentWorldRecord(sessionPtr);
+  }
+
+  List<double> getPlotData(String species, String attribute) {
+    if (!sessionRunning) {
+      return [];
+    }
+
+    final buffer = getPlotValues(sessionPtr, species.toNativeUtf8(), attribute.toNativeUtf8());
     final bufferArray = buffer.data.asTypedList(buffer.length);
     return bufferArray;
   }
