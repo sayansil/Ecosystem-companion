@@ -86,17 +86,21 @@ jobs:
           path: native_simulator/android/src/main/jniLibs
           key: cache-${{ env.ndk-version }}-${{ steps.get-ecosystem-core.outputs.commit_hash }}
 
+
       - name: Get flutter
         uses: subosito/flutter-action@v2.10.0
         with:
           flutter-version: '3.7.5'
           channel: 'stable'
 
+
       - name: Build debug apk
         run: flutter build apk --debug
 
+
       - name: Get apk
         run: cp build/app/outputs/flutter-apk/app-debug.apk ecosystem-companion-debug.apk
+
 
       - name: Save apk
         uses: actions/upload-artifact@v3.1.2

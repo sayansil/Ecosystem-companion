@@ -40,41 +40,82 @@ jobs:
     runs-on: ubuntu-22.04
     needs:
       - version-update
+    env:
+      ndk-version: r25c
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get NDK
-        uses: nttld/setup-ndk@v1
-        id: setup-ndk
-        with:
-          ndk-version: r25c
-          add-to-path: true
 
-      - name: Use NDK binaries
-        env:
-          NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+      - name: Get Ecosystem core
+        id: get-ecosystem-core
+        run: |
+          git clone https://github.com/sayansil/Ecosystem -b mobile-compatible
+          cd Ecosystem
+          commit_hash=$(git rev-parse --short HEAD)
+          echo "commit_hash=$commit_hash" >> "$GITHUB_OUTPUT"
+          
+
+      - name: Restore Ecosystem cache
+        uses: actions/cache/restore@v3
+        id: cache-restore
+        with:
+          path: native_simulator/android/src/main/jniLibs
+          key: cache-${{ env.ndk-version }}-${{ steps.get-ecosystem-core.outputs.commit_hash }}
+
+
+      - name: Create binary dirs
+        if: ${{ !steps.cache-restore.outputs.cache-hit }}
         run: |
           mkdir -p native_simulator/android/src/main/jniLibs/arm64-v8a
           mkdir -p native_simulator/android/src/main/jniLibs/armeabi-v7a
-          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so native_simulator/android/src/main/jniLibs/arm64-v8a/libc++_shared.so
-          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so native_simulator/android/src/main/jniLibs/armeabi-v7a/libc++_shared.so
 
-      - name: Build Ecosystem core
+
+      - name: Get NDK
+        if: ${{ !steps.cache-restore.outputs.cache-hit }}
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: ${{ env.ndk-version }}
+          add-to-path: true
+
+
+      - name: Use NDK binaries
+        if: ${{ !steps.cache-restore.outputs.cache-hit }}
         env:
           NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
-          sudo apt install ninja-build
-          git clone https://github.com/sayansil/Ecosystem -b mobile-compatible
+          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so native_simulator/android/src/main/jniLibs/arm64-v8a/libc++_shared.so
+          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so native_simulator/android/src/main/jniLibs/armeabi-v7a/libc++_shared.so
+
+
+      - name: Build Ecosystem core
+        if: ${{ !steps.cache-restore.outputs.cache-hit }}
+        env:
+          NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
           cd Ecosystem/simulation
+          sudo apt install ninja-build
           cmake --preset and-arm64v8a
           cmake --build --preset and-arm64v8a
           cmake --preset and-armeabiv7a-neon 
           cmake --build --preset and-armeabiv7a-neon
 
+
       - name: Use Ecosystem binaries
+        if: ${{ !steps.cache-restore.outputs.cache-hit }}
         run: |
           cp Ecosystem/simulation/build/and-arm64v8a/src/libecosystem_wrapper.so native_simulator/android/src/main/jniLibs/arm64-v8a/
           cp Ecosystem/simulation/build/and-armeabiv7a-neon/src/libecosystem_wrapper.so native_simulator/android/src/main/jniLibs/armeabi-v7a/
+
+
+      - name: Save Ecosystem cache
+        uses: actions/cache/save@v3
+        if: ${{ !steps.cache-restore.outputs.cache-hit }}
+        id: cache-save
+        with:
+          path: native_simulator/android/src/main/jniLibs
+          key: cache-${{ env.ndk-version }}-${{ steps.get-ecosystem-core.outputs.commit_hash }}
+
 
       - name: Get flutter
         uses: subosito/flutter-action@v2.10.0
@@ -82,33 +123,46 @@ jobs:
           flutter-version: '3.7.5'
           channel: 'stable'
 
+
       - name: Generate KeyStore
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'keystore/android_keystore'
           encodedString: ${{ secrets.KEYSTORE }}
 
+
       - name: Generate key properties
         run: |
-          touch android/key.properties
-          echo "storePassword=${{ secrets.SIGNING_STORE_PASSWORD }}" >> file
-          echo "keyPassword=${{ secrets.SIGNING_KEY_PASSWORD }}" >> file
-          echo "keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}" >> file
-          echo "storeFile=keystore/android_keystore" >> file
+          cd android
+          touch key.properties
+          echo "storePassword=${{ secrets.SIGNING_STORE_PASSWORD }}" >> key.properties
+          echo "keyPassword=${{ secrets.SIGNING_KEY_PASSWORD }}" >> key.properties
+          echo "keyAlias=${{ secrets.SIGNING_KEY_ALIAS }}" >> key.properties
+          echo "storeFile=keystore/android_keystore" >> key.properties
 
-      - name: Build debug apk
+
+      - name: Build release apk
         run: flutter build apk --release
+
 
       - name: Clean KeyStore
         run: |
           rm -rf keystore
           rm -rf android/key.properties
 
+
       - name: Get apk
-        run: cp build/app/outputs/flutter-apk/app-debug.apk ecosystem-companion-release.apk
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk ecosystem-companion-universal.apk
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk ecosystem-companion-arm64-v8a.apk
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ecosystem-companion-armeabi-v7a.apk
+
 
       - name: Save apk
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: Ecosystem Companion - release build
-          path: ecosystem-companion-release.apk
+          name: Ecosystem Companion - release APKs
+          path: |
+            ecosystem-companion-universal.apk
+            ecosystem-companion-arm64-v8a.apk
+            ecosystem-companion-armeabi-v7a.apk
