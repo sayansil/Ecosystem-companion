@@ -33,7 +33,7 @@ jobs:
         uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
-          ndk-version: ${{ ndk-version }}
+          ndk-version: ${{ env.ndk-version }}
           add-to-path: true
 
       - name: Use NDK binaries
