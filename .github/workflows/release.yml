@@ -145,12 +145,13 @@ jobs:
       - name: Generate KeyStore
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: 'android/app/keystore/android_keystore'
+          fileName: 'Ecosystem-companion/android/app/keystore/android_keystore'
           encodedString: ${{ secrets.KEYSTORE }}
 
 
       - name: Generate key properties
         run: |
+          pwd
           cd android
           touch key.properties
           echo "storePassword=${{ secrets.SIGNING_STORE_PASSWORD }}" >> key.properties
