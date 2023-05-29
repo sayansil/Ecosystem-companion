@@ -11,31 +11,68 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-22.04
+    env:
+      ndk-version: r25c
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get NDK
-        uses: nttld/setup-ndk@v1
-        id: setup-ndk
-        with:
-          ndk-version: r25c
-          add-to-path: true
-
-      - name: Use NDK binaries
-        env:
-          NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+      - name: Create binary dirs
         run: |
           mkdir -p native_simulator/android/src/main/jniLibs/arm64-v8a
           mkdir -p native_simulator/android/src/main/jniLibs/armeabi-v7a
-          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so native_simulator/android/src/main/jniLibs/arm64-v8a/libc++_shared.so
-          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so native_simulator/android/src/main/jniLibs/armeabi-v7a/libc++_shared.so
 
-      - name: Build Ecosystem core
+      - name: Restore NDK cache
+        uses: actions/cache/restore@v3
+        id: cache-restore-ndk
+        with:
+          path: native_simulator/android/src/main/jniLibs/*/libc++_shared.so
+          key: cache-ndk-${{ ndk-version }}
+
+      - name: Get NDK
+        if: ${{ !steps.cache-restore-ndk.outputs.cache-hit }}
+        uses: nttld/setup-ndk@v1
+        id: setup-ndk
+        with:
+          ndk-version: ${{ ndk-version }}
+          add-to-path: true
+
+      - name: Use NDK binaries
+        if: ${{ !steps.cache-restore-ndk.outputs.cache-hit }}
         env:
           NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
+          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so native_simulator/android/src/main/jniLibs/arm64-v8a/libc++_shared.so
+          cp $NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so native_simulator/android/src/main/jniLibs/armeabi-v7a/libc++_shared.so
+
+      - name: Save NDK cache
+        uses: actions/cache/save@v3
+        if: ${{ !steps.cache-restore-ndk.outputs.cache-hit }}
+        id: cache-save-ndk
+        with:
+          path: native_simulator/android/src/main/jniLibs/*/libc++_shared.so
+          key: cache-ndk-${{ ndk-version }}
+
+      - name: Get Ecosystem core
+        id: get-ecosystem-core
+        run: |
           sudo apt install ninja-build
           git clone https://github.com/sayansil/Ecosystem -b mobile-compatible
+          cd Ecosystem
+          commit_hash=$(git rev-parse --short HEAD)
+          echo "commit_hash=$commit_hash" >> "$GITHUB_OUTPUT"
+
+      - name: Restore Ecosystem cache
+        uses: actions/cache/restore@v3
+        id: cache-restore-core
+        with:
+          path: native_simulator/android/src/main/jniLibs/*/libecosystem_wrapper.so
+          key: cache-core-${{ steps.get-ecosystem-core.commit_hash }}
+
+      - name: Build Ecosystem core
+        if: ${{ !steps.cache-restore-core.outputs.cache-hit }}
+        env:
+          NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
           cd Ecosystem/simulation
           cmake --preset and-arm64v8a
           cmake --build --preset and-arm64v8a
@@ -43,9 +80,18 @@ jobs:
           cmake --build --preset and-armeabiv7a-neon
 
       - name: Use Ecosystem binaries
+        if: ${{ !steps.cache-restore-core.outputs.cache-hit }}
         run: |
           cp Ecosystem/simulation/build/and-arm64v8a/src/libecosystem_wrapper.so native_simulator/android/src/main/jniLibs/arm64-v8a/
           cp Ecosystem/simulation/build/and-armeabiv7a-neon/src/libecosystem_wrapper.so native_simulator/android/src/main/jniLibs/armeabi-v7a/
+
+      - name: Save Ecosystem cache
+        uses: actions/cache/save@v3
+        if: ${{ !steps.cache-restore-core.outputs.cache-hit }}
+        id: cache-save-core
+        with:
+          path: native_simulator/android/src/main/jniLibs/*/libecosystem_wrapper.so
+          key: cache-core-${{ steps.get-ecosystem-core.commit_hash }}
 
       - name: Get flutter
         uses: subosito/flutter-action@v2.10.0
