@@ -40,8 +40,8 @@ jobs:
 
       - name: Bump up version
         run: |
-          chmod +x update_version.sh
-          ./update_version.sh ${{ github.event.inputs.choice }}
+          chmod +x .github/scripts/update_version.sh 
+          ./.github/scripts/update_version.sh ${{ github.event.inputs.choice }}
 
       - name: Save updated version
         uses: EndBug/add-and-commit@v9
@@ -179,11 +179,25 @@ jobs:
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ecosystem-companion-armeabi-v7a.apk
 
 
-      - name: Save apk
-        uses: actions/upload-artifact@v3.1.2
+      - name: Get Tag
+        id: get-tag
+        run: |
+          chmod +x .github/scripts/get_version.sh
+          version=`./.github/scripts/get_version.sh`
+          echo "tag=$version" >> "$GITHUB_OUTPUT"
+          echo "release=Release $version" >> "$GITHUB_OUTPUT"
+          echo "Releasing with tag $version"
+          
+
+      - name: Draft Release
+        id: draft-release
+        uses: softprops/action-gh-release@v1
         with:
-          name: Ecosystem Companion - release APKs
-          path: |
+          name: ${{ steps.get-tag.outputs.release }}
+          tag_name: ${{ steps.get-tag.outputs.tag }}
+          draft: true
+          generate_release_notes: true
+          files: |
             ecosystem-companion-universal.apk
             ecosystem-companion-arm64-v8a.apk
             ecosystem-companion-armeabi-v7a.apk
