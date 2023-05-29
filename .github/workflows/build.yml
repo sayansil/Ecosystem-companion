@@ -55,7 +55,6 @@ jobs:
       - name: Get Ecosystem core
         id: get-ecosystem-core
         run: |
-          sudo apt install ninja-build
           git clone https://github.com/sayansil/Ecosystem -b mobile-compatible
           cd Ecosystem
           commit_hash=$(git rev-parse --short HEAD)
@@ -73,6 +72,7 @@ jobs:
         env:
           NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
+          sudo apt install ninja-build
           cd Ecosystem/simulation
           cmake --preset and-arm64v8a
           cmake --build --preset and-arm64v8a
