@@ -66,7 +66,7 @@ jobs:
         id: cache-restore-core
         with:
           path: native_simulator/android/src/main/jniLibs/*/libecosystem_wrapper.so
-          key: cache-core-${{ steps.get-ecosystem-core.commit_hash }}
+          key: cache-core-${{ steps.get-ecosystem-core.outputs.commit_hash }}
 
       - name: Build Ecosystem core
         if: ${{ !steps.cache-restore-core.outputs.cache-hit }}
@@ -91,7 +91,7 @@ jobs:
         id: cache-save-core
         with:
           path: native_simulator/android/src/main/jniLibs/*/libecosystem_wrapper.so
-          key: cache-core-${{ steps.get-ecosystem-core.commit_hash }}
+          key: cache-core-${{ steps.get-ecosystem-core.outputs.commit_hash }}
 
       - name: Get flutter
         uses: subosito/flutter-action@v2.10.0
