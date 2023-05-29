@@ -6,7 +6,9 @@ if [ "$1" == "-h" ]; then
   exit 0;
 fi
 
-versionLine=$(grep -n "version:" pubspec.yaml)
+pubspec_file="pubspec.yaml"
+
+versionLine=$(grep -n "version:" "$pubspec_file")
 versionLineNumber=$(echo "$versionLine" | cut -d":" -f 1)
 
 versionName=$(echo "$versionLine" | grep -o "[0-9]*\.[0-9]*\.[0-9]")
@@ -36,5 +38,5 @@ finalVersionCode="17$majorCode$minorCode$patchCode"
 finalVersion="version: $finalVersionName+$finalVersionCode"
 
 awkStr="NR==$versionLineNumber {\$0=\"$finalVersion\"} 1"
-awk "$awkStr" pubspec.yaml > pubspec.tmp && mv pubspec.tmp pubspec.yaml
+awk "$awkStr" "$pubspec_file" > pubspec.tmp && mv pubspec.tmp "$pubspec_file"
 echo "Bumping up version to $finalVersionCode ($originalVersionName => $finalVersionName)"
