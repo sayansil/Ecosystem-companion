@@ -26,7 +26,7 @@ jobs:
         id: cache-restore-ndk
         with:
           path: native_simulator/android/src/main/jniLibs/*/libc++_shared.so
-          key: cache-ndk-${{ ndk-version }}
+          key: cache-ndk-${{ env.ndk-version }}
 
       - name: Get NDK
         if: ${{ !steps.cache-restore-ndk.outputs.cache-hit }}
@@ -50,7 +50,7 @@ jobs:
         id: cache-save-ndk
         with:
           path: native_simulator/android/src/main/jniLibs/*/libc++_shared.so
-          key: cache-ndk-${{ ndk-version }}
+          key: cache-ndk-${{ env.ndk-version }}
 
       - name: Get Ecosystem core
         id: get-ecosystem-core
