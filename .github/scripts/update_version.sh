@@ -39,4 +39,6 @@ finalVersion="version: $finalVersionName+$finalVersionCode"
 
 awkStr="NR==$versionLineNumber {\$0=\"$finalVersion\"} 1"
 awk "$awkStr" "$pubspec_file" > pubspec.tmp && mv pubspec.tmp "$pubspec_file"
-echo "Bumping up version to $finalVersionCode ($originalVersionName => $finalVersionName)"
+#echo "Bumping up version to $finalVersionCode ($originalVersionName => $finalVersionName)"
+
+echo "v$finalVersionName"
