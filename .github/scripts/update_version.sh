@@ -11,7 +11,7 @@ pubspec_file="pubspec.yaml"
 versionLine=$(grep -n "version:" "$pubspec_file")
 versionLineNumber=$(echo "$versionLine" | cut -d":" -f 1)
 
-versionName=$(echo "$versionLine" | grep -o "[0-9]*\.[0-9]*\.[0-9]")
+versionName=$(echo "$versionLine" | grep -o "[0-9]*\.[0-9]*\.[0-9]*")
 
 majorName=$(echo "$versionName" | cut -d"." -f 1)
 minorName=$(echo "$versionName" | cut -d"." -f 2)
