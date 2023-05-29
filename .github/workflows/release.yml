@@ -21,13 +21,15 @@ jobs:
     steps:
       - name: Validate Branch
         if: github.ref != 'refs/heads/master'
-        run: exit 1
+        run: |
+          echo "Can only release on master branch!"
+          exit 1
 
       - name: Validate actor
         run: |
           valid_actors="sayansil,rohanmarkgomes"
           actor="${{ github.triggering_actor }}"
-          if [[ ",$valid_actors," = *",$actor,"* ]]; then echo "User does not have permission to release :/"; exit 1 fi
+          if [[ ",$valid_actors," = *",$actor,"* ]]; then echo "User $actor does not have permission to create a release :/"; exit 1 fi
 
 
   version-update:
