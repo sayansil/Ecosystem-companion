@@ -28,8 +28,7 @@ jobs:
       - name: Validate actor
         run: |
           valid_actors="sayansil,rohanmarkgomes"
-          actor="${{ github.triggering_actor }}"
-          if [[ ",$valid_actors," = *",$actor,"* ]]; then echo "User $actor does not have permission to create a release :/"; exit 1 fi
+          if [[ ",$valid_actors," != *",${{ github.triggering_actor }},"* ]]; then echo "User ${{ github.triggering_actor }} does not have permission to create a release :/"; exit 1; fi
 
 
   version-update:
