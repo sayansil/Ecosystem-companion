@@ -15,9 +15,26 @@ on:
 
 jobs:
 
+  authenticate:
+    name: Validate release request
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Validate Branch
+        if: github.ref != 'refs/heads/master'
+        run: exit 1
+
+      - name: Validate actor
+        run: |
+          valid_actors="sayansil,rohanmarkgomes"
+          actor="${{ github.triggering_actor }}"
+          if [[ ",$valid_actors," = *",$actor,"* ]]; then echo "User does not have permission to release :/"; exit 1 fi
+
+
   version-update:
     name: Update Version
     runs-on: ubuntu-22.04
+    needs:
+      - authenticate
     steps:
       - uses: actions/checkout@v3
 
@@ -39,6 +56,7 @@ jobs:
     name: Build
     runs-on: ubuntu-22.04
     needs:
+      - authenticate
       - version-update
     env:
       ndk-version: r25c
