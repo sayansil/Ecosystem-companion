@@ -30,8 +30,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           add: 'pubspec.yaml'
-          author_name: Sayan Sil
-          author_email: sayan227sil@ymail.com
+          default_author: user_info
           commit: --signoff
           fetch: false
           message: 'Update version for ${{ github.event.inputs.choice }} release'
