@@ -35,13 +35,17 @@ jobs:
     runs-on: ubuntu-22.04
     needs:
       - authenticate
+    outputs:
+      tag: ${{ steps.update-version.outputs.tag }}
     steps:
       - uses: actions/checkout@v3
 
       - name: Bump up version
+        id: update-version
         run: |
           chmod +x .github/scripts/update_version.sh 
-          ./.github/scripts/update_version.sh ${{ github.event.inputs.choice }}
+          version=`./.github/scripts/update_version.sh ${{ github.event.inputs.choice }}`
+          echo "tag=$version" >> "$GITHUB_OUTPUT"
 
       - name: Save updated version
         uses: EndBug/add-and-commit@v9
@@ -179,22 +183,12 @@ jobs:
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ecosystem-companion-armeabi-v7a.apk
 
 
-      - name: Get Tag
-        id: get-tag
-        run: |
-          chmod +x .github/scripts/get_version.sh
-          version=`./.github/scripts/get_version.sh`
-          echo "tag=$version" >> "$GITHUB_OUTPUT"
-          echo "release=Release $version" >> "$GITHUB_OUTPUT"
-          echo "Releasing with tag $version"
-          
-
       - name: Draft Release
         id: draft-release
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ steps.get-tag.outputs.release }}
-          tag_name: ${{ steps.get-tag.outputs.tag }}
+          name: "Release ${{ needs.version-update.outputs.tag }}"
+          tag_name: ${{ needs.version-update.outputs.tag }}
           draft: true
           generate_release_notes: true
           files: |
