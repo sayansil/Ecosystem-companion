@@ -15,9 +15,32 @@ on:
 
 jobs:
 
+  version-update:
+    name: Update Version
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Bump up version
+        run: |
+          chmod +x update_version.sh
+          ./update_version.sh ${{ github.event.inputs.choice }}
+
+      - name: Save updated version
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'pubspec.yaml'
+          author_name: Sayan Sil
+          author_email: sayan227sil@ymail.com
+          commit: --signoff
+          fetch: false
+          message: 'Update version for ${{ github.event.inputs.choice }} release'
+
   build:
     name: Build
     runs-on: ubuntu-22.04
+    needs:
+      - version-update
     steps:
       - uses: actions/checkout@v3
 
