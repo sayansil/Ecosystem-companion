@@ -6,10 +6,12 @@ import 'package:ecosystem/screens/home/home_screen.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(CompanionApp());
+  runApp(const CompanionApp());
 }
 
 class CompanionApp extends StatelessWidget {
+  const CompanionApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,7 +23,7 @@ class CompanionApp extends StatelessWidget {
         scaffoldBackgroundColor: colorBackground,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
