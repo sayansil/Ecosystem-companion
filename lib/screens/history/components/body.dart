@@ -16,6 +16,8 @@ import 'header.dart';
 import 'package:flutter/material.dart';
 
 class HistoryBody extends StatefulWidget {
+  const HistoryBody({super.key});
+
   @override
   _HistoryBodyState createState() => _HistoryBodyState();
 }

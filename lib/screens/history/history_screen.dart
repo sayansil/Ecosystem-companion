@@ -5,11 +5,13 @@ import 'package:ecosystem/screens/common/navappbar.dart';
 import 'components/body.dart';
 
 class HistoryScreen extends StatelessWidget {
+  const HistoryScreen({super.key});
+
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: NavDrawer(currentItem: DrawerItem.history),
+        drawer: const NavDrawer(currentItem: DrawerItem.history),
         appBar: buildNavAppBar(context),
-        body: HistoryBody(),
+        body: const HistoryBody(),
       );
 }

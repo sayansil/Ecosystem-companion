@@ -4,11 +4,13 @@ import 'package:ecosystem/screens/common/navdrawer.dart';
 import 'package:ecosystem/screens/common/navappbar.dart';
 import 'components/body.dart';
 class AboutScreen extends StatelessWidget {
+  const AboutScreen({super.key});
+
   @override
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: NavDrawer(currentItem: DrawerItem.about),
+        drawer: const NavDrawer(currentItem: DrawerItem.about),
         appBar: buildNavAppBar(context),
-        body: AboutBody(),
+        body: const AboutBody(),
       );
 }
