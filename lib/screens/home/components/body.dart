@@ -13,8 +13,6 @@ import '../../common/transition.dart';
 import 'header.dart';
 
 class HomeBody extends StatefulWidget {
-  const HomeBody({super.key});
-
   @override
   _HomeBodyState createState() => _HomeBodyState();
 }
