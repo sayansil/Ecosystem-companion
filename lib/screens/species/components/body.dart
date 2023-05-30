@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class SpeciesBody extends StatefulWidget {
-  const SpeciesBody({super.key});
-
   @override
   _SpeciesBodyState createState() => _SpeciesBodyState();
 }
@@ -68,14 +66,14 @@ class _SpeciesBodyState extends State<SpeciesBody> {
 
     if (baseJsonFilePath.isNotEmpty || modifyJsonFilePath.isNotEmpty) {
       if (Platform.isIOS && await Permission.storage.isRestricted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(permissionStorageNotGranted),
         ));
         return;
       } else if (isPlatformMobile && await Permission.storage.request().isPermanentlyDenied) {
         await openAppSettings();
       } else if (isPlatformMobile && !await Permission.storage.request().isGranted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(permissionStorageGrantRequest),
         ));
         return;
@@ -113,7 +111,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
       textModifyJsonPathController.clear();
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(snackBarAddedSpeciesText),
     ));
   }

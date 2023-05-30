@@ -94,26 +94,8 @@ jobs:
           channel: 'stable'
 
 
-      - name: Create firebase configs
-        run: |
-          echo "${{ secrets.FIREBASE_OPTIONS }}" > lib/firebase_options.dart
-          echo "${{ secrets.FIREBASE_IOS_APP_ID }}" > ios/firebase_app_id_file.json
-          echo "${{ secrets.FIREBASE_GOOGLE_SERVICE_INFO }}" > ios/Runner/GoogleService-Info.plist
-          echo "${{ secrets.FIREBASE_IOS_APP_ID }}" > macos/firebase_app_id_file.json
-          echo "${{ secrets.FIREBASE_GOOGLE_SERVICE_INFO }}" > macos/Runner/GoogleService-Info.plist
-
-
       - name: Build debug apk
         run: flutter build apk --debug
-
-
-      - name: Delete firebase configs
-        run: |
-          rm -rf lib/firebase_options.dart
-          rm -rf ios/firebase_app_id_file.json
-          rm -rf ios/Runner/GoogleService-Info.plist
-          rm -rf macos/firebase_app_id_file.json
-          rm -rf macos/Runner/GoogleService-Info.plist
 
 
       - name: Get apk
