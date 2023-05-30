@@ -40,7 +40,6 @@ dependencies:
   recase: ^4.1.0
   native_simulator:
     path: native_simulator
-  firebase_core: ^2.13.0
 
 
 dev_dependencies:

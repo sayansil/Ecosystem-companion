@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class BodyHeader extends StatelessWidget {
   final Size parentSize;
 
-  const BodyHeader({Key? key, required this.parentSize}) : super(key: key);
+  BodyHeader({Key? key, required this.parentSize}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

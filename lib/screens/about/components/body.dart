@@ -5,8 +5,6 @@ import 'header.dart';
 import 'package:flutter/material.dart';
 
 class AboutBody extends StatefulWidget {
-  const AboutBody({super.key});
-
 
   @override
   _AboutBodyState createState() => _AboutBodyState();

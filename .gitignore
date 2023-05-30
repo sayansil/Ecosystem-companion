@@ -31,7 +31,6 @@
 .pub/
 .flutter-plugins-dependencies
 build/
-lib/firebase_options.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
