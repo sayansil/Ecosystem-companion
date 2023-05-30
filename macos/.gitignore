@@ -2,6 +2,8 @@
 **/Flutter/ephemeral/
 **/Pods/
 libecosystem_wrapper.dylib
+firebase_app_id_file.json
+Runner/GoogleService-Info.plist
 
 # Xcode-related
 **/dgph
