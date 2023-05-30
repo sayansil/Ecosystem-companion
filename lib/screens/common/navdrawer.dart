@@ -10,7 +10,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 class NavDrawer extends StatelessWidget {
   final DrawerItem? currentItem;
 
-  NavDrawer({this.currentItem});
+  const NavDrawer({super.key, this.currentItem});
 
   @override
   Widget build(BuildContext context) {
@@ -81,16 +81,16 @@ class NavDrawer extends StatelessWidget {
     Navigator.of(context).pop();
     switch (item) {
       case DrawerItem.home:
-        Navigator.push(context, buildPageRoute(HomeScreen()));
+        Navigator.push(context, buildPageRoute(const HomeScreen()));
         break;
       case DrawerItem.organism:
-        Navigator.push(context, buildPageRoute(SpeciesScreen()));
+        Navigator.push(context, buildPageRoute(const SpeciesScreen()));
         break;
       case DrawerItem.history:
-        Navigator.push(context, buildPageRoute(HistoryScreen()));
+        Navigator.push(context, buildPageRoute(const HistoryScreen()));
         break;
       case DrawerItem.about:
-        Navigator.push(context, buildPageRoute(AboutScreen()));
+        Navigator.push(context, buildPageRoute(const AboutScreen()));
         break;
       case DrawerItem.contribute:
         _launchURL(url: githubUrl);
