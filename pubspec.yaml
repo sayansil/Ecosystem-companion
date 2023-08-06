@@ -14,7 +14,7 @@ publish_to: 'none'
 #   PP -> Patch
 # Eg. - 170123211 => Major ver 12, Minor update 32, Patch 11
 
-version: 0.1.4+170000104
+version: 0.1.5+170000105
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
