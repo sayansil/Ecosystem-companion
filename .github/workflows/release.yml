@@ -167,7 +167,9 @@ jobs:
 
 
       - name: Build release apk
-        run: flutter build apk --release
+        run: |
+          flutter build apk --release
+          flutter build appbundle --release
 
 
       - name: Clean KeyStore
@@ -181,6 +183,7 @@ jobs:
           cp build/app/outputs/flutter-apk/app-release.apk ecosystem-companion-universal.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk ecosystem-companion-arm64-v8a.apk
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk ecosystem-companion-armeabi-v7a.apk
+          cp build/app/outputs/bundle/release/app-release.aab ecosystem-companion-appbundle.aab
 
 
       - name: Draft Release
@@ -194,3 +197,4 @@ jobs:
             ecosystem-companion-universal.apk
             ecosystem-companion-arm64-v8a.apk
             ecosystem-companion-armeabi-v7a.apk
+            ecosystem-companion-appbundle.aab
