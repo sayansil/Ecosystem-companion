@@ -20,7 +20,7 @@ jobs:
       - name: Get Ecosystem core
         id: get-ecosystem-core
         run: |
-          git clone https://github.com/sayansil/Ecosystem -b mobile-compatible
+          git clone https://github.com/sayansil/Ecosystem
           cd Ecosystem
           commit_hash=$(git rev-parse --short HEAD)
           echo "commit_hash=$commit_hash" >> "$GITHUB_OUTPUT"
