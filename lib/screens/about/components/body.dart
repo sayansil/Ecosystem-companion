@@ -1,12 +1,11 @@
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/screens/common/header.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 
-import 'header.dart';
 import 'package:flutter/material.dart';
 
 class AboutBody extends StatefulWidget {
   const AboutBody({super.key});
-
 
   @override
   _AboutBodyState createState() => _AboutBodyState();
@@ -22,7 +21,7 @@ class _AboutBodyState extends State<AboutBody> {
       child: Stack(
         children: <Widget>[
           // * Header bar
-          BodyHeader(parentSize: size),
+          getScreenHeader("About", size),
 
           Container(
             margin: EdgeInsets.only(

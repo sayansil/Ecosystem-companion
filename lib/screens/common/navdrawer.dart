@@ -60,7 +60,6 @@ class NavDrawer extends StatelessWidget {
                 onClicked: () => (currentItem == DrawerItem.contribute)
                     ? {Navigator.of(context).pop()}
                     : selectedItem(context, DrawerItem.contribute)),
-            const SizedBox(height: 10),
           ],
         ),
       ),

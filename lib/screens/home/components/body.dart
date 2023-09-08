@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ecosystem/screens/common/header.dart';
 import 'package:path/path.dart' as path;
 import 'package:ecosystem/screens/progress/progress_screen.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
@@ -10,7 +11,6 @@ import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/simulation_item.dart';
 import '../../common/transition.dart';
-import 'header.dart';
 
 class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
@@ -196,7 +196,7 @@ class _HomeBodyState extends State<HomeBody> {
         child: Stack(
           children: <Widget>[
             // * Header bar
-            BodyHeader(parentSize: size),
+            getScreenHeader("Ecosystem Simulator", size),
 
             // * Card List of selected Species
             Container(

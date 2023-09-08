@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/schema/report_meta_visualisation_generated.dart' as meta;
 import 'package:ecosystem/screens/common/dialog.dart';
+import 'package:ecosystem/screens/common/header.dart';
 import 'package:ecosystem/screens/common/history_items.dart';
 import 'package:ecosystem/screens/common/transition.dart';
 import 'package:ecosystem/screens/report/report_screen.dart';
@@ -12,7 +13,6 @@ import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 
-import 'header.dart';
 import 'package:flutter/material.dart';
 
 class HistoryBody extends StatefulWidget {
@@ -116,7 +116,7 @@ class _HistoryBodyState extends State<HistoryBody> {
       child: Stack(
         children: <Widget>[
           // * Header bar
-          BodyHeader(parentSize: size),
+          getScreenHeader("History", size),
 
           // * Report list
           Container(

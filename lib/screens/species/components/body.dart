@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/screens/common/header.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -141,7 +141,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
       child: Stack(
         children: <Widget>[
           // * Header bar
-          BodyHeader(parentSize: size),
+          getScreenHeader("New Species", size),
 
           // * Form 1
           Container(
