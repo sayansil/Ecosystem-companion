@@ -206,243 +206,240 @@ class _HomeBodyState extends State<HomeBody> {
                 right: defaultPadding,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
 
                   // Title
                   getScreenHeaderText("Ecosystem Simulator"),
 
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [Stack(
-                        children: [
-                          // Light grey background
-                          Container(
-                              constraints: BoxConstraints(maxWidth:
-                              max(600, size.width * 0.3)
-                              ),
-                              margin: const EdgeInsets.only(top: 20),
-                              height: 200,
-                              decoration: BoxDecoration(
-                                color: colorPrimaryLight,
-                                boxShadow: [
-                                  BoxShadow(
-                                    offset: const Offset(0, 10),
-                                    blurRadius: 50,
-                                    color: colorPrimary.withOpacity(0.23),
-                                  ),
-                                ],
-                              )
+                  Stack(
+                    children: [
+                      // Light grey background
+                      Container(
+                          constraints: BoxConstraints(
+                              maxWidth: min(600, size.width)
                           ),
-
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              // * Form 1
-                              Container(
-                                constraints: BoxConstraints(maxWidth:
-                                max(600, size.width * 0.3)
-                                ),
-                                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-                                decoration: BoxDecoration(
-                                  color: colorPrimaryLight,
-                                  borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(0, 10),
-                                      blurRadius: 50,
-                                      color: colorPrimary.withOpacity(0.23),
-                                    ),
-                                  ],
-                                ),
-                                child: TextField(
-                                  style: TextStyle(
-                                      fontSize: 18.0, color: Colors.white.withOpacity(0.8)),
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  decoration: const InputDecoration(
-                                    labelText: "Years to Simulate",
-                                    labelStyle: editTextDarkStyle,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                  ),
-                                  controller: textYearsController,
-                                  onChanged: (String? text) {
-                                    years = int.tryParse(textYearsController.text) ?? 0;
-                                    simulationConfigChanged();
-                                  },
-                                ),
-                              ),
-
-                              // * Form 2
-                              Container(
-                                constraints: BoxConstraints(maxWidth:
-                                max(600, size.width * 0.3)
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: defaultPadding,
-                                  vertical: defaultPadding / 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(0, 10),
-                                      blurRadius: 50,
-                                      color: colorPrimary.withOpacity(0.23),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: <Widget>[
-
-                                      // Kingdom input
-                                      DropdownButtonFormField<String>(
-                                        icon: const Icon(Icons.arrow_downward_rounded),
-                                        elevation: 20,
-                                        style: dropdownOptionStyle,
-                                        onChanged: (String? item) {
-                                          if (item != null && item.isNotEmpty) {
-                                            kingdomName = item;
-                                            configChanged();
-                                            fetchSpeciesList(kingdomName);
-                                          }
-                                        },
-                                        items: kingdomList.map((e) => DropdownMenuItem<String>(
-                                          value: e,
-                                          child: Text(e),
-                                        )).toList(),
-                                        decoration: const InputDecoration(
-                                          labelText: simulationKingdomInputText,
-                                          labelStyle: editTextStyle,
-                                          enabledBorder: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                        ),
-                                      ),
-
-                                      const Divider(
-                                        height: 0,
-                                        thickness: 1,
-                                      ),
-
-                                      // Species input
-                                      DropdownButtonFormField<String>(
-                                        icon: const Icon(Icons.arrow_downward_rounded),
-                                        elevation: 20,
-                                        style: dropdownOptionStyle,
-                                        onChanged: (String? item) {
-                                          if (item != null && item.isNotEmpty) {
-                                            speciesName = item;
-                                            configChanged();
-                                          }
-                                        },
-                                        items: speciesList.map((e) => DropdownMenuItem<String>(
-                                          value: e,
-                                          child: Text(e),
-                                        )).toList(),
-                                        decoration: const InputDecoration(
-                                          labelText: simulationKindInputText,
-                                          labelStyle: editTextStyle,
-                                          enabledBorder: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                        ),
-                                      ),
-
-                                      const Divider(
-                                        height: 0,
-                                        thickness: 1,
-                                      ),
-
-                                      Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: <Widget>[
-
-                                            // Age input
-                                            Flexible(
-                                              child: TextField(
-                                                style: const TextStyle(
-                                                  fontSize: 20.0,
-                                                ),
-                                                keyboardType: TextInputType.number,
-                                                inputFormatters: <TextInputFormatter>[
-                                                  FilteringTextInputFormatter.digitsOnly
-                                                ],
-                                                decoration: InputDecoration(
-                                                    labelText: "Age",
-                                                    labelStyle: editTextStyle,
-                                                    enabledBorder: InputBorder.none,
-                                                    focusedBorder: InputBorder.none,
-                                                    errorText:
-                                                    textAgeController.text.isNotEmpty &&
-                                                        !isValidNumber(textAgeController) ?
-                                                    "Invalid value" : null
-                                                ),
-                                                controller: textAgeController,
-                                                onChanged: (text) {configChanged();},
-                                              ),
-                                            ),
-
-
-                                            // Count input
-                                            Flexible(
-                                              child: TextField(
-                                                style: const TextStyle(
-                                                  fontSize: 20.0,
-                                                ),
-                                                keyboardType: TextInputType.number,
-                                                inputFormatters: <TextInputFormatter>[
-                                                  FilteringTextInputFormatter.digitsOnly
-                                                ],
-                                                decoration: InputDecoration(
-                                                    labelText: "Count",
-                                                    labelStyle: editTextStyle,
-                                                    enabledBorder: InputBorder.none,
-                                                    focusedBorder: InputBorder.none,
-                                                    errorText:
-                                                    textCountController.text.isNotEmpty &&
-                                                        !isValidNumber(textCountController) ?
-                                                    "Invalid value" : null
-                                                ),
-                                                controller: textCountController,
-                                                onChanged: (text) {configChanged();},
-                                              ),
-                                            )
-                                          ]),
-
-                                      // Add set button
-                                      ElevatedButton(
-                                        onPressed: isSetReady
-                                            ? () {
-                                          addSet();
-                                        }
-                                            : null,
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: colorPrimary,
-                                          foregroundColor: Colors.white,
-                                          textStyle: buttonStyle,
-                                          minimumSize: const Size(double.infinity, 30),
-                                          shape: const StadiumBorder(),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: defaultPadding / 1.5),
-                                        ),
-                                        child: const Text(addSpeciesBtn),
-                                      ),
-                                      const SizedBox(
-                                        height: 10.0,
-                                      ),
-                                    ]),
+                          margin: const EdgeInsets.only(top: 20),
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: colorPrimaryLight,
+                            boxShadow: [
+                              BoxShadow(
+                                offset: const Offset(0, 10),
+                                blurRadius: 50,
+                                color: colorPrimary.withOpacity(0.23),
                               ),
                             ],
+                          )
+                      ),
+
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          // * Form 1
+                          Container(
+                            constraints: BoxConstraints(
+                                maxWidth: min(600, size.width)
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                            decoration: BoxDecoration(
+                              color: colorPrimaryLight,
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20)),
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: const Offset(0, 10),
+                                  blurRadius: 50,
+                                  color: colorPrimary.withOpacity(0.23),
+                                ),
+                              ],
+                            ),
+                            child: TextField(
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.white.withOpacity(0.8)),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: const InputDecoration(
+                                labelText: "Years to Simulate",
+                                labelStyle: editTextDarkStyle,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              controller: textYearsController,
+                              onChanged: (String? text) {
+                                years = int.tryParse(textYearsController.text) ?? 0;
+                                simulationConfigChanged();
+                              },
+                            ),
+                          ),
+
+                          // * Form 2
+                          Container(
+                            constraints: BoxConstraints(
+                                maxWidth: min(600, size.width)
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: defaultPadding,
+                              vertical: defaultPadding / 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: const Offset(0, 10),
+                                  blurRadius: 50,
+                                  color: colorPrimary.withOpacity(0.23),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+
+                                  // Kingdom input
+                                  DropdownButtonFormField<String>(
+                                    icon: const Icon(Icons.arrow_downward_rounded),
+                                    elevation: 20,
+                                    style: dropdownOptionStyle,
+                                    onChanged: (String? item) {
+                                      if (item != null && item.isNotEmpty) {
+                                        kingdomName = item;
+                                        configChanged();
+                                        fetchSpeciesList(kingdomName);
+                                      }
+                                    },
+                                    items: kingdomList.map((e) => DropdownMenuItem<String>(
+                                      value: e,
+                                      child: Text(e),
+                                    )).toList(),
+                                    decoration: const InputDecoration(
+                                      labelText: simulationKingdomInputText,
+                                      labelStyle: editTextStyle,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                  ),
+
+                                  const Divider(
+                                    height: 0,
+                                    thickness: 1,
+                                  ),
+
+                                  // Species input
+                                  DropdownButtonFormField<String>(
+                                    icon: const Icon(Icons.arrow_downward_rounded),
+                                    elevation: 20,
+                                    style: dropdownOptionStyle,
+                                    onChanged: (String? item) {
+                                      if (item != null && item.isNotEmpty) {
+                                        speciesName = item;
+                                        configChanged();
+                                      }
+                                    },
+                                    items: speciesList.map((e) => DropdownMenuItem<String>(
+                                      value: e,
+                                      child: Text(e),
+                                    )).toList(),
+                                    decoration: const InputDecoration(
+                                      labelText: simulationKindInputText,
+                                      labelStyle: editTextStyle,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                  ),
+
+                                  const Divider(
+                                    height: 0,
+                                    thickness: 1,
+                                  ),
+
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: <Widget>[
+
+                                        // Age input
+                                        Flexible(
+                                          child: TextField(
+                                            style: const TextStyle(
+                                              fontSize: 20.0,
+                                            ),
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: <TextInputFormatter>[
+                                              FilteringTextInputFormatter.digitsOnly
+                                            ],
+                                            decoration: InputDecoration(
+                                                labelText: "Age",
+                                                labelStyle: editTextStyle,
+                                                enabledBorder: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                                errorText:
+                                                textAgeController.text.isNotEmpty &&
+                                                    !isValidNumber(textAgeController) ?
+                                                "Invalid value" : null
+                                            ),
+                                            controller: textAgeController,
+                                            onChanged: (text) {configChanged();},
+                                          ),
+                                        ),
+
+
+                                        // Count input
+                                        Flexible(
+                                          child: TextField(
+                                            style: const TextStyle(
+                                              fontSize: 20.0,
+                                            ),
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: <TextInputFormatter>[
+                                              FilteringTextInputFormatter.digitsOnly
+                                            ],
+                                            decoration: InputDecoration(
+                                                labelText: "Count",
+                                                labelStyle: editTextStyle,
+                                                enabledBorder: InputBorder.none,
+                                                focusedBorder: InputBorder.none,
+                                                errorText:
+                                                textCountController.text.isNotEmpty &&
+                                                    !isValidNumber(textCountController) ?
+                                                "Invalid value" : null
+                                            ),
+                                            controller: textCountController,
+                                            onChanged: (text) {configChanged();},
+                                          ),
+                                        )
+                                      ]),
+
+                                  // Add set button
+                                  ElevatedButton(
+                                    onPressed: isSetReady
+                                        ? () {
+                                      addSet();
+                                    }
+                                        : null,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: colorPrimary,
+                                      foregroundColor: Colors.white,
+                                      textStyle: buttonStyle,
+                                      minimumSize: const Size(double.infinity, 30),
+                                      shape: const StadiumBorder(),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: defaultPadding / 1.5),
+                                    ),
+                                    child: const Text(addSpeciesBtn),
+                                  ),
+                                  const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                ]),
                           ),
                         ],
                       ),
-                    ]
+                    ],
                   ),
 
 
