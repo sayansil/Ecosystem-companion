@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 Container getScreenHeader(String headerText, Size parentSize) {
   return Container(
     padding: headerPadding,
-    height: parentSize.height * 0.2,
+    height: parentSize.height * 0.3,
     width: parentSize.width,
     decoration: const BoxDecoration(
       color: colorPrimary,

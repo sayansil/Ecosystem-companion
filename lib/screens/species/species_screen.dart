@@ -10,7 +10,7 @@ class SpeciesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
     resizeToAvoidBottomInset: false,
-    drawer: const NavDrawer(currentItem: DrawerItem.about),
+    drawer: const NavDrawer(currentItem: DrawerItem.organism),
     appBar: buildNavAppBar(context),
     body: const SpeciesBody(),
   );
