@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ecosystem/screens/common/card.dart';
 import 'package:ecosystem/screens/common/header.dart';
 import 'package:path/path.dart' as path;
 import 'package:ecosystem/screens/progress/progress_screen.dart';
@@ -190,6 +191,7 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    Size cardDims = getCardDims(size);
 
     return Container(
         constraints: const BoxConstraints.expand(),
@@ -198,50 +200,10 @@ class _HomeBodyState extends State<HomeBody> {
             // * Header bar
             getScreenHeader("Ecosystem Simulator", size),
 
-            // * Card List of selected Species
-            Container(
-              margin: EdgeInsets.only(
-                left: defaultPadding,
-                right: defaultPadding,
-                top: size.height * 0.3 + 160,
-              ),
-              child: GridView.builder(
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.only(top: 40, bottom: size.height * 0.1),
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20),
-                itemCount: allSets.isNotEmpty ? allSets.length + 1 : 0,
-                itemBuilder: (BuildContext context, index) {
-                  return index < allSets.length ? speciesSetItem(
-                      allSets[index].kingdom,
-                      allSets[index].species,
-                      allSets[index].age,
-                      allSets[index].count
-                  ) : Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: IconButton(
-                      icon: const Icon(Icons.delete),
-                      color: colorSecondary,
-                      iconSize: 35,
-                      onPressed: () {
-                        clearSets();
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-
             // * Form 1
             Container(
               constraints: const BoxConstraints(maxWidth: 600),
-              height: 100,
+              height: 300,
               margin: EdgeInsets.only(
                 left: defaultPadding,
                 right: defaultPadding,
@@ -442,6 +404,46 @@ class _HomeBodyState extends State<HomeBody> {
                       height: 10.0,
                     ),
                   ]),
+            ),
+
+            // * Card List of selected Species
+            Container(
+              margin: EdgeInsets.only(
+                left: defaultPadding,
+                right: defaultPadding,
+                top: size.height * 0.3 + 160,
+              ),
+              child: GridView.builder(
+                physics: const BouncingScrollPhysics(),
+                padding: EdgeInsets.only(top: 40, bottom: size.height * 0.1),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 3 / 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20),
+                itemCount: allSets.isNotEmpty ? allSets.length + 1 : 0,
+                itemBuilder: (BuildContext context, index) {
+                  return index < allSets.length ? speciesSetItem(
+                      allSets[index].kingdom,
+                      allSets[index].species,
+                      allSets[index].age,
+                      allSets[index].count
+                  ) : Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: IconButton(
+                      icon: const Icon(Icons.delete),
+                      color: colorSecondary,
+                      iconSize: 35,
+                      onPressed: () {
+                        clearSets();
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
 
             // * Bottom Submit Button

@@ -18,9 +18,11 @@ Container getScreenHeader(String headerText, Size parentSize) {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          headerText,
-          style: headerStyle,
+        Flexible(
+          child: Text(
+            headerText,
+            style: headerStyle,
+          ),
         ),
       ],
     ),
