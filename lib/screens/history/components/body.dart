@@ -136,65 +136,66 @@ class _HistoryBodyState extends State<HistoryBody> {
                   ),
 
                   //* Report list
-                  Container(
-                    width: size.height,
-                    height: size.width,
-                    padding: const EdgeInsets.only(
-                      top: defaultPadding * 1.25,
-                      left: defaultPadding * 0.75,
-                      right: defaultPadding * 0.25,
-                    ),
-                    decoration: const BoxDecoration(
-                      color: colorBackground,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(36),
-                          topRight: Radius.circular(36)),
-                    ),
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-
-                        // Loading screen
-                        Visibility(
-                          visible: loading,
-                          child: Lottie.asset(assetLoading),
+                  Expanded(
+                      child: Container(
+                        width: size.width,
+                        padding: const EdgeInsets.only(
+                          top: defaultPadding * 1.25,
+                          left: defaultPadding * 0.75,
+                          right: defaultPadding * 0.25,
                         ),
-
-                        // Empty screen
-                        Visibility(
-                          visible: !loading && reportList.isEmpty,
-                          child: Lottie.asset(assetEmpty),
+                        decoration: const BoxDecoration(
+                          color: colorBackground,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(36),
+                              topRight: Radius.circular(36)),
                         ),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
 
-                        // Report List
-                        Visibility(
-                          visible: !loading && reportList.isNotEmpty,
-                          child: ShaderMask(
-                            shaderCallback: (Rect bounds) {
-                              return LinearGradient(
-                                end: Alignment.topCenter,
-                                begin: Alignment.bottomCenter,
-                                colors: [Colors.white, Colors.white.withOpacity(0.05)],
-                                stops: const [0.95, 1],
-                                tileMode: TileMode.mirror,
-                              ).createShader(bounds);
-                            },
-                            child: SizedBox(
-                              height: size.height,
-                              child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: reportList.length,
-                                itemBuilder: (context, index) {
-                                  final item = reportList[index];
-                                  return historyReportItem(item, viewReport, deleteReport);
+                            // Loading screen
+                            Visibility(
+                              visible: loading,
+                              child: Lottie.asset(assetLoading),
+                            ),
+
+                            // Empty screen
+                            Visibility(
+                              visible: !loading && reportList.isEmpty,
+                              child: Lottie.asset(assetEmpty),
+                            ),
+
+                            // Report List
+                            Visibility(
+                              visible: !loading && reportList.isNotEmpty,
+                              child: ShaderMask(
+                                shaderCallback: (Rect bounds) {
+                                  return LinearGradient(
+                                    end: Alignment.topCenter,
+                                    begin: Alignment.bottomCenter,
+                                    colors: [Colors.white, Colors.white.withOpacity(0.05)],
+                                    stops: const [0.95, 1],
+                                    tileMode: TileMode.mirror,
+                                  ).createShader(bounds);
                                 },
-                                physics: const BouncingScrollPhysics(),
+                                child: SizedBox(
+                                  height: double.infinity,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: reportList.length,
+                                    itemBuilder: (context, index) {
+                                      final item = reportList[index];
+                                      return historyReportItem(item, viewReport, deleteReport);
+                                    },
+                                    physics: const BouncingScrollPhysics(),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
                   ),
                 ]
             ),
