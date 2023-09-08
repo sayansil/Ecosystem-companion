@@ -3,7 +3,24 @@ import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 
-Container getScreenHeader(String headerText, Size parentSize) {
+Container getScreenHeaderText(String headerText) {
+  return Container(
+      margin: const EdgeInsets.only(bottom: defaultPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Text(
+              headerText,
+              style: headerStyle,
+            ),
+          ),
+        ],
+      )
+  );
+}
+
+Container getScreenHeaderBackground(Size parentSize) {
   return Container(
     padding: headerPadding,
     height: parentSize.height * 0.3,
@@ -14,17 +31,6 @@ Container getScreenHeader(String headerText, Size parentSize) {
         bottomLeft: Radius.circular(36),
         bottomRight: Radius.circular(36),
       ),
-    ),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Flexible(
-          child: Text(
-            headerText,
-            style: headerStyle,
-          ),
-        ),
-      ],
     ),
   );
 }
