@@ -7,6 +7,7 @@ import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/plot_visualisation_generated.dart';
 import 'package:ecosystem/screens/common/plot_item.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
+import 'package:ecosystem/utility/permissions.dart';
 import 'package:ecosystem/utility/report_helpers.dart' as report;
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/gestures.dart';
@@ -73,7 +74,7 @@ class _ReportBodyState extends State<ReportBody> {
     });
   }
 
-  Future<void> saveData() async {
+  Future<void> saveData(BuildContext context) async {
     final currentTs = DateTime.now();
     final ecosystemRoot = await getEcosystemRoot();
 
@@ -260,7 +261,7 @@ class _ReportBodyState extends State<ReportBody> {
                           // Save button
                           ElevatedButton(
                             onPressed: () {
-                              saveData().then((value) => ScaffoldMessenger.of(this.context)
+                              saveData(this.context).then((value) => ScaffoldMessenger.of(this.context)
                                   .showSnackBar(const SnackBar(
                                 content: Text(snackBarSavedReportText),
                               )));

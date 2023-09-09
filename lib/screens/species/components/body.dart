@@ -7,7 +7,6 @@ import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -64,28 +63,6 @@ class _SpeciesBodyState extends State<SpeciesBody> {
 
     var baseJsonFilePath = textBaseJsonPathController.text;
     var modifyJsonFilePath = textModifyJsonPathController.text;
-
-    final isPlatformMobile = Platform.isAndroid || Platform.isIOS;
-
-    if (baseJsonFilePath.isNotEmpty || modifyJsonFilePath.isNotEmpty) {
-      if (Platform.isIOS && await Permission.storage.isRestricted) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(permissionStorageNotGranted),
-          ));
-        }
-        return;
-      } else if (isPlatformMobile && await Permission.storage.request().isPermanentlyDenied) {
-        await openAppSettings();
-      } else if (isPlatformMobile && !await Permission.storage.request().isGranted) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text(permissionStorageGrantRequest),
-          ));
-        }
-        return;
-      }
-    }
 
     final baseFile = File(join(speciesRoot, "base.json"));
     final modifyFile = File(join(speciesRoot, "modify.json"));
