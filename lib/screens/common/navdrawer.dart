@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/home/home_screen.dart';
 import 'package:ecosystem/screens/about/about_screen.dart';
 import 'package:ecosystem/screens/history/history_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -67,8 +68,10 @@ class NavDrawer extends StatelessWidget {
   }
 
   _launchURL({required String url}) async {
-    if (await canLaunchUrlString(url)) {
-      await launchUrlString(url);
+    Uri uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)){
+      await launchUrl(uri);
     } else {
       throw 'Could not launch $url';
     }
