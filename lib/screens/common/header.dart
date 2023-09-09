@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 Container getScreenHeaderText(String headerText) {
   return Container(
-      padding: const EdgeInsets.only(bottom: defaultPadding, top: defaultPadding / 2),
+      padding: const EdgeInsets.only(bottom: defaultPadding, top: defaultPadding),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
