@@ -1,4 +1,3 @@
-import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:ecosystem/utility/num_utils.dart';
 import 'package:flutter/material.dart';

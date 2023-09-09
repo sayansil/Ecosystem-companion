@@ -1,15 +1,14 @@
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/screens/common/header.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 
-import 'header.dart';
 import 'package:flutter/material.dart';
 
 class AboutBody extends StatefulWidget {
   const AboutBody({super.key});
 
-
   @override
-  _AboutBodyState createState() => _AboutBodyState();
+  State<AboutBody> createState() => _AboutBodyState();
 }
 
 class _AboutBodyState extends State<AboutBody> {
@@ -21,20 +20,41 @@ class _AboutBodyState extends State<AboutBody> {
       constraints: const BoxConstraints.expand(),
       child: Stack(
         children: <Widget>[
-          // * Header bar
-          BodyHeader(parentSize: size),
+          // * Header background
+          getScreenHeaderBackground(size),
 
           Container(
-            margin: EdgeInsets.only(
+            padding: const EdgeInsets.only(
+              top: defaultPadding,
               left: defaultPadding,
               right: defaultPadding,
-              top: size.height * 0.3 + 160,
             ),
-            child:  const Text(
-              stayTunedText,
-              style: subHeaderStyle,
+            child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+
+                  // Title
+                  getScreenHeaderText("About"),
+
+                  // TODO
+              ]
             ),
-          )
+          ),
+
+          Positioned(
+            bottom: 50,
+            child: Container(
+              margin: const EdgeInsets.only(
+                left: defaultPadding,
+                right: defaultPadding,
+                bottom: 50,
+              ),
+              child:  const Text(
+                stayTunedText,
+                style: subHeaderStyle,
+              ),
+            ),
+          ),
         ],
       ),
     );

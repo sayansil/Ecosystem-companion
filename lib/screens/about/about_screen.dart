@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/common/navdrawer.dart';
 import 'package:ecosystem/screens/common/navappbar.dart';
 import 'components/body.dart';
+
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 

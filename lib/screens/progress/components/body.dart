@@ -17,7 +17,7 @@ class ProgressBody extends StatefulWidget {
   const ProgressBody(this.years, this.initOrganisms, {Key? key}): super(key: key);
 
   @override
-  _ProgressBodyState createState() => _ProgressBodyState();
+  State<ProgressBody> createState() => _ProgressBodyState();
 }
 
 class _ProgressBodyState extends State<ProgressBody> {

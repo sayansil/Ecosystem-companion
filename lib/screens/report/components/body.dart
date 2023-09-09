@@ -7,6 +7,7 @@ import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/plot_visualisation_generated.dart';
 import 'package:ecosystem/screens/common/plot_item.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
+import 'package:ecosystem/utility/permissions.dart';
 import 'package:ecosystem/utility/report_helpers.dart' as report;
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/gestures.dart';
@@ -22,7 +23,7 @@ class ReportBody extends StatefulWidget {
   const ReportBody(this.plotDataPath, {Key? key}): super(key: key);
 
   @override
-  _ReportBodyState createState() => _ReportBodyState();
+  State<ReportBody> createState() => _ReportBodyState();
 }
 
 class _ReportBodyState extends State<ReportBody> {
@@ -35,7 +36,7 @@ class _ReportBodyState extends State<ReportBody> {
   String? activeKingdom;
   List<Plot> activePlots = [];
 
-  Future<void> loadData() async {
+  Future<void> loadData(BuildContext context) async {
     final ecosystemRoot = await getEcosystemRoot();
 
     if (widget.plotDataPath != null) {
@@ -44,8 +45,8 @@ class _ReportBodyState extends State<ReportBody> {
 
       if (plotFile.existsSync()) {
         plotBundleData = plotFile.readAsBytesSync();
-      } else {
-        ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(
+      } else if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(invalidReportPath),
         ));
         return;
@@ -73,7 +74,7 @@ class _ReportBodyState extends State<ReportBody> {
     });
   }
 
-  Future<void> saveData() async {
+  Future<void> saveData(BuildContext context) async {
     final currentTs = DateTime.now();
     final ecosystemRoot = await getEcosystemRoot();
 
@@ -202,7 +203,7 @@ class _ReportBodyState extends State<ReportBody> {
       loading = true;
     });
 
-    loadData().then((value) => {
+    loadData(this.context).then((value) => {
       setState(() {
         loading = false;
       })
@@ -260,7 +261,8 @@ class _ReportBodyState extends State<ReportBody> {
                           // Save button
                           ElevatedButton(
                             onPressed: () {
-                              saveData().then((value) => ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(
+                              saveData(this.context).then((value) => ScaffoldMessenger.of(this.context)
+                                  .showSnackBar(const SnackBar(
                                 content: Text(snackBarSavedReportText),
                               )));
                             },
