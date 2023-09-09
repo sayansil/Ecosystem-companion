@@ -44,7 +44,7 @@ jobs:
         id: update-version
         run: |
           chmod +x .github/scripts/update_version.sh 
-          version=`./.github/scripts/update_version.sh ${{ github.event.inputs.choice }}`
+          version=`./.github/scripts/update_version.sh ${{ github.event.inputs.release_type }}`
           echo "tag=$version" >> "$GITHUB_OUTPUT"
 
       - name: Save updated version
@@ -54,7 +54,7 @@ jobs:
           default_author: user_info
           commit: --signoff
           fetch: false
-          message: 'Update version for ${{ github.event.inputs.choice }} release'
+          message: 'Update version for ${{ github.event.inputs.release_type }} release'
 
   build:
     name: Build
