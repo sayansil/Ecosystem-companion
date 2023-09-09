@@ -128,7 +128,7 @@ class _HistoryBodyState extends State<HistoryBody> {
                       left: defaultPadding,
                       right: defaultPadding,
                     ),
-                    child: getScreenHeaderText("History"),
+                    child: getScreenHeaderText(screenTitleHistory),
                 ),
 
                 //* Report list

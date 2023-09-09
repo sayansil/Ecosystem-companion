@@ -33,7 +33,7 @@ class _AboutBodyState extends State<AboutBody> {
                   children: [
 
                   // Title
-                  getScreenHeaderText("About"),
+                  getScreenHeaderText(screenTitleAbout),
 
                   // TODO
               ]

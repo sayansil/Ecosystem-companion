@@ -223,7 +223,7 @@ class _HomeBodyState extends State<HomeBody> {
                       children: [
 
                         // Title
-                        getScreenHeaderText("Ecosystem Simulator"),
+                        getScreenHeaderText(screenTitleHome),
 
                         Stack(
                           children: [

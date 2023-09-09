@@ -150,7 +150,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                   children: [
 
                     // Title
-                    getScreenHeaderText("Add Species"),
+                    getScreenHeaderText(screenTitleSpecies),
 
                     Container(
                       constraints: BoxConstraints(maxWidth:
