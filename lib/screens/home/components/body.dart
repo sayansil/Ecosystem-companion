@@ -76,7 +76,7 @@ class _HomeBodyState extends State<HomeBody> {
     final Iterable<Directory> dirs = children.whereType<Directory>();
     final List<String> dirNames = dirs.map((e) => path.basename(e.path)).toList();
 
-    if (dirNames.isEmpty) {
+    if (dirNames.isEmpty && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(noSpeciesFound),
       ));

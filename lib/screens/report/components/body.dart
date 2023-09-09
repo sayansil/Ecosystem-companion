@@ -35,7 +35,7 @@ class _ReportBodyState extends State<ReportBody> {
   String? activeKingdom;
   List<Plot> activePlots = [];
 
-  Future<void> loadData() async {
+  Future<void> loadData(BuildContext context) async {
     final ecosystemRoot = await getEcosystemRoot();
 
     if (widget.plotDataPath != null) {
@@ -44,8 +44,8 @@ class _ReportBodyState extends State<ReportBody> {
 
       if (plotFile.existsSync()) {
         plotBundleData = plotFile.readAsBytesSync();
-      } else {
-        ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(
+      } else if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(invalidReportPath),
         ));
         return;
@@ -202,7 +202,7 @@ class _ReportBodyState extends State<ReportBody> {
       loading = true;
     });
 
-    loadData().then((value) => {
+    loadData(this.context).then((value) => {
       setState(() {
         loading = false;
       })
@@ -260,7 +260,8 @@ class _ReportBodyState extends State<ReportBody> {
                           // Save button
                           ElevatedButton(
                             onPressed: () {
-                              saveData().then((value) => ScaffoldMessenger.of(this.context).showSnackBar(const SnackBar(
+                              saveData().then((value) => ScaffoldMessenger.of(this.context)
+                                  .showSnackBar(const SnackBar(
                                 content: Text(snackBarSavedReportText),
                               )));
                             },

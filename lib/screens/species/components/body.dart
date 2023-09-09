@@ -69,16 +69,20 @@ class _SpeciesBodyState extends State<SpeciesBody> {
 
     if (baseJsonFilePath.isNotEmpty || modifyJsonFilePath.isNotEmpty) {
       if (Platform.isIOS && await Permission.storage.isRestricted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(permissionStorageNotGranted),
-        ));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(permissionStorageNotGranted),
+          ));
+        }
         return;
       } else if (isPlatformMobile && await Permission.storage.request().isPermanentlyDenied) {
         await openAppSettings();
       } else if (isPlatformMobile && !await Permission.storage.request().isGranted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(permissionStorageGrantRequest),
-        ));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(permissionStorageGrantRequest),
+          ));
+        }
         return;
       }
     }
@@ -114,9 +118,11 @@ class _SpeciesBodyState extends State<SpeciesBody> {
       textModifyJsonPathController.clear();
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text(snackBarAddedSpeciesText),
-    ));
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(snackBarAddedSpeciesText),
+      ));
+    }
   }
 
 
