@@ -22,7 +22,7 @@ class ReportBody extends StatefulWidget {
   const ReportBody(this.plotDataPath, {Key? key}): super(key: key);
 
   @override
-  _ReportBodyState createState() => _ReportBodyState();
+  State<ReportBody> createState() => _ReportBodyState();
 }
 
 class _ReportBodyState extends State<ReportBody> {

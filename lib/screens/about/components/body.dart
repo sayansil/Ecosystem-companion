@@ -8,7 +8,7 @@ class AboutBody extends StatefulWidget {
   const AboutBody({super.key});
 
   @override
-  _AboutBodyState createState() => _AboutBodyState();
+  State<AboutBody> createState() => _AboutBodyState();
 }
 
 class _AboutBodyState extends State<AboutBody> {

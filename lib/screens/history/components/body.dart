@@ -19,7 +19,7 @@ class HistoryBody extends StatefulWidget {
   const HistoryBody({super.key});
 
   @override
-  _HistoryBodyState createState() => _HistoryBodyState();
+  State<HistoryBody> createState() => _HistoryBodyState();
 }
 
 class _HistoryBodyState extends State<HistoryBody> {

@@ -16,7 +16,7 @@ class SpeciesBody extends StatefulWidget {
   const SpeciesBody({super.key});
 
   @override
-  _SpeciesBodyState createState() => _SpeciesBodyState();
+  State<SpeciesBody> createState() => _SpeciesBodyState();
 }
 
 class _SpeciesBodyState extends State<SpeciesBody> {

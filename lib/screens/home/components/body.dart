@@ -17,7 +17,7 @@ class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
 
   @override
-  _HomeBodyState createState() => _HomeBodyState();
+  State<HomeBody> createState() => _HomeBodyState();
 }
 
 class _HomeBodyState extends State<HomeBody> {
