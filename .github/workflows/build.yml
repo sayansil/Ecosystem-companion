@@ -90,7 +90,7 @@ jobs:
       - name: Get flutter
         uses: subosito/flutter-action@v2.10.0
         with:
-          flutter-version: '3.7.5'
+          flutter-version: '3.13.3'
           channel: 'stable'
 
 
