@@ -38,6 +38,7 @@ dependencies:
   intl: ^0.18.1
   lottie: ^2.6.0
   recase: ^4.1.0
+  package_info_plus: ^4.1.0
   native_simulator:
     path: native_simulator
 

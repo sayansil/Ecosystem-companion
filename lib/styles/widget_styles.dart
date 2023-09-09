@@ -11,7 +11,7 @@ const headerPadding = EdgeInsets.only(
 );
 
 const hugeHeaderStyle = TextStyle(fontSize: 35, fontFamily: 'Poppins', fontWeight: FontWeight.w500, color: colorPrimary, height: 1.75);
-const subHeaderStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondary, height: 1);
+const subHeaderStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondary, height: 1.25);
 const highlightedSubHeaderStyle = TextStyle(fontSize: 20, fontFamily: 'Poppins', color: colorSecondary, height: 1);
 
 const editTextStyle = TextStyle(color: colorTextDark, fontSize: 18, fontFamily: 'Poppins');
@@ -46,7 +46,7 @@ const homeCardCountTextStyle = TextStyle(fontSize: 30, fontFamily: 'Poppins');
 const historyItemTitleTextStyle = TextStyle(fontSize: 18, fontFamily: 'Poppins', fontWeight: FontWeight.bold);
 const historyItemSubtitleTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins');
 
-const footerTitleTextStyle = TextStyle(fontSize: 45, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);
+const footerTitleTextStyle = TextStyle(fontSize: 30, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);
 const footerSubtitleTextStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondaryLight);
 const footerSubtitleLinkStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondaryLight, fontWeight: FontWeight.bold);
 

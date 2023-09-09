@@ -93,9 +93,6 @@ const invalidReportPath = "Report not found";
 const simulationKingdomInputText = "Select a Kingdom";
 const simulationKindInputText = "Select a Species";
 
-const footerTitleText = "Made with ❤️";
-const stayTunedText = "Keep an eye on this space...";
-
 const navTitleHome = "Home";
 const navTitleSpecies = "New species";
 const navTitleHistory = "History";
@@ -106,3 +103,17 @@ const screenTitleHome = "Ecosystem Simulator";
 const screenTitleSpecies = "Add species";
 const screenTitleHistory = "History";
 const screenTitleAbout = "About";
+
+const footerTitleText = "Made with ❤️";
+const stayTunedText = "Keep an eye on this space...";
+const aboutText = "In this project, the user plays the role of the God. This "
+    "app helps the user mimic a real-world ecosystem where he can introduce "
+    "new organisms with custom characteristics and also bring changes to the "
+    "ecosystem and then observe their behavior and reaction to those changes. "
+    "Thus the user can be looked upon as The God of the ecosystem who has the "
+    "power to bring any change with which he can simulate the problems "
+    "happening worldwide and gain valuable insights on how the organisms try "
+    "to adapt to the change to ensure their survival. Studying the overall "
+    "behavior of the ecosystem will provide us with a wealth of knowledge and "
+    "be far better prepared for how we should be equipped to handle the "
+    "future.";

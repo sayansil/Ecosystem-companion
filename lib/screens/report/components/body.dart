@@ -5,6 +5,7 @@ import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/database/database_manager.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/plot_visualisation_generated.dart';
+import 'package:ecosystem/screens/common/credits.dart';
 import 'package:ecosystem/screens/common/plot_item.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:ecosystem/utility/permissions.dart';
@@ -131,50 +132,6 @@ class _ReportBodyState extends State<ReportBody> {
         });
       }
     }
-  }
-
-  Widget getFooter() {
-    return Container(
-      alignment: Alignment.topLeft,
-      padding: const EdgeInsets.only(
-        left: defaultPadding / 2,
-        right: defaultPadding / 2,
-        top: 100,
-        bottom: defaultPadding,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(footerTitleText, style: footerTitleTextStyle),
-          RichText(text: TextSpan(
-            children: [
-              const TextSpan(
-                text: "by ",
-                style: footerSubtitleTextStyle,
-              ),
-              TextSpan(
-                text: "SincereSanta",
-                style: footerSubtitleLinkStyle,
-                recognizer: TapGestureRecognizer()
-                ..onTap = () { launchUrlString(sincereSantaUrl);
-                },
-              ),
-              const TextSpan(
-                text: " and ",
-                style: footerSubtitleTextStyle,
-              ),
-              TextSpan(
-                text: "DarkStar1997",
-                style: footerSubtitleLinkStyle,
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () { launchUrlString(darkStar1997Url);
-                  },
-              ),
-            ]
-          )),
-        ],
-      ),
-    );
   }
 
   Widget getPlotList(Size size) {
