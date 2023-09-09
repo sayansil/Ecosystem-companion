@@ -153,8 +153,8 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                     getScreenHeaderText(screenTitleSpecies),
 
                     Container(
-                      constraints: BoxConstraints(maxWidth:
-                      max(600, size.width * 0.3)
+                      constraints: BoxConstraints(
+                          maxWidth:max(600, size.width * 0.3)
                       ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: defaultPadding,
