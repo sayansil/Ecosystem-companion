@@ -129,11 +129,12 @@ class _SpeciesBodyState extends State<SpeciesBody> {
 
           Container(
             padding: const EdgeInsets.only(
-              top: defaultPadding,
               left: defaultPadding,
               right: defaultPadding,
             ),
-            child: Column(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -279,7 +280,12 @@ class _SpeciesBodyState extends State<SpeciesBody> {
                           ),
                         ]),
                   ),
+
+                  SizedBox(
+                    height: size.height * 0.3,
+                  ),
                 ],
+              ),
             ),
           ),
 

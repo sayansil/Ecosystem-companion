@@ -118,87 +118,70 @@ class _HistoryBodyState extends State<HistoryBody> {
           // * Header background
           getScreenHeaderBackground(size),
 
-          Container(
-            padding: const EdgeInsets.only(
-              top: defaultPadding,
-            ),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+          Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
 
-                  // Title
-                  Container(
+                // Title
+                Container(
+                    padding: const EdgeInsets.only(
+                      left: defaultPadding,
+                      right: defaultPadding,
+                    ),
+                    child: getScreenHeaderText("History"),
+                ),
+
+                //* Report list
+                Expanded(
+                    child: Container(
+                      width: size.width,
                       padding: const EdgeInsets.only(
-                        left: defaultPadding,
-                        right: defaultPadding,
+                        top: defaultPadding * 1.25,
+                        left: defaultPadding * 0.75,
+                        right: defaultPadding * 0.25,
                       ),
-                      child: getScreenHeaderText("History"),
-                  ),
+                      decoration: const BoxDecoration(
+                        color: colorBackground,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(36),
+                            topRight: Radius.circular(36)),
+                      ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
 
-                  //* Report list
-                  Expanded(
-                      child: Container(
-                        width: size.width,
-                        padding: const EdgeInsets.only(
-                          top: defaultPadding * 1.25,
-                          left: defaultPadding * 0.75,
-                          right: defaultPadding * 0.25,
-                        ),
-                        decoration: const BoxDecoration(
-                          color: colorBackground,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(36),
-                              topRight: Radius.circular(36)),
-                        ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
+                          // Loading screen
+                          Visibility(
+                            visible: loading,
+                            child: Lottie.asset(assetLoading),
+                          ),
 
-                            // Loading screen
-                            Visibility(
-                              visible: loading,
-                              child: Lottie.asset(assetLoading),
-                            ),
+                          // Empty screen
+                          Visibility(
+                            visible: !loading && reportList.isEmpty,
+                            child: Lottie.asset(assetEmpty),
+                          ),
 
-                            // Empty screen
-                            Visibility(
-                              visible: !loading && reportList.isEmpty,
-                              child: Lottie.asset(assetEmpty),
-                            ),
-
-                            // Report List
-                            Visibility(
-                              visible: !loading && reportList.isNotEmpty,
-                              child: ShaderMask(
-                                shaderCallback: (Rect bounds) {
-                                  return LinearGradient(
-                                    end: Alignment.topCenter,
-                                    begin: Alignment.bottomCenter,
-                                    colors: [Colors.white, Colors.white.withOpacity(0.05)],
-                                    stops: const [0.95, 1],
-                                    tileMode: TileMode.mirror,
-                                  ).createShader(bounds);
+                          // Report List
+                          Visibility(
+                            visible: !loading && reportList.isNotEmpty,
+                            child: SizedBox(
+                              child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: reportList.length,
+                                itemBuilder: (context, index) {
+                                  final item = reportList[index];
+                                  return historyReportItem(item, viewReport, deleteReport);
                                 },
-                                child: SizedBox(
-                                  height: double.infinity,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: reportList.length,
-                                    itemBuilder: (context, index) {
-                                      final item = reportList[index];
-                                      return historyReportItem(item, viewReport, deleteReport);
-                                    },
-                                    physics: const BouncingScrollPhysics(),
-                                  ),
-                                ),
+                                physics: const BouncingScrollPhysics(),
                               ),
-                            ),
-                          ],
-                        ),
+                            )
+                          ),
+                        ],
                       ),
-                  ),
-                ]
-            ),
+                    ),
+                ),
+              ]
           ),
         ],
       ),
