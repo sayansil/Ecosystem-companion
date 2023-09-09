@@ -129,158 +129,168 @@ class _SpeciesBodyState extends State<SpeciesBody> {
 
           Container(
             padding: const EdgeInsets.only(
-              top: defaultPadding,
               left: defaultPadding,
               right: defaultPadding,
             ),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child: ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  end: Alignment.topCenter,
+                  begin: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.white.withOpacity(0.05)],
+                  stops: const [0.95, 1],
+                  tileMode: TileMode.mirror,
+                ).createShader(bounds);
+              },
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-                  // Title
-                  getScreenHeaderText("Add Species"),
+                    // Title
+                    getScreenHeaderText(screenTitleSpecies),
 
-                  Container(
-                    constraints: BoxConstraints(maxWidth:
-                    max(600, size.width * 0.3)
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: defaultPadding,
-                      vertical: defaultPadding / 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: const Offset(0, 10),
-                          blurRadius: 50,
-                          color: colorPrimary.withOpacity(0.23),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
+                    Container(
+                      constraints: BoxConstraints(maxWidth:
+                      max(600, size.width * 0.3)
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: defaultPadding,
+                        vertical: defaultPadding / 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
 
-                          // Kingdom input
-                          DropdownButtonFormField<KingdomName>(
-                            icon: const Icon(Icons.arrow_downward_rounded),
-                            elevation: 20,
-                            style: dropdownOptionStyle,
-                            onChanged: (KingdomName? item) {
-                              if (item != null) {
-                                kingdomName = item.name;
-                                configChanged();
-                              }
-                            },
-                            items: KingdomName.values.map((KingdomName item) {
-                              return DropdownMenuItem<KingdomName>(
-                                value: item,
-                                child: Text(item.name),
-                              );
-                            }).toList(),
-                            decoration: const InputDecoration(
-                              labelText: configKingdomInputText,
-                              labelStyle: editTextStyle,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                            ),
-                          ),
-
-
-                          const Divider(
-                            height: 0,
-                            thickness: 1,
-                          ),
-
-                          // Species input
-                          TextField(
-                            style: const TextStyle(
-                              fontSize: 20.0,
-                            ),
-                            decoration: const InputDecoration(
-                              labelText: configKindInputText,
-                              labelStyle: editTextStyle,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                            ),
-                            controller: textKindController,
-                            onChanged: (text) {configChanged();},
-                          ),
-
-
-                          const Divider(
-                            height: 0,
-                            thickness: 1,
-                          ),
-
-
-                          // Base Json file input
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: TextField(
-                                  style: const TextStyle(
-                                    fontSize: 20.0,
-                                  ),
-                                  decoration: const InputDecoration(
-                                    labelText: speciesSelectBaseJsonPath,
-                                    labelStyle: editTextStyle,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                  ),
-                                  controller: textBaseJsonPathController,
-                                ),
+                            // Kingdom input
+                            DropdownButtonFormField<KingdomName>(
+                              icon: const Icon(Icons.arrow_downward_rounded),
+                              elevation: 20,
+                              style: dropdownOptionStyle,
+                              onChanged: (KingdomName? item) {
+                                if (item != null) {
+                                  kingdomName = item.name;
+                                  configChanged();
+                                }
+                              },
+                              items: KingdomName.values.map((KingdomName item) {
+                                return DropdownMenuItem<KingdomName>(
+                                  value: item,
+                                  child: Text(item.name),
+                                );
+                              }).toList(),
+                              decoration: const InputDecoration(
+                                labelText: configKingdomInputText,
+                                labelStyle: editTextStyle,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
                               ),
-
-                              IconButton(
-                                icon: Image.asset('assets/images/folder.png'),
-                                iconSize: 30,
-                                onPressed: () {fillPath(textBaseJsonPathController);},
-                              )
-                            ],
-                          ),
+                            ),
 
 
-                          const Divider(
-                            height: 0,
-                            thickness: 1,
-                          ),
+                            const Divider(
+                              height: 0,
+                              thickness: 1,
+                            ),
 
-
-                          // Modify json file input
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: TextField(
-                                  style: const TextStyle(
-                                    fontSize: 20.0,
-                                  ),
-                                  decoration: const InputDecoration(
-                                    labelText: speciesSelectModifyJsonPath,
-                                    labelStyle: editTextStyle,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                  ),
-                                  controller: textModifyJsonPathController,
-                                ),
+                            // Species input
+                            TextField(
+                              style: const TextStyle(
+                                fontSize: 20.0,
                               ),
+                              decoration: const InputDecoration(
+                                labelText: configKindInputText,
+                                labelStyle: editTextStyle,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              controller: textKindController,
+                              onChanged: (text) {configChanged();},
+                            ),
 
-                              IconButton(
-                                icon: Image.asset('assets/images/folder.png'),
-                                iconSize: 30,
-                                onPressed: () {fillPath(textModifyJsonPathController);},
-                              )
-                            ],
-                          ),
-                        ]),
-                  ),
-                ],
-            ),
+
+                            const Divider(
+                              height: 0,
+                              thickness: 1,
+                            ),
+
+
+                            // Base Json file input
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: TextField(
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                    decoration: const InputDecoration(
+                                      labelText: speciesSelectBaseJsonPath,
+                                      labelStyle: editTextStyle,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                    controller: textBaseJsonPathController,
+                                  ),
+                                ),
+
+                                IconButton(
+                                  icon: Image.asset('assets/images/folder.png'),
+                                  iconSize: 30,
+                                  onPressed: () {fillPath(textBaseJsonPathController);},
+                                )
+                              ],
+                            ),
+
+
+                            const Divider(
+                              height: 0,
+                              thickness: 1,
+                            ),
+
+
+                            // Modify json file input
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: TextField(
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                    ),
+                                    decoration: const InputDecoration(
+                                      labelText: speciesSelectModifyJsonPath,
+                                      labelStyle: editTextStyle,
+                                      enabledBorder: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                    ),
+                                    controller: textModifyJsonPathController,
+                                  ),
+                                ),
+
+                                IconButton(
+                                  icon: Image.asset('assets/images/folder.png'),
+                                  iconSize: 30,
+                                  onPressed: () {fillPath(textModifyJsonPathController);},
+                                )
+                              ],
+                            ),
+                          ]),
+                    ),
+
+                    SizedBox(
+                      height: size.height * 0.3,
+                    ),
+                  ],
+                ),
+              ),
+            )
           ),
 
           // * Bottom Submit Button

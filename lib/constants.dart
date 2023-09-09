@@ -95,3 +95,14 @@ const simulationKindInputText = "Select a Species";
 
 const footerTitleText = "Made with ❤️";
 const stayTunedText = "Keep an eye on this space...";
+
+const navTitleHome = "Home";
+const navTitleSpecies = "New species";
+const navTitleHistory = "History";
+const navTitleAbout = "About";
+const navTitleContribute = "Contribute";
+
+const screenTitleHome = "Ecosystem Simulator";
+const screenTitleSpecies = "Add species";
+const screenTitleHistory = "History";
+const screenTitleAbout = "About";

@@ -22,21 +22,21 @@ class NavDrawer extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 50),
             buildMenuItem(
-                text: "Home",
+                text: navTitleHome,
                 icon: Icons.home_rounded,
                 onClicked: () => (currentItem == DrawerItem.home)
                     ? {Navigator.of(context).pop()}
                     : selectedItem(context, DrawerItem.home)),
             const SizedBox(height: 10),
             buildMenuItem(
-                text: "New species",
+                text: navTitleSpecies,
                 icon: Icons.add,
                 onClicked: () => (currentItem == DrawerItem.organism)
                     ? {Navigator.of(context).pop()}
                     : selectedItem(context, DrawerItem.organism)),
             const SizedBox(height: 10),
             buildMenuItem(
-                text: "History",
+                text: navTitleHistory,
                 icon: Icons.checklist_rtl_rounded,
                 onClicked: () => (currentItem == DrawerItem.history)
                     ? {Navigator.of(context).pop()}
@@ -49,14 +49,14 @@ class NavDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             buildMenuItem(
-                text: "About",
+                text: navTitleAbout,
                 icon: Icons.info_rounded,
                 onClicked: () => (currentItem == DrawerItem.about)
                     ? {Navigator.of(context).pop()}
                     : selectedItem(context, DrawerItem.about)),
             const SizedBox(height: 10),
             buildMenuItem(
-                text: "Contribute",
+                text: navTitleContribute,
                 icon: Icons.rocket_rounded,
                 onClicked: () => (currentItem == DrawerItem.contribute)
                     ? {Navigator.of(context).pop()}

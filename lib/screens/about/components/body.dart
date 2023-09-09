@@ -25,7 +25,6 @@ class _AboutBodyState extends State<AboutBody> {
 
           Container(
             padding: const EdgeInsets.only(
-              top: defaultPadding,
               left: defaultPadding,
               right: defaultPadding,
             ),
@@ -34,7 +33,7 @@ class _AboutBodyState extends State<AboutBody> {
                   children: [
 
                   // Title
-                  getScreenHeaderText("About"),
+                  getScreenHeaderText(screenTitleAbout),
 
                   // TODO
               ]
