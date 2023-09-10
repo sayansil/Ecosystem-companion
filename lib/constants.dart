@@ -13,6 +13,10 @@ const colorBackground = Color(0xFFF0F0F0);
 const colorBackgroundSeeThrough = Color(0xA6F0F0F0);
 const colorTextDark = Color(0x80181818);
 const colorTextLight = Color(0x80FFFFFF);
+const colorAccentLight = Color(0xcce8dff8);
+const colorAccent = Color(0xffa57afa);
+const colorAnimalAccent = Color(0xffd8e5ee);
+const colorPlantAccent = Color(0xffd4efcf);
 
 const plotLineColors = [
   Colors.deepPurple,
@@ -92,6 +96,8 @@ const noSpeciesFound = "No species found in that Kingdom. Please create one.";
 const invalidReportPath = "Report not found";
 const simulationKingdomInputText = "Select a Kingdom";
 const simulationKindInputText = "Select a Species";
+
+const addSampleSpeciesHeader = "Add sample species…";
 
 const navTitleHome = "Home";
 const navTitleSpecies = "New species";

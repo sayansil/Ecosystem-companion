@@ -199,288 +199,282 @@ class _HomeBodyState extends State<HomeBody> {
             // * Header background
             getScreenHeaderBackground(size),
 
-            Container(
-              padding: const EdgeInsets.only(
-                left: defaultPadding,
-                right: defaultPadding,
-              ),
-              child: ShaderMask(
-                  shaderCallback: (Rect bounds) {
-                    return LinearGradient(
-                      end: Alignment.topCenter,
-                      begin: Alignment.bottomCenter,
-                      colors: [Colors.white, Colors.white.withOpacity(0.05)],
-                      stops: const [0.95, 1],
-                      tileMode: TileMode.mirror,
-                    ).createShader(bounds);
-                  },
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
+            ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return LinearGradient(
+                    end: Alignment.topCenter,
+                    begin: Alignment.bottomCenter,
+                    colors: [Colors.white, Colors.white.withOpacity(0.05)],
+                    stops: const [0.95, 1],
+                    tileMode: TileMode.mirror,
+                  ).createShader(bounds);
+                },
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    left: defaultPadding,
+                    right: defaultPadding,
+                  ),
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
 
-                        // Title
-                        getScreenHeaderText(screenTitleHome),
+                      // Title
+                      getScreenHeaderText(screenTitleHome),
 
-                        Stack(
-                          children: [
-                            // Light grey background
-                            Container(
+                      Stack(
+                        children: [
+                          // Light grey background
+                          Container(
+                              constraints: BoxConstraints(
+                                  maxWidth: min(600, size.width)
+                              ),
+                              margin: const EdgeInsets.only(top: 20),
+                              height: 200,
+                              decoration: const BoxDecoration(
+                                color: colorPrimaryLight,
+                              )
+                          ),
+
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              // * Form 1
+                              Container(
                                 constraints: BoxConstraints(
                                     maxWidth: min(600, size.width)
                                 ),
-                                margin: const EdgeInsets.only(top: 20),
-                                height: 200,
-                                decoration: BoxDecoration(
+                                padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                                decoration: const BoxDecoration(
                                   color: colorPrimaryLight,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      offset: const Offset(0, 10),
-                                      blurRadius: 50,
-                                      color: colorPrimary.withOpacity(0.23),
-                                    ),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20)),
+                                  boxShadow: defaultCardShadow,
+                                ),
+                                child: TextField(
+                                  style: TextStyle(
+                                      fontSize: 18.0, color: Colors.white.withOpacity(0.8)),
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
                                   ],
-                                )
-                            ),
-
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                // * Form 1
-                                Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth: min(600, size.width)
+                                  decoration: const InputDecoration(
+                                    labelText: "Years to Simulate",
+                                    labelStyle: editTextDarkStyle,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
                                   ),
-                                  padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-                                  decoration: const BoxDecoration(
-                                    color: colorPrimaryLight,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20)),
-                                  ),
-                                  child: TextField(
-                                    style: TextStyle(
-                                        fontSize: 18.0, color: Colors.white.withOpacity(0.8)),
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    decoration: const InputDecoration(
-                                      labelText: "Years to Simulate",
-                                      labelStyle: editTextDarkStyle,
-                                      enabledBorder: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                    ),
-                                    controller: textYearsController,
-                                    onChanged: (String? text) {
-                                      years = int.tryParse(textYearsController.text) ?? 0;
-                                      simulationConfigChanged();
-                                    },
-                                  ),
+                                  controller: textYearsController,
+                                  onChanged: (String? text) {
+                                    years = int.tryParse(textYearsController.text) ?? 0;
+                                    simulationConfigChanged();
+                                  },
                                 ),
+                              ),
 
-                                // * Form 2
-                                Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth: min(600, size.width)
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: defaultPadding,
-                                    vertical: defaultPadding / 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
+                              // * Form 2
+                              Container(
+                                constraints: BoxConstraints(
+                                    maxWidth: min(600, size.width)
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: defaultPadding,
+                                  vertical: defaultPadding / 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: defaultCardShadow,
+                                ),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
 
-                                        // Kingdom input
-                                        DropdownButtonFormField<String>(
-                                          icon: const Icon(Icons.arrow_downward_rounded),
-                                          elevation: 20,
-                                          style: dropdownOptionStyle,
-                                          onChanged: (String? item) {
-                                            if (item != null && item.isNotEmpty) {
-                                              kingdomName = item;
-                                              configChanged();
-                                              fetchSpeciesList(kingdomName);
-                                            }
-                                          },
-                                          items: kingdomList.map((e) => DropdownMenuItem<String>(
-                                            value: e,
-                                            child: Text(e),
-                                          )).toList(),
-                                          decoration: const InputDecoration(
-                                            labelText: simulationKingdomInputText,
-                                            labelStyle: editTextStyle,
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                          ),
-                                        ),
-
-                                        const Divider(
-                                          height: 0,
-                                          thickness: 1,
-                                        ),
-
-                                        // Species input
-                                        DropdownButtonFormField<String>(
-                                          icon: const Icon(Icons.arrow_downward_rounded),
-                                          elevation: 20,
-                                          style: dropdownOptionStyle,
-                                          onChanged: (String? item) {
-                                            if (item != null && item.isNotEmpty) {
-                                              speciesName = item;
-                                              configChanged();
-                                            }
-                                          },
-                                          items: speciesList.map((e) => DropdownMenuItem<String>(
-                                            value: e,
-                                            child: Text(e),
-                                          )).toList(),
-                                          decoration: const InputDecoration(
-                                            labelText: simulationKindInputText,
-                                            labelStyle: editTextStyle,
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                          ),
-                                        ),
-
-                                        const Divider(
-                                          height: 0,
-                                          thickness: 1,
-                                        ),
-
-                                        Row(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
-
-                                              // Age input
-                                              Flexible(
-                                                child: TextField(
-                                                  style: const TextStyle(
-                                                    fontSize: 20.0,
-                                                  ),
-                                                  keyboardType: TextInputType.number,
-                                                  inputFormatters: <TextInputFormatter>[
-                                                    FilteringTextInputFormatter.digitsOnly
-                                                  ],
-                                                  decoration: InputDecoration(
-                                                      labelText: "Age",
-                                                      labelStyle: editTextStyle,
-                                                      enabledBorder: InputBorder.none,
-                                                      focusedBorder: InputBorder.none,
-                                                      errorText:
-                                                      textAgeController.text.isNotEmpty &&
-                                                          !isValidNumber(textAgeController) ?
-                                                      "Invalid value" : null
-                                                  ),
-                                                  controller: textAgeController,
-                                                  onChanged: (text) {configChanged();},
-                                                ),
-                                              ),
-
-
-                                              // Count input
-                                              Flexible(
-                                                child: TextField(
-                                                  style: const TextStyle(
-                                                    fontSize: 20.0,
-                                                  ),
-                                                  keyboardType: TextInputType.number,
-                                                  inputFormatters: <TextInputFormatter>[
-                                                    FilteringTextInputFormatter.digitsOnly
-                                                  ],
-                                                  decoration: InputDecoration(
-                                                      labelText: "Count",
-                                                      labelStyle: editTextStyle,
-                                                      enabledBorder: InputBorder.none,
-                                                      focusedBorder: InputBorder.none,
-                                                      errorText:
-                                                      textCountController.text.isNotEmpty &&
-                                                          !isValidNumber(textCountController) ?
-                                                      "Invalid value" : null
-                                                  ),
-                                                  controller: textCountController,
-                                                  onChanged: (text) {configChanged();},
-                                                ),
-                                              )
-                                            ]),
-
-                                        // Add set button
-                                        ElevatedButton(
-                                          onPressed: isSetReady
-                                              ? () {
-                                            addSet();
+                                      // Kingdom input
+                                      DropdownButtonFormField<String>(
+                                        icon: const Icon(Icons.arrow_downward_rounded),
+                                        elevation: 20,
+                                        style: dropdownOptionStyle,
+                                        onChanged: (String? item) {
+                                          if (item != null && item.isNotEmpty) {
+                                            kingdomName = item;
+                                            configChanged();
+                                            fetchSpeciesList(kingdomName);
                                           }
-                                              : null,
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: colorPrimary,
-                                            foregroundColor: Colors.white,
-                                            textStyle: buttonStyle,
-                                            minimumSize: const Size(double.infinity, 30),
-                                            shape: const StadiumBorder(),
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: defaultPadding / 1.5),
-                                          ),
-                                          child: const Text(addSpeciesBtn),
+                                        },
+                                        items: kingdomList.map((e) => DropdownMenuItem<String>(
+                                          value: e,
+                                          child: Text(e),
+                                        )).toList(),
+                                        decoration: const InputDecoration(
+                                          labelText: simulationKingdomInputText,
+                                          labelStyle: editTextStyle,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
                                         ),
-                                        const SizedBox(
-                                          height: 10.0,
-                                        ),
-                                      ]),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                      ),
 
-                        // * Card List of selected Species
-                        Flexible(
-                          child: SizedBox(
-                            child: GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: EdgeInsets.only(top: 40, bottom: size.height * 0.3),
-                              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 200,
-                                  childAspectRatio: 3 / 2,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20),
-                              itemCount: allSets.isNotEmpty ? allSets.length + 1 : 0,
-                              itemBuilder: (BuildContext context, index) {
-                                return index < allSets.length ? speciesSetItem(
-                                    allSets[index].kingdom,
-                                    allSets[index].species,
-                                    allSets[index].age,
-                                    allSets[index].count
-                                ) : Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    color: colorSecondary,
-                                    iconSize: 35,
-                                    onPressed: () {
-                                      clearSets();
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
+                                      const Divider(
+                                        height: 0,
+                                        thickness: 1,
+                                      ),
+
+                                      // Species input
+                                      DropdownButtonFormField<String>(
+                                        icon: const Icon(Icons.arrow_downward_rounded),
+                                        elevation: 20,
+                                        style: dropdownOptionStyle,
+                                        onChanged: (String? item) {
+                                          if (item != null && item.isNotEmpty) {
+                                            speciesName = item;
+                                            configChanged();
+                                          }
+                                        },
+                                        items: speciesList.map((e) => DropdownMenuItem<String>(
+                                          value: e,
+                                          child: Text(e),
+                                        )).toList(),
+                                        decoration: const InputDecoration(
+                                          labelText: simulationKindInputText,
+                                          labelStyle: editTextStyle,
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                        ),
+                                      ),
+
+                                      const Divider(
+                                        height: 0,
+                                        thickness: 1,
+                                      ),
+
+                                      Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: <Widget>[
+
+                                            // Age input
+                                            Flexible(
+                                              child: TextField(
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                ),
+                                                keyboardType: TextInputType.number,
+                                                inputFormatters: <TextInputFormatter>[
+                                                  FilteringTextInputFormatter.digitsOnly
+                                                ],
+                                                decoration: InputDecoration(
+                                                    labelText: "Age",
+                                                    labelStyle: editTextStyle,
+                                                    enabledBorder: InputBorder.none,
+                                                    focusedBorder: InputBorder.none,
+                                                    errorText:
+                                                    textAgeController.text.isNotEmpty &&
+                                                        !isValidNumber(textAgeController) ?
+                                                    "Invalid value" : null
+                                                ),
+                                                controller: textAgeController,
+                                                onChanged: (text) {configChanged();},
+                                              ),
+                                            ),
+
+
+                                            // Count input
+                                            Flexible(
+                                              child: TextField(
+                                                style: const TextStyle(
+                                                  fontSize: 20.0,
+                                                ),
+                                                keyboardType: TextInputType.number,
+                                                inputFormatters: <TextInputFormatter>[
+                                                  FilteringTextInputFormatter.digitsOnly
+                                                ],
+                                                decoration: InputDecoration(
+                                                    labelText: "Count",
+                                                    labelStyle: editTextStyle,
+                                                    enabledBorder: InputBorder.none,
+                                                    focusedBorder: InputBorder.none,
+                                                    errorText:
+                                                    textCountController.text.isNotEmpty &&
+                                                        !isValidNumber(textCountController) ?
+                                                    "Invalid value" : null
+                                                ),
+                                                controller: textCountController,
+                                                onChanged: (text) {configChanged();},
+                                              ),
+                                            )
+                                          ]),
+
+                                      // Add set button
+                                      ElevatedButton(
+                                        onPressed: isSetReady
+                                            ? () {
+                                          addSet();
+                                        }
+                                            : null,
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: colorPrimary,
+                                          foregroundColor: Colors.white,
+                                          textStyle: buttonStyle,
+                                          minimumSize: const Size(double.infinity, 30),
+                                          shape: const StadiumBorder(),
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: defaultPadding / 1.5),
+                                        ),
+                                        child: const Text(addSpeciesBtn),
+                                      ),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                    ]),
+                              ),
+                            ],
                           ),
-                        )
-                      ],
-                    ),
-                  )
-              )
+                        ],
+                      ),
+
+                      // * Card List of selected Species
+                      Flexible(
+                        child: SizedBox(
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.only(top: 40, bottom: size.height * 0.3),
+                            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                childAspectRatio: 3 / 2,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 20),
+                            itemCount: allSets.isNotEmpty ? allSets.length + 1 : 0,
+                            itemBuilder: (BuildContext context, index) {
+                              return index < allSets.length ? speciesSetItem(
+                                  allSets[index].kingdom,
+                                  allSets[index].species,
+                                  allSets[index].age,
+                                  allSets[index].count
+                              ) : Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: defaultCardShadow,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  color: colorSecondary,
+                                  iconSize: 35,
+                                  onPressed: () {
+                                    clearSets();
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
             ),
 
 
