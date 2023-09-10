@@ -68,6 +68,10 @@ const stopSimulationMessage = "All unsaved data from the current simulation will
 const stopSimulationAccept = "Yes";
 const stopSimulationReject = "No";
 
+const downloadSpeciesMessage = "This download might take a minute or two...";
+const downloadSpeciesAccept = "Yes";
+const downloadSpeciesReject = "No";
+
 const confirmDeleteTitle = "Deleting simulation report 😔";
 const confirmDeleteMessage = "Are you sure you want to delete this report?";
 const confirmDeleteAccept = "Yes";
@@ -88,6 +92,7 @@ const configKindInputText = "Species name";
 
 const snackBarAddedSpeciesText = "Species added successfully";
 const snackBarSavedReportText = "Report saved";
+const snackBarCannotDownloadText = "Could not download. Please check your internet connection.";
 
 const permissionStorageNotGranted = "Could not access device storage :(";
 const permissionStorageGrantRequest = "Please grant storage permission to proceed";

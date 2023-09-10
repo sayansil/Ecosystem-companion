@@ -22,6 +22,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http: ^1.1.0
   url_launcher: ^6.1.14
   flat_buffers: ^2.0.5
   sqflite: ^2.3.0

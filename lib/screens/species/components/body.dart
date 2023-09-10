@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:developer' as ddev;
 
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/sample_species.dart';
+import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/screens/common/header.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -59,19 +60,24 @@ class _SpeciesBodyState extends State<SpeciesBody> {
     }
   }
 
-  void createSpecies(BuildContext context) async {
-    final speciesName = textKindController.text.toLowerCase();
-
+  Future<void> saveSpecies(String species, String kingdom, String baseText, String modifyText) async {
     final ecosystemRoot = await getEcosystemRoot();
-    final speciesRoot = join(ecosystemRoot, templateDir, kingdomName, speciesName);
-
-    var baseJsonFilePath = textBaseJsonPathController.text;
-    var modifyJsonFilePath = textModifyJsonPathController.text;
+    final speciesRoot = join(ecosystemRoot, templateDir, kingdom, species);
 
     final baseFile = File(join(speciesRoot, "base.json"));
     final modifyFile = File(join(speciesRoot, "modify.json"));
     baseFile.createSync(recursive: true);
     modifyFile.createSync(recursive: true);
+
+    baseFile.writeAsStringSync(baseText);
+    modifyFile.writeAsStringSync(modifyText);
+  }
+
+  void createSpecies(BuildContext context) async {
+    final speciesName = textKindController.text.toLowerCase();
+
+    var baseJsonFilePath = textBaseJsonPathController.text;
+    var modifyJsonFilePath = textModifyJsonPathController.text;
 
     String baseText = "";
     String modifyText = "";
@@ -90,8 +96,7 @@ class _SpeciesBodyState extends State<SpeciesBody> {
       modifyText = await rootBundle.loadString(join(assetSpeciesTemplatePath, kingdomName, "modify.json"));
     }
 
-    baseFile.writeAsStringSync(baseText);
-    modifyFile.writeAsStringSync(modifyText);
+    await saveSpecies(speciesName, kingdomName, baseText, modifyText);
 
     setState(() {
       textKindController.clear();
@@ -121,7 +126,40 @@ class _SpeciesBodyState extends State<SpeciesBody> {
   }
 
   Future<void> confirmFetchSpeciesData(SampleSpecies s, BuildContext context) async {
-    ddev.log(s.toString());
+    bool confirmation = await showYesNoDialog(
+        context,
+        "Download \"${s.name}\" data? 💾",
+        downloadSpeciesMessage,
+        downloadSpeciesAccept,
+        downloadSpeciesReject,
+    );
+
+    if (!confirmation) {
+      return;
+    }
+
+    var baseResponse = await http.get(Uri.parse(s.baseUrl));
+    var modifyResponse = await http.get(Uri.parse(s.modifyUrl));
+
+    if (baseResponse.statusCode != 200 ||
+          modifyResponse.statusCode != 200 ||
+          baseResponse.body.isEmpty ||
+          modifyResponse.body.isEmpty) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(snackBarCannotDownloadText),
+        ));
+      }
+      return;
+    }
+
+    await saveSpecies(s.name, s.kingdom.value, baseResponse.body, modifyResponse.body);
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text(snackBarAddedSpeciesText),
+      ));
+    }
   }
 
   @override
