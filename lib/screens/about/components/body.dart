@@ -37,68 +37,78 @@ class _AboutBodyState extends State<AboutBody> {
           // * Header background
           getScreenHeaderBackground(size),
 
-          Container(
-            padding: const EdgeInsets.only(
-              left: defaultPadding,
-              right: defaultPadding,
-            ),
-            child: ShaderMask(
-                shaderCallback: (Rect bounds) {
-                  return LinearGradient(
-                    end: Alignment.topCenter,
-                    begin: Alignment.bottomCenter,
-                    colors: [Colors.white, Colors.white.withOpacity(0.05)],
-                    stops: const [0.95, 1],
-                    tileMode: TileMode.mirror,
-                  ).createShader(bounds);
-                },
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
+          ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  end: Alignment.topCenter,
+                  begin: Alignment.bottomCenter,
+                  colors: [Colors.white, Colors.white.withOpacity(0.05)],
+                  stops: const [0.95, 1],
+                  tileMode: TileMode.mirror,
+                ).createShader(bounds);
+              },
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.only(
+                  left: defaultPadding,
+                  right: defaultPadding,
+                ),
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
 
-                        // Title
-                        getScreenHeaderText(screenTitleAbout),
+                      // Title
+                      getScreenHeaderText(screenTitleAbout),
 
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: defaultPadding,
-                            vertical: defaultPadding,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text(
-                                aboutText,
-                                style: subHeaderStyle,
-                              ),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultPadding,
+                          vertical: defaultPadding,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: defaultCardShadow,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Text(
+                              aboutText,
+                              style: subHeaderStyle,
+                            ),
 
-                              const SizedBox(height: 100),
+                            const SizedBox(height: 100),
 
-                              Visibility(
-                                visible: version.isNotEmpty,
+                            Visibility(
+                              visible: version.isNotEmpty,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: defaultPadding / 4,
+                                  horizontal: defaultPadding / 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colorPrimary,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
                                 child: Text(
                                   "version: $version",
-                                  style: subHeaderStyle,
+                                  style: subHeaderBrightStyle,
                                 ),
                               ),
+                            ),
 
-                              getFooter(),
-                            ],
-                          ),
+                            getFooter(),
+                          ],
                         ),
+                      ),
 
-                        const SizedBox(height: 100),
-                      ]
-                  ),
-                )
-            )
+                      const SizedBox(height: 100),
+                    ]
+                ),
+              )
           ),
         ],
       ),

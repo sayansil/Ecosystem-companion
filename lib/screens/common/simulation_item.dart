@@ -6,6 +6,7 @@ Container speciesSetItem(kingdom, species, age, count) {
   return Container(
     decoration: BoxDecoration(
         color: Colors.white,
+        boxShadow: defaultCardShadow,
         borderRadius: BorderRadius.circular(10)),
     child: Stack(children: <Widget>[
       Positioned(

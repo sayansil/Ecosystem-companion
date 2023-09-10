@@ -10,8 +10,10 @@ const headerPadding = EdgeInsets.only(
   top: defaultSmallPadding,
 );
 
+const secondaryHeaderStyle = TextStyle(fontSize: 20, height: 0.9, fontFamily: 'Poppins', fontWeight: FontWeight.w500);
 const hugeHeaderStyle = TextStyle(fontSize: 35, fontFamily: 'Poppins', fontWeight: FontWeight.w500, color: colorPrimary, height: 1.75);
 const subHeaderStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorSecondary, height: 1.25);
+const subHeaderBrightStyle = TextStyle(fontSize: 15, fontFamily: 'Poppins', color: colorBackground, height: 1.25);
 const highlightedSubHeaderStyle = TextStyle(fontSize: 20, fontFamily: 'Poppins', color: colorSecondary, height: 1);
 
 const editTextStyle = TextStyle(color: colorTextDark, fontSize: 18, fontFamily: 'Poppins');
@@ -66,3 +68,9 @@ final highlightMenuButtonStyle = ElevatedButton.styleFrom(
       borderRadius: BorderRadius.all(Radius.circular(10))
   ),
 );
+
+const defaultCardShadow = [BoxShadow(
+  offset: Offset(2, 2),
+  blurRadius: 8,
+  color: Color.fromRGBO(0, 0, 0, 0.16),
+)];

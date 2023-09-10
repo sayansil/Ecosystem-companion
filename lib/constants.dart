@@ -13,6 +13,10 @@ const colorBackground = Color(0xFFF0F0F0);
 const colorBackgroundSeeThrough = Color(0xA6F0F0F0);
 const colorTextDark = Color(0x80181818);
 const colorTextLight = Color(0x80FFFFFF);
+const colorAccentLight = Color(0xcce8dff8);
+const colorAccent = Color(0xffa57afa);
+const colorAnimalAccent = Color(0xffd8e5ee);
+const colorPlantAccent = Color(0xffd4efcf);
 
 const plotLineColors = [
   Colors.deepPurple,
@@ -64,6 +68,10 @@ const stopSimulationMessage = "All unsaved data from the current simulation will
 const stopSimulationAccept = "Yes";
 const stopSimulationReject = "No";
 
+const downloadSpeciesMessage = "This download might take a minute or two...";
+const downloadSpeciesAccept = "Yes";
+const downloadSpeciesReject = "No";
+
 const confirmDeleteTitle = "Deleting simulation report 😔";
 const confirmDeleteMessage = "Are you sure you want to delete this report?";
 const confirmDeleteAccept = "Yes";
@@ -84,6 +92,7 @@ const configKindInputText = "Species name";
 
 const snackBarAddedSpeciesText = "Species added successfully";
 const snackBarSavedReportText = "Report saved";
+const snackBarCannotDownloadText = "Could not download. Please check your internet connection.";
 
 const permissionStorageNotGranted = "Could not access device storage :(";
 const permissionStorageGrantRequest = "Please grant storage permission to proceed";
@@ -92,6 +101,8 @@ const noSpeciesFound = "No species found in that Kingdom. Please create one.";
 const invalidReportPath = "Report not found";
 const simulationKingdomInputText = "Select a Kingdom";
 const simulationKindInputText = "Select a Species";
+
+const addSampleSpeciesHeader = "Add sample species…";
 
 const navTitleHome = "Home";
 const navTitleSpecies = "New species";
