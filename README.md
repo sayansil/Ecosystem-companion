@@ -14,6 +14,9 @@
 <p align="center">
 <a href="https://github.com/sayansil/Ecosystem/blob/master/LICENSE">
         <img src="https://img.shields.io/badge/license-GPL%20v3-yellow.svg" /></a>
+
+<a href="https://github.com/sayansil/Ecosystem-companion/actions/workflows/build.yml">
+        <img src="https://github.com/sayansil/Ecosystem-companion/actions/workflows/build.yml/badge.svg" /></a>
 </p>
 
 

@@ -4,6 +4,16 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'android/**'
+      - 'assets/**'
+      - 'ios/**'
+      - 'lib/**'
+      - 'linux/**'
+      - 'macos/**'
+      - 'web/**'
+      - 'native_simulator/**'
+      - 'pubspec.yaml'
   workflow_dispatch:
 
 jobs:
