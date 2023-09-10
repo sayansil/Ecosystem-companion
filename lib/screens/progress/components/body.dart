@@ -159,6 +159,24 @@ class _ProgressBodyState extends State<ProgressBody> {
 
     return Stack(
       children: <Widget>[
+        // Bottom Live Plot
+        Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Visibility(
+                visible: x.isNotEmpty,
+                child:
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: LineChart(
+                    liveData(x, y, widget.years.toDouble()),
+                    swapAnimationDuration: const Duration(milliseconds: 15), // Optional
+                    swapAnimationCurve: Curves.linear, // Optional
+                  ),
+                )
+            )
+        ),
 
         // Title text
         const Positioned(
@@ -219,6 +237,7 @@ class _ProgressBodyState extends State<ProgressBody> {
           ),
         ),
 
+        // Inputs
         Positioned(
           left: defaultPadding,
           right: defaultPadding,
@@ -256,25 +275,6 @@ class _ProgressBodyState extends State<ProgressBody> {
                 )
               ]),
         ),
-
-        // Bottom Live Plot
-        Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Visibility(
-              visible: x.isNotEmpty,
-              child:
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: LineChart(
-                    liveData(x, y, widget.years.toDouble()),
-                    swapAnimationDuration: const Duration(milliseconds: 15), // Optional
-                    swapAnimationCurve: Curves.linear, // Optional
-                  ),
-                )
-            )
-        )
       ],
     );
   }
