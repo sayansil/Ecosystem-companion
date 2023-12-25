@@ -4,7 +4,7 @@ import 'package:ecosystem/screens/common/dialog.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/material.dart';
 
-import 'components/driver.dart';
+import 'components/body/driver.dart';
 
 class ProgressScreen extends StatelessWidget {
   final int year;

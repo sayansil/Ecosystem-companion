@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:ecosystem/screens/common/dropdown.dart';
 import 'package:ecosystem/screens/common/live_plot.dart';

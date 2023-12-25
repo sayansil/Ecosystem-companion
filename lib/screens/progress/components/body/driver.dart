@@ -1,7 +1,7 @@
 import 'package:ecosystem/screens/common/dropdown.dart';
 import 'package:ecosystem/screens/common/transition.dart';
-import 'package:ecosystem/screens/progress/components/landscape.dart';
-import 'package:ecosystem/screens/progress/components/portrait.dart';
+import 'package:ecosystem/screens/progress/components/body/landscape.dart';
+import 'package:ecosystem/screens/progress/components/body/portrait.dart';
 import 'package:ecosystem/screens/report/report_screen.dart';
 import 'package:native_simulator/native_simulator.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
