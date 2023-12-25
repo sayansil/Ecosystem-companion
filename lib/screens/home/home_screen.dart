@@ -1,3 +1,4 @@
+import 'package:ecosystem/screens/home/components/body_landscape.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/screens/common/navappbar.dart';
@@ -12,6 +13,12 @@ class HomeScreen extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         drawer: const NavDrawer(currentItem: DrawerItem.home),
         appBar: buildNavAppBar(context),
-        body: const HomeBody(),
+        body: OrientationBuilder(
+          builder: (BuildContext context, Orientation orientation) {
+            return orientation == Orientation.portrait ?
+              const HomeBody():
+              const HomeLandscapeBody();
+          }
+        ),
       );
 }

@@ -2,6 +2,8 @@ import 'package:ecosystem/screens/common/defaultappbar.dart';
 import 'package:ecosystem/screens/report/components/body.dart';
 import 'package:flutter/material.dart';
 
+import 'components/body_landscape.dart';
+
 class ReportScreen extends StatelessWidget {
   final String? plotDataPath;
 
@@ -11,6 +13,12 @@ class ReportScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: buildAppBar(context),
-      body: ReportBody(plotDataPath),
+      body: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          return orientation == Orientation.portrait ?
+            ReportBody(plotDataPath) :
+            ReportLandscapeBody(plotDataPath);
+        }
+      ),
   );
 }

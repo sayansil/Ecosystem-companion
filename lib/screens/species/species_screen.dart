@@ -1,4 +1,5 @@
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/screens/species/components/body_landscape.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/common/navdrawer.dart';
 import 'package:ecosystem/screens/common/navappbar.dart';
@@ -12,6 +13,12 @@ class SpeciesScreen extends StatelessWidget {
     resizeToAvoidBottomInset: false,
     drawer: const NavDrawer(currentItem: DrawerItem.organism),
     appBar: buildNavAppBar(context),
-    body: const SpeciesBody(),
+    body: OrientationBuilder(
+      builder: (BuildContext context, Orientation orientation) {
+        return orientation == Orientation.portrait ?
+          const SpeciesBody() :
+          const SpeciesLandscapeBody();
+      }
+    ),
   );
 }
