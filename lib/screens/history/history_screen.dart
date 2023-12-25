@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:ecosystem/constants.dart';
+import 'package:ecosystem/screens/history/components/body_landscape.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/common/navdrawer.dart';
 import 'package:ecosystem/screens/common/navappbar.dart';
@@ -12,6 +15,12 @@ class HistoryScreen extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         drawer: const NavDrawer(currentItem: DrawerItem.history),
         appBar: buildNavAppBar(context),
-        body: const HistoryBody(),
+        body: OrientationBuilder(
+          builder: (BuildContext context, Orientation orientation) {
+            return orientation == Orientation.portrait ?
+              const HistoryBody() :
+              const HistoryLandscapeBody();
+          },
+        ),
       );
 }

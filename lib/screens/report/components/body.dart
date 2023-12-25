@@ -8,15 +8,12 @@ import 'package:ecosystem/schema/plot_visualisation_generated.dart';
 import 'package:ecosystem/screens/common/credits.dart';
 import 'package:ecosystem/screens/common/plot_item.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
-import 'package:ecosystem/utility/permissions.dart';
 import 'package:ecosystem/utility/report_helpers.dart' as report;
 import 'package:ecosystem/utility/simulation_helpers.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class ReportBody extends StatefulWidget {
   final String? plotDataPath;

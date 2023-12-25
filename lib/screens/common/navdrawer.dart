@@ -6,7 +6,6 @@ import 'package:ecosystem/screens/home/home_screen.dart';
 import 'package:ecosystem/screens/about/about_screen.dart';
 import 'package:ecosystem/screens/history/history_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class NavDrawer extends StatelessWidget {
   final DrawerItem? currentItem;
