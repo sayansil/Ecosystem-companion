@@ -44,9 +44,9 @@ Widget getPortraitBody(HomeBodyState state) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-
-                    // Title
-                    getScreenHeaderText(screenTitleHome),
+                    const SizedBox(
+                      height: maskPadding,
+                    ),
 
                     Stack(
                       children: [

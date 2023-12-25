@@ -32,6 +32,7 @@ const plotLineColors = [
 
 const defaultPadding = 30.0;
 const defaultSmallPadding = 20.0;
+const maskPadding = 30.0;
 
 // * Global parameters
 
@@ -110,7 +111,7 @@ const navTitleHistory = "History";
 const navTitleAbout = "About";
 const navTitleContribute = "Contribute";
 
-const screenTitleHome = "Ecosystem Simulator";
+const screenTitleHome = "Home";
 const screenTitleSpecies = "Add species";
 const screenTitleHistory = "History";
 const screenTitleAbout = "About";

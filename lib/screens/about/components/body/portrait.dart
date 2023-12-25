@@ -37,9 +37,9 @@ Widget getPortraitBody(AboutBodyState state) {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-
-                    // Title
-                    getScreenHeaderText(screenTitleAbout),
+                    const SizedBox(
+                      height: maskPadding,
+                    ),
 
                     Container(
                       width: double.infinity,

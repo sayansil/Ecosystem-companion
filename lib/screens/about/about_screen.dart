@@ -11,7 +11,7 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: const NavDrawer(currentItem: DrawerItem.about),
-        appBar: buildNavAppBar(context),
+        appBar: buildNavAppBar(context, screenTitleAbout),
         body: const AboutBody(),
       );
 }

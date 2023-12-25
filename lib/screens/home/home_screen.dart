@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: const NavDrawer(currentItem: DrawerItem.home),
-        appBar: buildNavAppBar(context),
+        appBar: buildNavAppBar(context, screenTitleHome),
         body: const HomeBody(),
       );
 }

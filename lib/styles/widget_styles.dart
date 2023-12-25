@@ -3,7 +3,7 @@ import 'package:ecosystem/constants.dart';
 
 // * Global widget styles for application
 
-const headerStyle = TextStyle(fontSize: 30, height: 0.9, fontFamily: 'Poppins', fontWeight: FontWeight.w300);
+const headerStyle = TextStyle(fontSize: 20, height: 0.9, fontFamily: 'Poppins', fontWeight: FontWeight.w300, color: colorSecondary);
 const headerPadding = EdgeInsets.only(
   left: defaultPadding,
   right: defaultPadding,

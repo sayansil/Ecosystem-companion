@@ -12,7 +12,7 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: const NavDrawer(currentItem: DrawerItem.history),
-        appBar: buildNavAppBar(context),
+        appBar: buildNavAppBar(context, screenTitleHistory),
         body: const HistoryBody(),
       );
 }

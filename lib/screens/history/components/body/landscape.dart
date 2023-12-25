@@ -21,14 +21,8 @@ Widget getLandscapeBody(HistoryBodyState state) {
         Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-
-              // Title
-              Container(
-                padding: const EdgeInsets.only(
-                  left: defaultPadding,
-                  right: defaultPadding,
-                ),
-                child: getScreenHeaderText(screenTitleHistory),
+              const SizedBox(
+                height: maskPadding,
               ),
 
               //* Report list

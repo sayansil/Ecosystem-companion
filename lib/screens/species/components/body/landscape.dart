@@ -42,9 +42,9 @@ Widget getLandscapeBody(SpeciesBodyState state) {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-                // Title
-                getScreenHeaderText(screenTitleSpecies),
+                const SizedBox(
+                  height: maskPadding,
+                ),
 
                 Container(
                   constraints: BoxConstraints(
