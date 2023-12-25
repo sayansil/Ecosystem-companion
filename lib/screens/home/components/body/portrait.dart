@@ -9,6 +9,7 @@ import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import '../../../common/simulation_item.dart';
 
 import 'driver.dart';
@@ -46,6 +47,17 @@ Widget getPortraitBody(HomeBodyState state) {
                   children: [
                     const SizedBox(
                       height: maskPadding,
+                    ),
+
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: Lottie.asset(
+                        assetHappyDog,
+                        animate: true,
+                        repeat: true,
+                        height: min(200, size.width / 5),
+                        width: min(200, size.width / 5),
+                      )
                     ),
 
                     Stack(

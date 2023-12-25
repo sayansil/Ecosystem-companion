@@ -53,6 +53,7 @@ enum DrawerItem { home, config, history, about, contribute, organism }
 
 const assetLoading = "assets/json/animation/loading.json";
 const assetEmpty = "assets/json/animation/empty.json";
+const assetHappyDog = "assets/json/animation/dog-happy.json";
 
 // * String constants
 
