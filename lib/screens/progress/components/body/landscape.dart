@@ -50,7 +50,7 @@ Widget getLandscapeBody(ProgressBodyState state) {
                 style: subHeaderStyle,
               ),
               TextSpan(
-                text: "$state.currentYear / ${state.widget.years}",
+                text: "${state.currentYear} / ${state.widget.years}",
                 style: highlightedSubHeaderStyle,
               )
             ]
