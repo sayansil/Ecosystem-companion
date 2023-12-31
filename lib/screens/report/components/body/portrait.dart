@@ -1,3 +1,4 @@
+import 'package:ecosystem/screens/common/dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -11,98 +12,76 @@ Widget getPortraitBody(ReportBodyState state) {
   return Stack(
     alignment: Alignment.center,
     children: [
+
       Visibility(
           visible: state.loading,
-          child: Lottie.asset(assetLoading)
+          child: Container(
+            width: double.maxFinite,
+            alignment: Alignment.center,
+            child: Lottie.asset(assetLoading),
+          )
       ),
 
       Visibility(
           visible: !state.loading,
-          child: Stack(
+          child: Column(
               children: [
-
-                // Title
-                const Positioned(
-                    left: defaultPadding,
-                    child: Text(
-                      "Simulation\nReport",
-                      style: hugeHeaderStyle,
-                    )
-                ),
-
                 // Actions Bar
-                Positioned(
-                    right: defaultPadding,
-                    top: 10,
-                    child: Column(
+                Container(
+                    padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
+                    child: Row(
                       mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-
-                            // Export button
-                            ElevatedButton(
-                              onPressed: null,
-                              style: menuButtonStyle,
-                              child: const Text("Export"),
+                        Flexible(
+                          child: Container(
+                            padding: const EdgeInsets.only(right: defaultPadding / 2),
+                            child: getDropDown(
+                              (String? item) => state.setActiveSpecies(item),
+                              state.allSpecies,
+                              "Species",
+                              state.activeSpecies,
                             ),
-
-
-                            const SizedBox(
-                              width: 15,
-                            ),
-
-                            // Save button
-                            ElevatedButton(
-                              onPressed: () {
-                                state.saveData(state.context).then((value) => ScaffoldMessenger.of(state.context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text(snackBarSavedReportText),
-                                )));
-                              },
-                              style: menuButtonStyle,
-                              child: const Text("Save"),
-                            ),
-                          ],
+                          ),
                         ),
 
-                        // Species dropdown
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 150,
-                              child: DropdownButtonFormField<String>(
-                                  icon: const Icon(Icons.arrow_downward_rounded),
-                                  elevation: 10,
-                                  style: dropdownOptionStyle,
-                                  onChanged: (String? item) =>
-                                      state.setActiveSpecies(item),
-                                  value: state.activeSpecies,
-                                  items: state.plotBundle?.plotGroups!.map((item) => DropdownMenuItem<String>(
-                                    value: item.name!,
-                                    child: Text(item.name!),
-                                  )).toList(),
-                                  decoration: const InputDecoration(
-                                    labelText: "Species",
-                                    labelStyle: editTextStyle,
-                                    enabledBorder: InputBorder.none,
-                                    focusedBorder: InputBorder.none,
-                                  )
-                              ),
-                            )
-                          ],
-                        )
+                        // Export button
+                        ElevatedButton(
+                          onPressed: null,
+                          style: menuButtonStyle,
+                          child: const Text("Export"),
+                        ),
+
+
+                        const SizedBox(
+                          width: 15,
+                        ),
+
+                        // Save button
+                        ElevatedButton(
+                          onPressed: () {
+                            state.saveData(state.context).then((value) => ScaffoldMessenger.of(state.context)
+                                .showSnackBar(const SnackBar(
+                              content: Text(snackBarSavedReportText),
+                            )));
+                          },
+                          style: menuButtonStyle,
+                          child: const Text("Save"),
+                        ),
                       ],
-                    )
+                    ),
                 ),
 
+                const SizedBox(height: defaultPadding),
 
                 if (state.renderObjects != null)
-                  Column(
-                    children: [
-                      const SizedBox(height: 150),
-                      state.getPlotList(size),
-                    ],
+                  Expanded(
+                      child: Scrollbar(
+                        interactive: true,
+                        thumbVisibility: true,
+                        child: state.getPlotList(size),
+                      )
                   )
               ]
           )

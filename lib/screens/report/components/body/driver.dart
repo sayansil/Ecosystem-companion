@@ -6,6 +6,7 @@ import 'package:ecosystem/database/database_manager.dart';
 import 'package:ecosystem/database/tableSchema/ecosystem_master.dart';
 import 'package:ecosystem/schema/plot_visualisation_generated.dart';
 import 'package:ecosystem/screens/common/credits.dart';
+import 'package:ecosystem/screens/common/dropdown.dart';
 import 'package:ecosystem/screens/common/plot_item.dart';
 import 'package:ecosystem/screens/report/components/body/landscape.dart';
 import 'package:ecosystem/screens/report/components/body/portrait.dart';
@@ -30,6 +31,7 @@ class ReportBodyState extends State<ReportBody> {
   Uint8List? plotBundleData;
   PlotBundle? plotBundle;
   List<report.RenderObject>? renderObjects;
+  List<DropdownObject> allSpecies = [];
 
   String? activeSpecies;
   String? activeKingdom;
@@ -70,6 +72,9 @@ class ReportBodyState extends State<ReportBody> {
       activeSpecies = plotBundle!.plotGroups![0].name;
       activeKingdom = plotBundle!.plotGroups![0].type;
       activePlots = plotBundle!.plotGroups![0].plots!;
+
+      allSpecies = plotBundle!.plotGroups!.map((e)
+        => DropdownObject(e.name!, e.name!)).toList();
     });
   }
 
@@ -133,20 +138,36 @@ class ReportBodyState extends State<ReportBody> {
   }
 
   Widget getPlotList(Size size) {
-    return Expanded(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: renderObjects!.length + 1,
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (context, index) {
-          if (index < renderObjects!.length) {
-            final item = renderObjects![index];
-            return getReportPlot(item);
-          }
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      itemCount: renderObjects!.length + 1,
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, index) {
+        if (index < renderObjects!.length) {
+          final item = renderObjects![index];
+          return getReportPlot(item);
+        }
 
-          return getFooter();
-        },
-      ),
+        return getFooter();
+      },
+    );
+  }
+
+  Widget getPlotGrid(Size size) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisExtent: 200,
+        childAspectRatio: 2,
+        crossAxisSpacing: defaultPadding,
+        mainAxisSpacing: defaultPadding),
+      itemCount: renderObjects!.length,
+      itemBuilder: (context, index) {
+          final item = renderObjects![index];
+          return getReportPlot(item);
+      },
     );
   }
 

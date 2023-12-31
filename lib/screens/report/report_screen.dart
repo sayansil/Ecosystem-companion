@@ -1,3 +1,4 @@
+import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/screens/common/defaultappbar.dart';
 import 'package:ecosystem/screens/report/components/body/driver.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ class ReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(context, null),
+      appBar: buildAppBar(context, screenTitleReport),
       body: ReportBody(plotDataPath)
   );
 }
