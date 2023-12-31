@@ -11,7 +11,7 @@ class ReportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(context),
+      appBar: buildAppBar(context, null),
       body: ReportBody(plotDataPath)
   );
 }

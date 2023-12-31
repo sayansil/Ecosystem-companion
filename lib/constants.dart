@@ -116,6 +116,7 @@ const screenTitleHome = "Home";
 const screenTitleSpecies = "Add species";
 const screenTitleHistory = "History";
 const screenTitleAbout = "About";
+const screenTitleProgress = "Simulation";
 
 const footerTitleText = "Made with ❤️";
 const stayTunedText = "Keep an eye on this space...";

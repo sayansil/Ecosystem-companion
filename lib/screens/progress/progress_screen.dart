@@ -24,7 +24,7 @@ class ProgressScreen extends StatelessWidget {
       ),
     child: Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(context),
+      appBar: buildAppBar(context, screenTitleProgress),
       body: ProgressBody(year, initOrganisms),
   ));
 }
