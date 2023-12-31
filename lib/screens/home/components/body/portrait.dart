@@ -55,8 +55,8 @@ Widget getPortraitBody(HomeBodyState state) {
                         assetHappyDog,
                         animate: true,
                         repeat: true,
-                        height: min(200, size.width / 5),
-                        width: min(200, size.width / 5),
+                        height: min(200, size.width / 8),
+                        width: min(200, size.width / 8),
                       )
                     ),
 
