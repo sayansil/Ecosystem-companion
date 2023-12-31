@@ -1,9 +1,10 @@
 import 'package:ecosystem/constants.dart';
 import 'package:ecosystem/screens/common/defaultappbar.dart';
 import 'package:ecosystem/screens/common/dialog.dart';
-import 'package:ecosystem/screens/progress/components/body.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/material.dart';
+
+import 'components/body/driver.dart';
 
 class ProgressScreen extends StatelessWidget {
   final int year;
@@ -23,7 +24,7 @@ class ProgressScreen extends StatelessWidget {
       ),
     child: Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: buildAppBar(context),
+      appBar: buildAppBar(context, screenTitleProgress),
       body: ProgressBody(year, initOrganisms),
   ));
 }

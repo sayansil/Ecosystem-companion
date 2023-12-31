@@ -1,8 +1,9 @@
+
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/screens/common/navdrawer.dart';
 import 'package:ecosystem/screens/common/navappbar.dart';
-import 'components/body.dart';
+import 'components/body/driver.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
@@ -11,7 +12,7 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: const NavDrawer(currentItem: DrawerItem.history),
-        appBar: buildNavAppBar(context),
+        appBar: buildNavAppBar(context, screenTitleHistory),
         body: const HistoryBody(),
       );
 }

@@ -1,13 +1,12 @@
 import 'package:ecosystem/screens/common/dropdown.dart';
-import 'package:ecosystem/screens/common/live_plot.dart';
 import 'package:ecosystem/screens/common/transition.dart';
+import 'package:ecosystem/screens/progress/components/body/landscape.dart';
+import 'package:ecosystem/screens/progress/components/body/portrait.dart';
 import 'package:ecosystem/screens/report/report_screen.dart';
-import 'package:ecosystem/styles/widget_styles.dart';
 import 'package:native_simulator/native_simulator.dart';
 import 'package:ecosystem/utility/simulation_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:recase/recase.dart';
 
 class ProgressBody extends StatefulWidget {
@@ -17,10 +16,10 @@ class ProgressBody extends StatefulWidget {
   const ProgressBody(this.years, this.initOrganisms, {Key? key}): super(key: key);
 
   @override
-  State<ProgressBody> createState() => _ProgressBodyState();
+  State<ProgressBody> createState() => ProgressBodyState();
 }
 
-class _ProgressBodyState extends State<ProgressBody> {
+class ProgressBodyState extends State<ProgressBody> {
   int currentYear = 0;
 
   List<double> x = [];
@@ -156,126 +155,12 @@ class _ProgressBodyState extends State<ProgressBody> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Stack(
-      children: <Widget>[
-        // Bottom Live Plot
-        Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Visibility(
-                visible: x.isNotEmpty,
-                child:
-                AspectRatio(
-                  aspectRatio: 1,
-                  child: LineChart(
-                    liveData(x, y, widget.years.toDouble()),
-                    swapAnimationDuration: const Duration(milliseconds: 15), // Optional
-                    swapAnimationCurve: Curves.linear, // Optional
-                  ),
-                )
-            )
-        ),
-
-        // Title text
-        const Positioned(
-          left: defaultPadding,
-          top: 0,
-          child: Text(
-            "Simulation",
-            style: hugeHeaderStyle,
-          ),
-        ),
-
-        // Subtitle Text
-        Positioned(
-          left: defaultPadding,
-          top: 75,
-          child: RichText(text: TextSpan(
-            children: [
-              const TextSpan(
-                text: "year  ",
-                style: subHeaderStyle,
-              ),
-              TextSpan(
-                text: "$currentYear / ${widget.years}",
-                style: highlightedSubHeaderStyle,
-              )
-            ]
-          )),
-        ),
-
-        // Start/Stop/View button
-        Positioned(
-          right: defaultPadding,
-          top: 12.5,
-
-          child: ElevatedButton(
-            style: highlightMenuButtonStyle,
-            onPressed: () async {
-              if (simulationState == SimulationStatus.init) {
-                return;
-              } else if (simulationState == SimulationStatus.ready) {
-                startSimulation();
-              } else if (simulationState == SimulationStatus.running) {
-                stopSimulation();
-              } else if (simulationState == SimulationStatus.stopped ||
-                  simulationState == SimulationStatus.completed) {
-                viewSimulation();
-              }
-            },
-            child: Text(
-                simulationState == SimulationStatus.ready ?
-                simulateStartBtn :
-                simulationState == SimulationStatus.running ?
-                simulateStopBtn :
-                simulationState == SimulationStatus.stopped ||
-                    simulationState == SimulationStatus.completed ?
-                simulateViewBtn : ""
-            ),
-          ),
-        ),
-
-        // Inputs
-        Positioned(
-          left: defaultPadding,
-          right: defaultPadding,
-          top: 125,
-          child:
-          Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-
-                // Species input
-                Flexible(
-                  child: Container(
-                    padding: const EdgeInsets.only(right: defaultPadding / 2),
-                    child: getDropDown(
-                      selectSpecies,
-                      allSpecies,
-                      "Species",
-                      activeSpecies,
-                    ),
-                  ),
-                ),
-
-
-                // Attribute input
-                Flexible(
-                  child: Container(
-                    padding: const EdgeInsets.only(left: defaultPadding / 2),
-                    child: getDropDown(
-                      selectAttribute,
-                      allAttributes,
-                      "Attribute",
-                      activeAttribute,
-                    ),
-                  ),
-                )
-              ]),
-        ),
-      ],
+    return OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          return orientation == Orientation.portrait ?
+            getPortraitBody(this) :
+            getLandscapeBody(this);
+        }
     );
   }
 }

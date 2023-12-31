@@ -32,6 +32,7 @@ const plotLineColors = [
 
 const defaultPadding = 30.0;
 const defaultSmallPadding = 20.0;
+const maskPadding = 30.0;
 
 // * Global parameters
 
@@ -52,6 +53,7 @@ enum DrawerItem { home, config, history, about, contribute, organism }
 
 const assetLoading = "assets/json/animation/loading.json";
 const assetEmpty = "assets/json/animation/empty.json";
+const assetHappyDog = "assets/json/animation/dog-happy.json";
 
 // * String constants
 
@@ -110,10 +112,12 @@ const navTitleHistory = "History";
 const navTitleAbout = "About";
 const navTitleContribute = "Contribute";
 
-const screenTitleHome = "Ecosystem Simulator";
+const screenTitleHome = "Home";
 const screenTitleSpecies = "Add species";
 const screenTitleHistory = "History";
 const screenTitleAbout = "About";
+const screenTitleProgress = "Simulation";
+const screenTitleReport = "Simulation Report";
 
 const footerTitleText = "Made with ❤️";
 const stayTunedText = "Keep an eye on this space...";
