@@ -6,7 +6,6 @@ import 'dart:math';
 
 import 'package:ecosystem/screens/common/header.dart';
 import 'package:ecosystem/styles/widget_styles.dart';
-import 'package:flutter/material.dart';
 import 'package:ecosystem/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
